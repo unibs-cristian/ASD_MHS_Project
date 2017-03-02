@@ -47,7 +47,7 @@ public class Instance {
  	}
 	
 	public void printMatrix() {
-		System.out.println(matrixRows + " "  + matrixCols);
+		System.out.println("Numero di righe: " + matrixRows + " Numero di colonne: "  + matrixCols);
 		for(int i=0; i<matrixRows; i++) {
 			for(int j=0; j<matrixCols; j++) {
 				System.out.print(matrix.get(i*matrixCols + j) + " ");

@@ -75,25 +75,15 @@ public class Reader {
 					sCurrentLine = cleanString(sCurrentLine);
 					int j = 0, k = 0;
 					
-					while(j<instance.getNumUsefulColumns() && k<sCurrentLine.length()) {						
-						System.out.println((i + " " + j + " " + k + " " + sCurrentLine.charAt(k)) + " ");
+					while(j<instance.getNumUsefulColumns() && k<sCurrentLine.length()) {												
 						if(instance.isUseful(k)) {							
-							if(sCurrentLine.charAt(k) == '1') {							
-								/**
-								System.out.println(i + " " + j);
-								System.out.println(i*8 + j);
-								System.out.println();*/
+							if(sCurrentLine.charAt(k) == '1') {															
 								instance.setElement(i, j);								
 							}							
 							j++;
-						}
-						if(instance.isUseful(k))
-							instance.printMatrixElem(i, j-1);
-						else
-							instance.printMatrixElem(i, j);
+						}						
 						k++;
-					}
-					System.out.println(j + "*" + k);
+					}					
 					i++;
 				}				
 			}
