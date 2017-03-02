@@ -36,6 +36,10 @@ public class Instance {
 		matrix.set(row*usefulColumns.cardinality() + column);
 	}
 	
+	public boolean isUseful(int col) {
+		return usefulColumns.get(col);
+	}
+	
 	public void printUsefulColumns() {
 		for(int i=0; i<numColumns; i++) {
 			System.out.println(usefulColumns.get(i) + " ");
