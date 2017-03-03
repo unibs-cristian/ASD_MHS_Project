@@ -20,7 +20,7 @@ public class Reader {
 		this.path = path;
 	}
 	
-	public void read() {
+	public Instance read() {
 		try {
 			fr = new FileReader(path);
 		} catch (FileNotFoundException e) {
@@ -85,10 +85,12 @@ public class Reader {
 			if (fr != null)
 				fr.close();	
 			
+			return instance;
+			
 		} catch (IOException e) {
 			System.out.println("I/O error");
-		}		
-		
+		}	
+		return null;	
 	}
 	
 	private String cleanString(String str) {

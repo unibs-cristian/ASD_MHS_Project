@@ -18,6 +18,10 @@ public class Instance {
 		this.numColumns = numColumns;
 	}
 	
+	public BitSet getMatrix() {
+		return matrix;
+	}
+	 
 	public int getNumUsefulColumns() {
 		return usefulColumns.cardinality();
 	}
@@ -59,5 +63,4 @@ public class Instance {
 	public void printMatrixElem(int i, int j) {
 		System.out.println(matrix.get(i*matrixCols+ j));
 	}
-	
 }
