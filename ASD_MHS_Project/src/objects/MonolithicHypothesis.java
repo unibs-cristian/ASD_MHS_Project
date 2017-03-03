@@ -13,9 +13,15 @@ public class MonolithicHypothesis extends Hypothesis{
 	}
 
 	@Override
-	public void setField() {
-		// TODO Auto-generated method stub
-		
+	public void setField(Instance instance) {
+		if(getBin().cardinality() == 0) // Controllo se l'ipotesi e' vuota
+			vector.set(0, nInsiemi, false); // TODO e' utile?
+		else {
+			if(getBin().cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
+				vector = instance.getMatrixColumn(getBin().length());
+			}
+		}
+	
 	}
 
 }

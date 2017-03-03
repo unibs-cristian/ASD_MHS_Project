@@ -21,7 +21,19 @@ public class Instance {
 	public BitSet getMatrix() {
 		return matrix;
 	}
-	 
+	
+	public int getMatrixNumRows() {
+		return matrixRows;
+	}	
+	
+	public BitSet getMatrixColumn(int column) {
+		BitSet col = new BitSet(matrixRows);
+		for(int i=0; i<matrixRows; i++) 
+			col.set(i, matrix.get(i*matrixCols + column));
+	
+		return col;				
+	}
+	
 	public int getNumUsefulColumns() {
 		return usefulColumns.cardinality();
 	}

@@ -11,5 +11,13 @@ public abstract class Hypothesis {
 		this.dimension = dimension;
 	}
 	
-	public abstract void setField();
+	public BitSet getBin() {
+		return bin;
+	}
+	
+	public int getDimension() {
+		return dimension;
+	}
+	
+	public abstract void setField(Instance instance);
 }
