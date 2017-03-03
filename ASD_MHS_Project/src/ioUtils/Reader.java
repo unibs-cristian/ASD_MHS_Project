@@ -9,7 +9,6 @@ import java.util.BitSet;
 import objects.Instance;
 
 public class Reader {
-	private final static String EXTENSION = "matrix";
 	private final static String COMMENT_DELIMITER = ";;;";
 	private final static String ROW_DELIMITER = "-";
 	private final static String SEPARATOR = " ";
