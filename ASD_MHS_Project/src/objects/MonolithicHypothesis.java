@@ -1,10 +1,21 @@
 package objects;
 
-public class MonolithicHypothesis extends Hypothesis{
+import java.util.BitSet;
 
-	public MonolithicHypothesis(int dimension) {
+public class MonolithicHypothesis extends Hypothesis{
+	private int nInsiemi;
+	private BitSet vector;
+	
+	public MonolithicHypothesis(int dimension, int nInsiemi) {
 		super(dimension);
-		// TODO Auto-generated constructor stub
+		this.nInsiemi = nInsiemi;
+		vector = new BitSet(nInsiemi);
+	}
+
+	@Override
+	public void setField() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
