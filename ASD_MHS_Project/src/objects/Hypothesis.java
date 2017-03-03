@@ -20,4 +20,6 @@ public abstract class Hypothesis {
 	}
 	
 	public abstract void setField(Instance instance);
+	public abstract boolean check();
+	public abstract void propagate(Hypothesis h);
 }

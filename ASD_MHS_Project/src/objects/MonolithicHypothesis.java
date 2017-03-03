@@ -24,4 +24,18 @@ public class MonolithicHypothesis extends Hypothesis{
 	
 	}
 
+	@Override
+	public boolean check() {
+		if(vector.cardinality() == nInsiemi)
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public void propagate(Hypothesis h) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
