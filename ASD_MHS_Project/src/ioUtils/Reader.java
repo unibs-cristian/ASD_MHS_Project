@@ -16,8 +16,8 @@ public class Reader {
 	
 	private String path;
 	private String fileName;
-	private FileReader fr, fr2;
-	private BufferedReader br, br2;
+	private FileReader fr;
+	private BufferedReader br;
 	
 	public Reader(String path, String fileName){
 		this.fileName = fileName;
@@ -54,23 +54,17 @@ public class Reader {
 				}
 			} while((sCurrentLine = br.readLine()) != null);		
 
-			if (br != null)
-				br.close();
-
-			if (fr != null)
-				fr.close();
-
 			instance.createMatrix(numRows);
 			try {
-				fr2 = new FileReader(fileName);
+				fr = new FileReader(fileName);
 			} catch (FileNotFoundException e) {
 				System.out.println("File not found.");
 			}
-			br2 = new BufferedReader(fr2);
+			br = new BufferedReader(fr);
 					
 			int i = 0;
 			
-			while ((sCurrentLine = br2.readLine()) != null) {
+			while ((sCurrentLine = br.readLine()) != null) {
 				if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
 					sCurrentLine = cleanString(sCurrentLine);
 					int j = 0, k = 0;
@@ -88,9 +82,16 @@ public class Reader {
 				}				
 			}
 			instance.printMatrix();
+			
+			if (br != null)
+				br.close();
+
+			if (fr != null)
+				fr.close();	
+			
 		} catch (IOException e) {
 			System.out.println("I/O error");
-		}
+		}		
 		
 	}
 	
