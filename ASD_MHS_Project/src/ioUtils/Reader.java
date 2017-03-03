@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.BitSet;
 
 import objects.Instance;
 
@@ -14,18 +13,16 @@ public class Reader {
 	private final static String SEPARATOR = " ";
 	
 	private String path;
-	private String fileName;
 	private FileReader fr;
 	private BufferedReader br;
 	
-	public Reader(String path, String fileName){
-		this.fileName = fileName;
+	public Reader(String path){
 		this.path = path;
 	}
 	
 	public void read() {
 		try {
-			fr = new FileReader(fileName);
+			fr = new FileReader(path);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		}
@@ -55,7 +52,7 @@ public class Reader {
 
 			instance.createMatrix(numRows);
 			try {
-				fr = new FileReader(fileName);
+				fr = new FileReader(path);
 			} catch (FileNotFoundException e) {
 				System.out.println("File not found.");
 			}
