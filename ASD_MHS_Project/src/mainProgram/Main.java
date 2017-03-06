@@ -66,7 +66,7 @@ public class Main {
 		do {
 			next.clear();
 			for(int i=0; i<current.size(); i++) {
-				System.out.println(current.get(i).getBin());
+				//System.out.println(current.get(i).getBin());
 				if(current.get(i).check()) {
 					solutions.add(current.get(i));
 					current.remove(i);
@@ -77,7 +77,7 @@ public class Main {
 				}
 			}
 			current = new ArrayList<>(next);
-			System.out.println(current);
+			//System.out.println(current);
 		} while(!current.isEmpty());
 	}
 	
@@ -94,7 +94,6 @@ public class Main {
 			for(int i=0; i<h.getDimension(); i++) {		
 				h1 = h.clone();
 				h1.setBin(i);
-				System.out.println(h1.getBin());
 				h1.setField(in);
 				h1.propagate(h);
 				next.add(h1);
@@ -121,8 +120,6 @@ public class Main {
 				
 				cond = true;
 				for(int j=h.getBin().nextSetBit(0); j<h.getBin().length(); j++) {
-					System.out.println(h.getBin().nextSetBit(0));
-					System.out.println(h.getBin().length());
 					h2 = h1.clone();
 					if(h2.getBin().get(j)!=false) {
 						h2.set(j,false);
