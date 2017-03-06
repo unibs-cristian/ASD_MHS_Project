@@ -11,6 +11,12 @@ public class MonolithicHypothesis extends Hypothesis{
 		this.nInsiemi = nInsiemi;
 		vector = new BitSet(nInsiemi);
 	}
+	
+	public MonolithicHypothesis(int dimension, BitSet bin, int nInsiemi) {
+		super(dimension,bin);
+		this.nInsiemi = nInsiemi;
+		vector = new BitSet(nInsiemi);
+	}
 
 	@Override
 	public void setField(Instance instance) {
@@ -19,6 +25,10 @@ public class MonolithicHypothesis extends Hypothesis{
 		else {
 			if(getBin().cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
 				vector = instance.getMatrixColumn(getBin().length());
+			}
+			else {
+				/*vector = 
+				vector.or(vectorB);*/
 			}
 		}
 	
@@ -37,5 +47,22 @@ public class MonolithicHypothesis extends Hypothesis{
 		// TODO Auto-generated method stub
 		//empty
 	}
-
+	
+	@Override
+	public Hypothesis generateLeftMostPredecessor(Instance instance) {
+		BitSet leftMostPredecessor = getBin();
+		leftMostPredecessor.set(leftMostPredecessor.length(), false);
+		MonolithicHypothesis hLeftMostPredecessor = new MonolithicHypothesis(getDimension(),leftMostPredecessor,nInsiemi);
+		hLeftMostPredecessor.setField(instance);
+		return hLeftMostPredecessor;
+	}
+	
+	@Override
+	public Hypothesis generateRightMostPredecessor(Instance instance) {
+		BitSet rightMostPredecessor = getBin();
+		rightMostPredecessor.set(rightMostPredecessor.nextSetBit(0), false);
+		MonolithicHypothesis hRightMostPredecessor = new MonolithicHypothesis(getDimension(),rightMostPredecessor,nInsiemi);
+		hRightMostPredecessor.setField(instance);
+		return hRightMostPredecessor;
+	}
 }

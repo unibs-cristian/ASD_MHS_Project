@@ -1,6 +1,5 @@
 package mainProgram;
 import java.io.File;
-import java.util.BitSet;
 
 import objects.Instance;
 import ioUtils.*;

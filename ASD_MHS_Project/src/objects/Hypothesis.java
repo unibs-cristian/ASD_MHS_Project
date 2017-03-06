@@ -11,6 +11,11 @@ public abstract class Hypothesis {
 		this.dimension = dimension;
 	}
 	
+	public Hypothesis(int dimension, BitSet bin){
+		this.bin = bin;
+		this.dimension = dimension;
+	}
+	
 	public BitSet getBin() {
 		return bin;
 	}
@@ -22,4 +27,6 @@ public abstract class Hypothesis {
 	public abstract void setField(Instance instance);
 	public abstract boolean check();
 	public abstract void propagate(Hypothesis h);
+	public abstract Hypothesis generateLeftMostPredecessor(Instance instance);
+	public abstract Hypothesis generateRightMostPredecessor(Instance instance);
 }
