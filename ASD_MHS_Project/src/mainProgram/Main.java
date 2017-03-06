@@ -66,31 +66,35 @@ public class Main {
 		do {
 			next.clear();
 			for(int i=0; i<current.size(); i++) {
+				System.out.println(current.get(i).getBin());
 				if(current.get(i).check()) {
 					solutions.add(current.get(i));
 					current.remove(i);
+					i--;//Se viene rimosso un elemento tutti gli altri shiftano a sx quindi devo decrementare i per non saltarne uno
 				}
 				else {
 					generateChildren(current.get(i), in);
 				}
 			}
-			current = next;
+			current = new ArrayList<>(next);
+			System.out.println(current);
 		} while(!current.isEmpty());
 	}
 	
 	private static void generateChildren(Hypothesis h, Instance in) {
-		Hypothesis h1 = h;
-		Hypothesis h2 = h;
-		Hypothesis pred = h; 
-		Hypothesis last = h;
+		Hypothesis h1 = h.clone();
+		Hypothesis h2 = h.clone();
+		Hypothesis pred = h.clone(); 
+		Hypothesis last = h.clone();
 		int cont = 0;
 		boolean cond = false;
 		BitSet fin;
 		
 		if(h.isEmpty()) {
-			h1 = h;
-			for(int i=0; i<h.getDimension(); i++) {				
+			for(int i=0; i<h.getDimension(); i++) {		
+				h1 = h.clone();
 				h1.setBin(i);
+				System.out.println(h1.getBin());
 				h1.setField(in);
 				h1.propagate(h);
 				next.add(h1);
@@ -98,9 +102,9 @@ public class Main {
 			return;
 		}
 		
-		pred = h;
+		pred = h.clone();
 		do {
-			pred = prev(h);
+			pred = prev(pred);
 		} while(!(pred == null || h.getHammingDistance(pred) == 2));
 				
 		if(pred!=null)
@@ -110,23 +114,25 @@ public class Main {
 		
 		for(int i=h.getBin().nextSetBit(0)-1; i>=0; i--) {
 			if(pred!=null) {
-				h1 = h;
+				h1 = h.clone();
 				h1.setBin(i);
 				h1.setField(in);
 				h1.propagate(h);
 				
 				cond = true;
-				for(int j=h.getBin().nextSetBit(0); i<=h.getBin().length(); i++) {
-					h2 = h1;
+				for(int j=h.getBin().nextSetBit(0); j<h.getBin().length(); j++) {
+					System.out.println(h.getBin().nextSetBit(0));
+					System.out.println(h.getBin().length());
+					h2 = h1.clone();
 					if(h2.getBin().get(j)!=false) {
 						h2.set(j,false);
-						if(pred!=h2) {
+						if(!h2.equals(pred)) {
 							cond = false;
-							fin = h2.getBin();
-							fin.set(h.getBin().length(), false);
+							fin = (BitSet)h2.getBin().clone();
+							fin.set(h.getBin().length()-1, false);
 							while(pred!=null && !isGreater(pred.getBin(), fin)) {
 								do {
-									pred = prev(h);
+									pred = prev(pred);
 								} while(!(pred == null || h.getHammingDistance(pred) == 2));
 							}
 							break;							
@@ -134,7 +140,7 @@ public class Main {
 						else {
 							h1.propagate(h2);
 							do {
-								pred = prev(h);
+								pred = prev(pred);
 							} while(!(pred == null || h.getHammingDistance(pred) == 2));
 						}
 					}
@@ -148,8 +154,8 @@ public class Main {
 						next.add(h1);
 					else
 						next.add(next.indexOf(last), h1);
-					last = h1;
 				}
+				last = h1.clone();
 				cont++;
 			}
 		}

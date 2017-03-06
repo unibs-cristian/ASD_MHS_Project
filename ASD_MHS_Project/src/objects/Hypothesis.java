@@ -2,7 +2,7 @@ package objects;
 
 import java.util.BitSet;
 
-public abstract class Hypothesis {
+public abstract class Hypothesis implements Cloneable{
 	private int dimension;
 	private BitSet bin;
 	
@@ -41,7 +41,7 @@ public abstract class Hypothesis {
 	}
 	
 	public int getHammingDistance(Hypothesis h1) {
-		BitSet b = getBin();
+		BitSet b = (BitSet)getBin().clone();
 		b.xor(h1.getBin());
 		return b.cardinality();
 	}
@@ -50,9 +50,30 @@ public abstract class Hypothesis {
 		return bin.toString();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hypothesis other = (Hypothesis) obj;
+		if (bin == null) {
+			if (other.bin != null)
+				return false;
+		} else if (!bin.equals(other.bin))
+			return false;
+		if (dimension != other.dimension)
+			return false;
+		return true;
+	}
+	
+	public abstract Hypothesis clone();
 	public abstract void setField(Instance instance);
 	public abstract boolean check();
 	public abstract void propagate(Hypothesis h);
 	public abstract Hypothesis generateLeftMostPredecessor(Instance instance);
 	public abstract Hypothesis generateRightMostPredecessor(Instance instance);
+
 }
