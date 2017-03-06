@@ -24,6 +24,32 @@ public abstract class Hypothesis {
 		return dimension;
 	}
 	
+	public boolean isEmpty() {
+		return bin.cardinality() == 0;
+	}
+	
+	public void setBin(int index) {
+		bin.set(index);
+	}
+	
+	public void setBin(BitSet bs) {
+		bin = bs;
+	}
+	
+	public void set(int index, boolean value) {
+		bin.set(index, value);
+	}
+	
+	public int getHammingDistance(Hypothesis h1) {
+		BitSet b = getBin();
+		b.xor(h1.getBin());
+		return b.cardinality();
+	}
+	
+	public String toString() {
+		return bin.toString();
+	}
+	
 	public abstract void setField(Instance instance);
 	public abstract boolean check();
 	public abstract void propagate(Hypothesis h);

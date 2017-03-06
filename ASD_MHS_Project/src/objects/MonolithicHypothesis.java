@@ -27,8 +27,10 @@ public class MonolithicHypothesis extends Hypothesis{
 				vector = instance.getMatrixColumn(getBin().length());
 			}
 			else {
-				/*vector = 
-				vector.or(vectorB);*/
+				Hypothesis hA = generateLeftMostPredecessor(instance);
+				BitSet bsA = hA.getBin();
+				bsA.or(generateRightMostPredecessor(instance).getBin());
+				setBin(bsA);				
 			}
 		}
 	
