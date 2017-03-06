@@ -17,6 +17,10 @@ public class MonolithicHypothesis extends Hypothesis{
 		this.nInsiemi = nInsiemi;
 		vector = new BitSet(nInsiemi);
 	}
+	
+	public BitSet getVector() {
+		return vector;
+	}
 
 	@Override
 	public void setField(Instance instance) {
@@ -27,10 +31,9 @@ public class MonolithicHypothesis extends Hypothesis{
 				vector = instance.getMatrixColumn(getBin().length());
 			}
 			else {
-				Hypothesis hA = generateLeftMostPredecessor(instance);
-				BitSet bsA = hA.getBin();
-				bsA.or(generateRightMostPredecessor(instance).getBin());
-				setBin(bsA);				
+				MonolithicHypothesis hA = (MonolithicHypothesis)generateLeftMostPredecessor(instance);
+				vector = hA.getVector();
+				vector.or(((MonolithicHypothesis)generateRightMostPredecessor(instance)).getVector());				
 			}
 		}
 	
