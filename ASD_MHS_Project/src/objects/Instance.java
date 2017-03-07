@@ -4,10 +4,10 @@ import java.util.BitSet;
 
 public class Instance {
 	private BitSet usefulColumns;
-	private BitSet matrix;
-	private int numColumns;
-	private int matrixCols;
-	private int matrixRows;
+	private BitSet matrix;		   
+	private int inputFileCols;        // Indica il numero di colonne della matrice contenuta nel file di input
+	private int matrixCols;        // Indica il numero di colonne della matrice composta solo dalle colonne utili
+	private int matrixRows; 	
 	
 	public Instance() {
 		usefulColumns = new BitSet();		
@@ -15,7 +15,7 @@ public class Instance {
 	
 	public Instance(int numColumns) {
 		usefulColumns = new BitSet(numColumns);
-		this.numColumns = numColumns;
+		this.inputFileCols = numColumns;
 	}
 	
 	public BitSet getMatrix() {
@@ -36,6 +36,10 @@ public class Instance {
 			col.set(i, matrix.get(i*matrixCols + column));
 	
 		return col;				
+	}
+	
+	public int getInputFileCols() {
+		return inputFileCols;
 	}
 	
 	public int getNumUsefulColumns() {
@@ -61,7 +65,7 @@ public class Instance {
 	}
 	
 	public void printUsefulColumns() {
-		for(int i=0; i<numColumns; i++) {
+		for(int i=0; i<inputFileCols; i++) {
 			System.out.println(usefulColumns.get(i) + " ");
 		}
  	}

@@ -2,6 +2,8 @@ package objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Solution {
 	private ArrayList<Hypothesis> mhsSet; 
@@ -25,10 +27,12 @@ public class Solution {
 	
 	public String getSummary(Instance in) {
 		String summary;
-		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getMatrixNumCols()+"\n";
+		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n";
 		summary += ";;;MHS found: "+mhsSet.size()+"\n";
 		summary += ";;;MHS cardinality distribution: \n";
-		summary += cardDistribution.toString();
+		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
+			summary += ";;; Card " + entry.getKey() + " -> " + entry.getValue() + "\n";
+		}
 		return summary;
 	}
 	
