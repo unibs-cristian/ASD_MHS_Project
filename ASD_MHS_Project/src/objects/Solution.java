@@ -9,16 +9,22 @@ public class Solution {
 	private HashMap<Integer, Integer> cardDistribution;
 	private Instance in;
 	private boolean complete;
+	private int levelReached;
 	
 	public Solution(Instance in) {
 		this.in = in;
 		mhsSet = new ArrayList<>();
 		cardDistribution = new HashMap<>();
 		complete = false;
+		levelReached = 0;
 	}
 	
 	public void setComplete() {
 		complete = true;
+	}
+	
+	public void incrementLevelReached() {
+		levelReached++;
 	}
 	
 	public void add(Hypothesis mhs) {
@@ -37,8 +43,10 @@ public class Solution {
 		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n";
 		if(complete)
 			summary += ";;;Execution completed\n";
-		else
+		else {
 			summary += ";;;Execution interrupted\n";
+			summary += ";;;Level reached: "+levelReached+"\n";
+		}
 		summary += ";;;MHS found: "+mhsSet.size()+"\n";
 		summary += ";;;MHS cardinality distribution:";
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {

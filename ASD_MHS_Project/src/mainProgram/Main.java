@@ -118,6 +118,7 @@ public class Main {
 				}
 			}
 			current = new ArrayList<>(next);
+			sol.incrementLevelReached();
 			//System.out.println(current);
 		} while(!current.isEmpty());
 		sol.setComplete();
