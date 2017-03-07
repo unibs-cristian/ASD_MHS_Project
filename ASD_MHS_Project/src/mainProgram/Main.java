@@ -20,11 +20,18 @@ public class Main {
 	
 	private final static String EXTENSION_INPUT = "matrix";
 	private final static String EXTENSION_OUTPUT = "mhs";
+	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione? (y/n)";
+	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
+	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
+	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione premere Q";
+	private final static int NANO_TO_SEC = 1000000000;
 	
 	private static ArrayList<Hypothesis> current;
 	private static Solution sol;		
 	private static ArrayList<Hypothesis> next;
 	private static String inputFilePath;
+	private static boolean hasTimeLimit = false;
+	private static int timeLimit; 
 	
 	/**
 	 * Main program
@@ -35,6 +42,11 @@ public class Main {
 		// Lettura file di input
 		Instance in = readInputData();
 		
+		// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
+		hasTimeLimit = UserInput.yesOrNo(MSG_EXECUTION_TIME_1);
+		if(hasTimeLimit)
+			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
+			
 		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 		// Modulo per il calcolo monolitico dei MHS
 		calcoloMHS(in, mh);
@@ -77,7 +89,6 @@ public class Main {
 			bw = new BufferedWriter(fw);
 			bw.write(output);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -86,7 +97,6 @@ public class Main {
 				if(fw!=null)
 					fw.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -98,10 +108,16 @@ public class Main {
 	 * @param in : l'oggetto Instance che rappresenta i dati in input
 	 */
 	private static void calcoloMHS(Instance in, Hypothesis h) {
+		
+		System.out.println(MSG_MONOLITHIC_START);
+		if(!hasTimeLimit)
+			System.out.println(MSG_MONOLITHIC_INTERRUPT);
+		
 		current = new ArrayList<>();
 		sol = new Solution(in);		
 		next = new ArrayList<>();
 		
+		long startTime = System.nanoTime();
 		h.setField(in);
 		current.add(h);		
 		do {
@@ -121,6 +137,9 @@ public class Main {
 			sol.incrementLevelReached();
 			//System.out.println(current);
 		} while(!current.isEmpty());
+		long endTime = System.nanoTime();
+		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
+		System.out.println("Monolithic Execution time: " + executionTime);
 		sol.setComplete();
 	}
 	
