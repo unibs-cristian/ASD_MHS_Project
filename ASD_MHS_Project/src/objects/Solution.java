@@ -42,6 +42,7 @@ public class Solution {
 		int k;
 		for(int i=0; i<mhsSet.size(); i++) {
 			k = 0;
+			mhsMatrix += "\n";
 			for(int j=0; j<in.getInputFileCols(); j++) {
 				if(in.getUsefulCols().get(j)) {
 					if(mhsSet.get(i).getBin().get(k))
@@ -53,8 +54,12 @@ public class Solution {
 				else
 					mhsMatrix += "0 ";
 			}
-			mhsMatrix += "-\n";
+			mhsMatrix += "-";
 		}
 		return mhsMatrix;
+	}
+	
+	public String getStringForFile() {
+		return getSummary()+toString();
 	}
 }

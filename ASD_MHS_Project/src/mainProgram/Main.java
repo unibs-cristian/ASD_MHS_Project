@@ -33,8 +33,7 @@ public class Main {
 		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 		// Modulo per il calcolo monolitico dei MHS
 		calcoloMHS(in, mh);
-		System.out.println(sol.getSummary());
-		System.out.println(sol);
+		System.out.print(sol.getStringForFile());
 	}
 	
 	/**
