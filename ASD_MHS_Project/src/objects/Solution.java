@@ -2,14 +2,15 @@ package objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Solution {
 	private ArrayList<Hypothesis> mhsSet; 
 	private HashMap<Integer, Integer> cardDistribution;
+	private Instance in;
 	
-	public Solution() {
+	public Solution(Instance in) {
+		this.in = in;
 		mhsSet = new ArrayList<>();
 		cardDistribution = new HashMap<>();
 	}
@@ -25,7 +26,7 @@ public class Solution {
 		cardDistribution.put(mhs.getBin().cardinality(), ++value);
 	}
 	
-	public String getSummary(Instance in) {
+	public String getSummary() {
 		String summary;
 		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n";
 		summary += ";;;MHS found: "+mhsSet.size()+"\n";
