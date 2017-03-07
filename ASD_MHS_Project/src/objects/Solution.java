@@ -8,11 +8,17 @@ public class Solution {
 	private ArrayList<Hypothesis> mhsSet; 
 	private HashMap<Integer, Integer> cardDistribution;
 	private Instance in;
+	private boolean complete;
 	
 	public Solution(Instance in) {
 		this.in = in;
 		mhsSet = new ArrayList<>();
 		cardDistribution = new HashMap<>();
+		complete = false;
+	}
+	
+	public void setComplete() {
+		complete = true;
 	}
 	
 	public void add(Hypothesis mhs) {
@@ -29,6 +35,10 @@ public class Solution {
 	public String getSummary() {
 		String summary;
 		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n";
+		if(complete)
+			summary += ";;;Execution completed\n";
+		else
+			summary += ";;;Execution interrupted\n";
 		summary += ";;;MHS found: "+mhsSet.size()+"\n";
 		summary += ";;;MHS cardinality distribution:";
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {

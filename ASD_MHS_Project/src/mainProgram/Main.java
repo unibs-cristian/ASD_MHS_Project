@@ -120,6 +120,7 @@ public class Main {
 			current = new ArrayList<>(next);
 			//System.out.println(current);
 		} while(!current.isEmpty());
+		sol.setComplete();
 	}
 	
 	private static void generateChildren(Hypothesis h, Instance in) {
