@@ -1,7 +1,10 @@
 package mainProgram;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import objects.Hypothesis;
 import objects.Instance;
@@ -15,11 +18,13 @@ import ioUtils.*;
  */
 public class Main {
 	
-	private final static String EXTENSION = "matrix";
+	private final static String EXTENSION_INPUT = "matrix";
+	private final static String EXTENSION_OUTPUT = "mhs";
 	
 	private static ArrayList<Hypothesis> current;
 	private static Solution sol;		
-	private static ArrayList<Hypothesis> next; 
+	private static ArrayList<Hypothesis> next;
+	private static String inputFilePath;
 	
 	/**
 	 * Main program
@@ -34,6 +39,11 @@ public class Main {
 		// Modulo per il calcolo monolitico dei MHS
 		calcoloMHS(in, mh);
 		System.out.print(sol.getStringForFile());
+		
+		// Scrittura file di output
+		String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
+		whriteOutputData(sol.getStringForFile(),outputFilePath);
+		
 	}
 	
 	/**
@@ -46,9 +56,40 @@ public class Main {
 		// Lettura tramite File Chooser e controllo del formato del file scelto
 		do {
 			f = UserInput.chooseInputFile();
-		} while(!UserInput.check_extension(f.getName(), EXTENSION));	
+		} while(!UserInput.check_extension(f.getName(), EXTENSION_INPUT));	
+		inputFilePath = f.getPath();
 		Reader r = new Reader(f.getPath());
 		return r.read();
+	}
+	
+	/**
+	 * Modulo per la scrittura del file di output
+	 * 
+	 * @return l'oggetto Instance che rappresenta i dati in input
+	 */
+	private static void whriteOutputData(String output,String filename) {
+		//File f;
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		
+		try {
+			fw = new FileWriter(filename);
+			bw = new BufferedWriter(fw);
+			bw.write(output);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(bw!=null)
+					bw.close();
+				if(fw!=null)
+					fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
