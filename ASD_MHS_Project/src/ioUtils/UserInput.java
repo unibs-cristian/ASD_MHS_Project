@@ -45,9 +45,8 @@ public class UserInput {
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		do {
 			result = fileChooser.showOpenDialog(null);
-			System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());
 		} while(result != JFileChooser.APPROVE_OPTION);
-		
+		System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());
 		return fileChooser.getSelectedFile();
 	}
 	
