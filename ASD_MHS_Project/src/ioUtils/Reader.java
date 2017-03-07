@@ -77,7 +77,7 @@ public class Reader {
 					i++;
 				}				
 			}
-			instance.printMatrix();
+			//instance.printMatrix();
 			
 			if (br != null)
 				br.close();
