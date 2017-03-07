@@ -22,6 +22,10 @@ public class Instance {
 		return matrix;
 	}
 	
+	public BitSet getUsefulCols() {
+		return usefulColumns;
+	}
+	
 	public int getMatrixNumRows() {
 		return matrixRows;
 	}
