@@ -6,6 +6,7 @@ import java.io.File;
 import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
+import objects.Solution;
 import ioUtils.*;
 
 /**
@@ -17,7 +18,7 @@ public class Main {
 	private final static String EXTENSION = "matrix";
 	
 	private static ArrayList<Hypothesis> current;
-	private static ArrayList<Hypothesis> solutions;		
+	private static Solution sol;		
 	private static ArrayList<Hypothesis> next; 
 	
 	/**
@@ -32,9 +33,8 @@ public class Main {
 		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 		// Modulo per il calcolo monolitico dei MHS
 		calcoloMHS(in, mh);
-		for(int i=0; i<solutions.size(); i++) 
-			System.out.println(solutions.get(i));
-		System.out.println(getSummary(solutions, in));
+		System.out.println(sol.getSummary(in));
+		System.out.println(sol);
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class Main {
 	 */
 	private static void calcoloMHS(Instance in, Hypothesis h) {
 		current = new ArrayList<>();
-		solutions = new ArrayList<>();		
+		sol = new Solution();		
 		next = new ArrayList<>();
 		
 		h.setField(in);
@@ -69,7 +69,7 @@ public class Main {
 			for(int i=0; i<current.size(); i++) {
 				//System.out.println(current.get(i).getBin());
 				if(current.get(i).check()) {
-					solutions.add(current.get(i));
+					sol.add(current.get(i));
 					current.remove(i);
 					i--;//Se viene rimosso un elemento tutti gli altri shiftano a sx quindi devo decrementare i per non saltarne uno
 				}
@@ -174,11 +174,6 @@ public class Main {
 		return true;
 	}
 	
-	private static String getSummary(ArrayList<Hypothesis> solutions, Instance in) {
-		String summary;
-		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getMatrixNumCols()+"\n";
-		summary += ";;;MHS found: "+solutions.size();
-		return summary;
-	}
+	
 
 }
