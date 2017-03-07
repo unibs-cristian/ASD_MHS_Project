@@ -24,7 +24,11 @@ public class Instance {
 	
 	public int getMatrixNumRows() {
 		return matrixRows;
-	}	
+	}
+	
+	public int getMatrixNumCols() {
+		return matrixCols;
+	}
 	
 	public BitSet getMatrixColumn(int column) {
 		BitSet col = new BitSet(matrixRows);

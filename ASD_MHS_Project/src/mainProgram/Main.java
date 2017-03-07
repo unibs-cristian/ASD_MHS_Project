@@ -34,6 +34,7 @@ public class Main {
 		calcoloMHS(in, mh);
 		for(int i=0; i<solutions.size(); i++) 
 			System.out.println(solutions.get(i));
+		System.out.println(getSummary(solutions, in));
 	}
 	
 	/**
@@ -171,6 +172,13 @@ public class Main {
 		if(b2.cardinality() == 0 || b1.get(b2.nextSetBit(0)) == false)
 			return false;
 		return true;
+	}
+	
+	private static String getSummary(ArrayList<Hypothesis> solutions, Instance in) {
+		String summary;
+		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getMatrixNumCols()+"\n";
+		summary += ";;;MHS found: "+solutions.size();
+		return summary;
 	}
 
 }
