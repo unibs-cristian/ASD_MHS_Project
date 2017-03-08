@@ -1,6 +1,12 @@
 package mainProgram;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,10 +26,11 @@ public class Main {
 	
 	private final static String EXTENSION_INPUT = "matrix";
 	private final static String EXTENSION_OUTPUT = "mhs";
-	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione? (y/n)";
+	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
 	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione premere Q";
+	private final static String MSG_TIMEOUT_EXCEPTION = "Limite di tempo raggiunto, esecuzione interrotta";
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	private static ArrayList<Hypothesis> current;
@@ -46,15 +53,16 @@ public class Main {
 		hasTimeLimit = UserInput.yesOrNo(MSG_EXECUTION_TIME_1);
 		if(hasTimeLimit)
 			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
-			
+		
 		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
+		startMonolithicMHS(in, mh);
+					
 		// Modulo per il calcolo monolitico dei MHS
-		calcoloMHS(in, mh);
 		System.out.print(sol.getStringForFile());
 		
 		// Scrittura file di output
 		String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
-		whriteOutputData(sol.getStringForFile(),outputFilePath);
+		writeOutputData(sol.getStringForFile(),outputFilePath);
 		
 	}
 	
@@ -79,7 +87,7 @@ public class Main {
 	 * 
 	 * @return l'oggetto Instance che rappresenta i dati in input
 	 */
-	private static void whriteOutputData(String output,String filename) {
+	private static void writeOutputData(String output,String filename) {
 		//File f;
 		BufferedWriter bw = null;
 		FileWriter fw = null;
@@ -107,7 +115,50 @@ public class Main {
 	 * 
 	 * @param in : l'oggetto Instance che rappresenta i dati in input
 	 */
-	private static void calcoloMHS(Instance in, Hypothesis h) {
+	private static void startMonolithicMHS(Instance in, MonolithicHypothesis mh) {
+		
+		if(hasTimeLimit) {
+			final Runnable processing = new Runnable() {
+				
+				@Override
+				public void run() {
+					exploreH(in, mh);
+					
+				}
+			};
+			
+			final ExecutorService executor = Executors.newSingleThreadExecutor();
+			final Future future = executor.submit(processing);
+			executor.shutdown(); 
+	
+			try { 
+				future.get(timeLimit, TimeUnit.SECONDS); 
+			}
+			catch (InterruptedException ie) { 
+				ie.printStackTrace();
+			}
+			catch (ExecutionException ee) { 
+				ee.printStackTrace();
+			}
+			catch (TimeoutException te) { 
+				System.out.println(MSG_TIMEOUT_EXCEPTION);
+				// Scrittura file di output
+				String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
+				writeOutputData(sol.getStringForFile(),outputFilePath);			
+			}
+			if (!executor.isTerminated())
+			    executor.shutdownNow(); // If you want to stop the code that hasn't finished.
+		}
+		else
+			exploreH(in, mh);
+	}
+	
+	/**
+	 * Modulo per effettuare il calcolo monolitico dei MHS sui dati in ingresso 
+	 * 
+	 * @param in : l'oggetto Instance che rappresenta i dati in input
+	 */
+	private static void exploreH(Instance in, Hypothesis h) {
 		
 		System.out.println(MSG_MONOLITHIC_START);
 		if(!hasTimeLimit)
@@ -134,8 +185,8 @@ public class Main {
 				}
 			}
 			current = new ArrayList<>(next);
+			System.out.println(next);
 			sol.incrementLevelReached();
-			//System.out.println(current);
 		} while(!current.isEmpty());
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
@@ -229,8 +280,9 @@ public class Main {
 	}
 	
 	private static boolean isGreater(BitSet b1, BitSet b2) {
-		b2.xor(b1);
-		if(b2.cardinality() == 0 || b1.get(b2.nextSetBit(0)) == false)
+		BitSet b = (BitSet)b2.clone();
+		b.xor(b1);
+		if(b.cardinality() == 0 || b1.get(b.nextSetBit(0)) == false)
 			return false;
 		return true;
 	}
