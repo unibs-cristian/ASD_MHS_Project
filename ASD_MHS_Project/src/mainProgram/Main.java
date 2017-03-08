@@ -128,7 +128,7 @@ public class Main {
 			};
 			
 			final ExecutorService executor = Executors.newSingleThreadExecutor();
-			final Future future = executor.submit(processing);
+			final Future<?> future = executor.submit(processing);
 			executor.shutdown(); 
 	
 			try { 
@@ -184,6 +184,7 @@ public class Main {
 					generateChildren(current.get(i), in);
 				}
 			}
+			//TODO attenzione il contenuto di next deve essere prima ordinato
 			current = new ArrayList<>(next);
 			System.out.println(next);
 			sol.incrementLevelReached();
@@ -265,6 +266,9 @@ public class Main {
 					else
 						next.add(next.indexOf(last), h1);
 				}
+				System.out.println(h);
+				System.out.println(cont);
+				System.out.println(next);
 				last = h1.clone();
 				cont++;
 			}
