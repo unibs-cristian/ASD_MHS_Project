@@ -241,6 +241,7 @@ public class Main {
 							cond = false;
 							fin = (BitSet)h2.getBin().clone();
 							fin.set(h.getBin().length()-1, false);
+							//pred <= fin
 							while(pred!=null && !isGreater(pred.getBin(), fin)) {
 								do {
 									pred = prev(pred);
