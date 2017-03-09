@@ -2,7 +2,7 @@ package objects;
 
 import java.util.BitSet;
 
-public abstract class Hypothesis implements Cloneable{
+public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 	private int dimension;
 	private BitSet bin;
 	
@@ -67,6 +67,18 @@ public abstract class Hypothesis implements Cloneable{
 		if (dimension != other.dimension)
 			return false;
 		return true;
+	}
+	
+	public int compareTo(Hypothesis h) {
+		BitSet b = (BitSet)getBin().clone();
+		b.xor(h.getBin());
+		if(b.cardinality() == 0)
+			return 0;
+		else if (getBin().get(b.nextSetBit(0)) == false)
+			return -1;//minore
+		else
+			return 1;//maggiore
+
 	}
 	
 	public abstract Hypothesis clone();

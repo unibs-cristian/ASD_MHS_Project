@@ -1,6 +1,7 @@
 package mainProgram;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -185,6 +186,7 @@ public class Main {
 				}
 			}
 			//TODO attenzione il contenuto di next deve essere prima ordinato
+			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
 			System.out.println(next);
 			sol.incrementLevelReached();
@@ -222,9 +224,7 @@ public class Main {
 				
 		if(pred!=null)
 			cont = 0;
-		
-		
-		
+			
 		for(int i=h.getBin().nextSetBit(0)-1; i>=0; i--) {
 			if(pred!=null) {
 				h1 = h.clone();
@@ -239,7 +239,7 @@ public class Main {
 						h2.set(j,false);
 						if(!h2.equals(pred)) {
 							cond = false;
-							fin = (BitSet)h2.getBin().clone();
+							fin = (BitSet)h1.getBin().clone();
 							fin.set(h.getBin().length()-1, false);
 							//pred <= fin
 							while(pred!=null && !isGreater(pred.getBin(), fin)) {
@@ -257,21 +257,22 @@ public class Main {
 						}
 					}
 				}
-			}
-			if(cond) {
-				if(cont == 0)
-					next.add(h1);
-				else {
-					if(next.isEmpty())
+			
+				if(cond) {
+					if(cont == 0)
 						next.add(h1);
-					else
-						next.add(next.indexOf(last), h1);
+					else {
+						if(next.isEmpty())
+							next.add(h1);
+						else
+							next.add(next.indexOf(last), h1);
+					}
+					System.out.println(h);
+					System.out.println(cont);
+					System.out.println(next);
+					last = h1.clone();
+					cont++;
 				}
-				System.out.println(h);
-				System.out.println(cont);
-				System.out.println(next);
-				last = h1.clone();
-				cont++;
 			}
 		}
 			
