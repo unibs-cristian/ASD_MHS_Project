@@ -10,6 +10,7 @@ public class Solution {
 	private Instance in;
 	private boolean complete;
 	private int levelReached;
+	private double time;
 	
 	public Solution(Instance in) {
 		this.in = in;
@@ -21,6 +22,10 @@ public class Solution {
 	
 	public void setComplete() {
 		complete = true;
+	}
+	
+	public void setTime(double time) {
+		this.time = time;
 	}
 	
 	public void incrementLevelReached() {
@@ -47,6 +52,7 @@ public class Solution {
 			summary += ";;;Execution interrupted\n";
 			summary += ";;;Level reached: "+levelReached+"\n";
 		}
+		summary += ";;;Time elapsed: "+time+"\n";
 		summary += ";;;MHS found: "+mhsSet.size()+"\n";
 		summary += ";;;MHS cardinality distribution:";
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {

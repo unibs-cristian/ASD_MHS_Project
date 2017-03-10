@@ -149,6 +149,7 @@ public class Main {
 		System.out.println(next);
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
+		sol.setTime(executionTime);
 		System.out.println("Monolithic Execution time: " + executionTime);
 		if(!timeLimitReached)
 			sol.setComplete();						
@@ -216,11 +217,27 @@ public class Main {
 							} while(!(pred == null || h.getHammingDistance(pred) == 2));
 						}
 						*/
-						//TODO controllare se la soluzione del codice proposta è corretta
+						//metodo rozzo ma corretto (sembra più efficiente)
+						
 						if(!current.contains(h2)) {
 							cond = false;
 							break;
 						}
+						
+						
+						//metodo più efficiente
+						/*
+						if(h2.compareTo(pred)!=0) {
+							while(pred!=null && pred.compareTo(h2)==-1) {
+									pred = prev(pred);
+							}
+							
+							if(pred == null || h2.compareTo(pred)!=0) {
+								cond = false;
+								break;
+							}
+						}
+						*/
 					}
 				}
 			
