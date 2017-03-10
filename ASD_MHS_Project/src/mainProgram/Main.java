@@ -152,6 +152,7 @@ public class Main {
 			sol.setComplete();						
 	}
 	
+	
 	private static void generateChildren(Hypothesis h, Instance in) {
 		Hypothesis h1 = h.clone();
 		Hypothesis h2 = h.clone();
