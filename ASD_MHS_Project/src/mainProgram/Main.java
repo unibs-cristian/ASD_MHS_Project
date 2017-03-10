@@ -131,7 +131,7 @@ public class Main{
 		do {
 			next.clear();
 			for(int i=0; i<current.size(); i++) {
-				key = UserInput.leggiString("");
+				//key = UserInput.leggiString("");
 				//System.out.println(current.get(i).getBin());
 				if(current.get(i).check()) {
 					sol.add(current.get(i));
@@ -148,12 +148,14 @@ public class Main{
 						break;
 					}
 				}
+				/*
 				else { // Se c'e' un tasto per uscire, controllo se questo e' stato premuto
 					if(key.equalsIgnoreCase(EXIT_KEY)) {
 						keyPressed = true;
 						break;
 					}
 				}
+				*/
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
@@ -177,6 +179,7 @@ public class Main{
 		Hypothesis last = h.clone();
 		//Hypothesis fin = h.clone();
 		int cont = 0;
+		int predIndex;
 		boolean cond = false;
 		
 		if(h.isEmpty()) {
@@ -191,8 +194,14 @@ public class Main{
 		}
 		
 		pred = h.clone();
+		predIndex = current.indexOf(h);
 		do {
-			pred = prev(pred);
+			//pred = prev(pred);
+			predIndex--;
+			if(predIndex<0)
+				pred = null;
+			else
+				pred = current.get(predIndex);
 		} while(!(pred == null || h.getHammingDistance(pred) == 2));
 				
 		if(pred!=null)
@@ -240,16 +249,27 @@ public class Main{
 						*/
 						
 						//metodo più efficiente
-						
+						//TODO controllare gli else
 						if(h2.compareTo(pred)!=0) {
 							while(pred!=null && pred.compareTo(h2)==-1) {
-									pred = prev(pred);
+								//pred = prev(pred);
+								predIndex--;
+								if(predIndex<0)
+									pred = null;
+								else
+									pred = current.get(predIndex);
 							}
 							
 							if(pred == null || h2.compareTo(pred)!=0) {
 								cond = false;
 								break;
 							}
+							else {
+								h1.propagate(h2);
+							}
+						}
+						else {
+							h1.propagate(h2);
 						}
 						
 					}
@@ -272,11 +292,12 @@ public class Main{
 		}
 			
 	}
-	
+	/*
 	private static Hypothesis prev(Hypothesis h) {
 		if(current.indexOf(h) - 1 < 0)
 			return null;
 		else 
 			return current.get(current.indexOf(h) - 1);
-	}	
+	}
+	*/	
 }
