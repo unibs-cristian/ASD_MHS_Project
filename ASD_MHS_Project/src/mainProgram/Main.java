@@ -1,6 +1,5 @@
 package mainProgram;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -161,9 +160,9 @@ public class Main {
 		Hypothesis h2 = h.clone();
 		Hypothesis pred = h.clone(); 
 		Hypothesis last = h.clone();
+		//Hypothesis fin = h.clone();
 		int cont = 0;
 		boolean cond = false;
-		BitSet fin;
 		
 		if(h.isEmpty()) {
 			for(int i=0; i<h.getDimension(); i++) {		
@@ -200,10 +199,10 @@ public class Main {
 						/*
 						if(!h2.equals(pred)) {
 							cond = false;
-							fin = (BitSet)h1.getBin().clone();
+							fin = h1.clone();
 							fin.set(h.getBin().length()-1, false);
 							//pred <= fin
-							while(pred!=null && !isGreater(pred.getBin(), fin)) {
+							while(pred!=null && pred.compareTo(fin)<=0) {
 								do {
 									pred = prev(pred);
 								} while(!(pred == null || h.getHammingDistance(pred) == 2));
@@ -218,15 +217,15 @@ public class Main {
 						}
 						*/
 						//metodo rozzo ma corretto (sembra più efficiente)
-						
+						/*
 						if(!current.contains(h2)) {
 							cond = false;
 							break;
 						}
-						
+						*/
 						
 						//metodo più efficiente
-						/*
+						
 						if(h2.compareTo(pred)!=0) {
 							while(pred!=null && pred.compareTo(h2)==-1) {
 									pred = prev(pred);
@@ -237,7 +236,7 @@ public class Main {
 								break;
 							}
 						}
-						*/
+						
 					}
 				}
 			
@@ -266,11 +265,4 @@ public class Main {
 			return current.get(current.indexOf(h) - 1);
 	}
 	
-	private static boolean isGreater(BitSet b1, BitSet b2) {
-		BitSet b = (BitSet)b2.clone();
-		b.xor(b1);
-		if(b.cardinality() == 0 || b1.get(b.nextSetBit(0)) == false)
-			return false;
-		return true;
-	}
 }
