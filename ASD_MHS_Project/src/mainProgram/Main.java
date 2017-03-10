@@ -134,9 +134,11 @@ public class Main {
 				else {
 					generateChildren(current.get(i), in);
 				}
-				if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
-					timeLimitReached = true;
-					break;
+				if(hasTimeLimit) {
+					if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
+						timeLimitReached = true;
+						break;
+					}
 				}
 			}			
 			Collections.sort(next, Collections.reverseOrder());
@@ -193,6 +195,8 @@ public class Main {
 					h2 = h1.clone();
 					if(h2.getBin().get(j)!=false) {
 						h2.set(j,false);
+						//TODO codice tratto dallo pseudo-codice (non è corretto)
+						/*
 						if(!h2.equals(pred)) {
 							cond = false;
 							fin = (BitSet)h1.getBin().clone();
@@ -210,6 +214,12 @@ public class Main {
 							do {
 								pred = prev(pred);
 							} while(!(pred == null || h.getHammingDistance(pred) == 2));
+						}
+						*/
+						//TODO controllare se la soluzione del codice proposta è corretta
+						if(!current.contains(h2)) {
+							cond = false;
+							break;
 						}
 					}
 				}
