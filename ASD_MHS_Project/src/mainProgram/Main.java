@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
@@ -15,14 +16,15 @@ import ioUtils.*;
  * Classe contenente il metodo Main e i metodi corrispondenti ai vari moduli che costituiscono l'elaborato
  *
  */
-public class Main {
+public class Main{
 	
 	private final static String EXTENSION_INPUT = "matrix";
 	private final static String EXTENSION_OUTPUT = "mhs";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
-	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione premere Q";
+	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione inserire Q e premere ENTER";
+	private final static String EXIT_KEY = "Q";
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	private static ArrayList<Hypothesis> current;
@@ -30,6 +32,7 @@ public class Main {
 	private static ArrayList<Hypothesis> next;
 	private static String inputFilePath;
 	private static boolean hasTimeLimit = false;
+	public static boolean keyPressed = false;
 	private static int timeLimit; 
 	
 	/**
@@ -38,6 +41,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		// Lettura file di input
 		Instance in = readInputData();
 		if(in != null) {
@@ -112,6 +116,7 @@ public class Main {
 	 */
 	private static void exploreH(Instance in, Hypothesis h) {
 		boolean timeLimitReached = false;
+		String key = "";
 		System.out.println(MSG_MONOLITHIC_START);
 		if(!hasTimeLimit)
 			System.out.println(MSG_MONOLITHIC_INTERRUPT);
@@ -126,6 +131,7 @@ public class Main {
 		do {
 			next.clear();
 			for(int i=0; i<current.size(); i++) {
+				key = UserInput.leggiString("");
 				//System.out.println(current.get(i).getBin());
 				if(current.get(i).check()) {
 					sol.add(current.get(i));
@@ -135,24 +141,31 @@ public class Main {
 				else {
 					generateChildren(current.get(i), in);
 				}
+				// Se e' stato fissato un limite di tempo per l'elaborazione, controllo che questo non sia stato superato
 				if(hasTimeLimit) {
 					if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
 						timeLimitReached = true;
 						break;
 					}
 				}
+				else { // Se c'e' un tasto per uscire, controllo se questo e' stato premuto
+					if(key.equalsIgnoreCase(EXIT_KEY)) {
+						keyPressed = true;
+						break;
+					}
+				}
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
-			System.out.println(next);
+			//System.out.println(next);
 			sol.incrementLevelReached();
-		} while(!current.isEmpty() && !timeLimitReached);		
+		} while(!current.isEmpty() && !timeLimitReached && !keyPressed);		
 		System.out.println(next);
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime);
 		System.out.println("Monolithic Execution time: " + executionTime);
-		if(!timeLimitReached)
+		if(!timeLimitReached && !keyPressed)
 			sol.setComplete();						
 	}
 	
@@ -265,6 +278,5 @@ public class Main {
 			return null;
 		else 
 			return current.get(current.indexOf(h) - 1);
-	}
-	
+	}	
 }
