@@ -2,17 +2,10 @@ package mainProgram;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
@@ -31,7 +24,6 @@ public class Main {
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
 	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione premere Q";
-	private final static String MSG_TIMEOUT_EXCEPTION = "Limite di tempo raggiunto, esecuzione interrotta";
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	private static ArrayList<Hypothesis> current;
@@ -56,7 +48,7 @@ public class Main {
 			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
 		
 		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
-		startMonolithicMHS(in, mh);
+		exploreH(in, mh);
 					
 		// Modulo per il calcolo monolitico dei MHS
 		System.out.print(sol.getStringForFile());
@@ -111,56 +103,14 @@ public class Main {
 		}
 	}
 	
-	/**
-	 * Modulo per effettuare il calcolo monolitico dei MHS sui dati in ingresso 
-	 * 
-	 * @param in : l'oggetto Instance che rappresenta i dati in input
-	 */
-	private static void startMonolithicMHS(Instance in, MonolithicHypothesis mh) {
 		
-		if(hasTimeLimit) {
-			final Runnable processing = new Runnable() {
-				
-				@Override
-				public void run() {
-					exploreH(in, mh);
-					
-				}
-			};
-			
-			final ExecutorService executor = Executors.newSingleThreadExecutor();
-			final Future<?> future = executor.submit(processing);
-			executor.shutdown(); 
-	
-			try { 
-				future.get(timeLimit, TimeUnit.SECONDS); 
-			}
-			catch (InterruptedException ie) { 
-				ie.printStackTrace();
-			}
-			catch (ExecutionException ee) { 
-				ee.printStackTrace();
-			}
-			catch (TimeoutException te) { 
-				System.out.println(MSG_TIMEOUT_EXCEPTION);
-				// Scrittura file di output
-				String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
-				writeOutputData(sol.getStringForFile(),outputFilePath);			
-			}
-			if (!executor.isTerminated())
-			    executor.shutdownNow(); // If you want to stop the code that hasn't finished.
-		}
-		else
-			exploreH(in, mh);
-	}
-	
 	/**
 	 * Modulo per effettuare il calcolo monolitico dei MHS sui dati in ingresso 
 	 * 
 	 * @param in : l'oggetto Instance che rappresenta i dati in input
 	 */
 	private static void exploreH(Instance in, Hypothesis h) {
-		
+		boolean timeLimitReached = false;
 		System.out.println(MSG_MONOLITHIC_START);
 		if(!hasTimeLimit)
 			System.out.println(MSG_MONOLITHIC_INTERRUPT);
@@ -184,17 +134,22 @@ public class Main {
 				else {
 					generateChildren(current.get(i), in);
 				}
-			}
-			//TODO attenzione il contenuto di next deve essere prima ordinato
+				if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
+					timeLimitReached = true;
+					break;
+				}
+			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
 			System.out.println(next);
 			sol.incrementLevelReached();
-		} while(!current.isEmpty());
+		} while(!current.isEmpty() && !timeLimitReached);		
+		System.out.println(next);
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		System.out.println("Monolithic Execution time: " + executionTime);
-		sol.setComplete();
+		if(!timeLimitReached)
+			sol.setComplete();						
 	}
 	
 	private static void generateChildren(Hypothesis h, Instance in) {
@@ -267,9 +222,7 @@ public class Main {
 						else
 							next.add(next.indexOf(last), h1);
 					}
-					System.out.println(h);
-					System.out.println(cont);
-					System.out.println(next);
+					
 					last = h1.clone();
 					cont++;
 				}
@@ -292,7 +245,4 @@ public class Main {
 			return false;
 		return true;
 	}
-	
-	
-
 }
