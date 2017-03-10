@@ -31,9 +31,15 @@ public class MonolithicHypothesis extends Hypothesis {
 				vector = instance.getMatrixColumn(getBin().length()-1);
 			}
 			else {
+				/*
 				MonolithicHypothesis hA = (MonolithicHypothesis)generateLeftMostPredecessor(instance);
 				vector = hA.getVector();
-				vector.or(((MonolithicHypothesis)generateRightMostPredecessor(instance)).getVector());				
+				vector.or(((MonolithicHypothesis)generateRightMostPredecessor(instance)).getVector());
+				*/
+				//TODO controllare se questa procedura è corretta
+				for(int i = getBin().nextSetBit(0); i<getBin().length(); i++)
+					if(getBin().get(i))
+						vector.or(instance.getMatrixColumn(i));
 			}
 		}
 	
