@@ -40,22 +40,22 @@ public class Main {
 	public static void main(String[] args) {
 		// Lettura file di input
 		Instance in = readInputData();
-		
-		// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
-		hasTimeLimit = UserInput.yesOrNo(MSG_EXECUTION_TIME_1);
-		if(hasTimeLimit)
-			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
-		
-		MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
-		exploreH(in, mh);
-					
-		// Modulo per il calcolo monolitico dei MHS
-		System.out.print(sol.getStringForFile());
-		
-		// Scrittura file di output
-		String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
-		writeOutputData(sol.getStringForFile(),outputFilePath);
-		
+		if(in != null) {
+			// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
+			hasTimeLimit = UserInput.yesOrNo(MSG_EXECUTION_TIME_1);
+			if(hasTimeLimit)
+				timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
+			
+			MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
+			exploreH(in, mh);
+						
+			// Modulo per il calcolo monolitico dei MHS
+			System.out.print(sol.getStringForFile());
+			
+			// Scrittura file di output
+			String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
+			writeOutputData(sol.getStringForFile(),outputFilePath);
+		}
 	}
 	
 	/**
@@ -68,6 +68,8 @@ public class Main {
 		// Lettura tramite File Chooser e controllo del formato del file scelto
 		do {
 			f = UserInput.chooseInputFile();
+			if(f==null)
+				return null;
 		} while(!UserInput.check_extension(f.getName(), EXTENSION_INPUT));	
 		inputFilePath = f.getPath();
 		Reader r = new Reader(f.getPath());

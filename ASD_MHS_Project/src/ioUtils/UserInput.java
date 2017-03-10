@@ -7,8 +7,9 @@ import java.util.Scanner;
 
 public class UserInput {
 	
-	private final static String MSG_ERRORE_FORMATO_FILE = "Errore, formato file di input non corretto\n";
+	private final static String MSG_ERRORE_FORMATO_FILE = "Errore, formato file di input non corretto.";
 	private final static String MSG_FILE_SELEZIONATO = "File selezionato: ";
+	private final static String MSG_FILE_NON_SELEZIONATO = "Esecuzione annullata.";
 	private final static String RISPOSTA_SI="S";
 	private final static String RISPOSTA_NO="N";
 	private final static String MSG_AMMISSIBILI1 = "Errore! I valori ammissibili sono " + "'" +  RISPOSTA_SI + " e '" + RISPOSTA_NO + "'";
@@ -43,10 +44,13 @@ public class UserInput {
 		JFileChooser fileChooser = new JFileChooser();
 		int result;
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		do {
+		//do {
 			result = fileChooser.showOpenDialog(null);
-		} while(result != JFileChooser.APPROVE_OPTION);
-		System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());
+		//} while(result != JFileChooser.APPROVE_OPTION);
+		if(result == JFileChooser.APPROVE_OPTION)
+			System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());
+		else
+			System.out.println(MSG_FILE_NON_SELEZIONATO);
 		return fileChooser.getSelectedFile();
 	}
 	
