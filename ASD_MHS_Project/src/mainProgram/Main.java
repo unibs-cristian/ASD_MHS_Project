@@ -23,8 +23,10 @@ public class Main{
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
+	/*
 	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione inserire Q e premere ENTER";
 	private final static String EXIT_KEY = "Q";
+	*/
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	private static ArrayList<Hypothesis> current;
@@ -116,11 +118,12 @@ public class Main{
 	 */
 	private static void exploreH(Instance in, Hypothesis h) {
 		boolean timeLimitReached = false;
-		String key = "";
+		//String key = "";
 		System.out.println(MSG_MONOLITHIC_START);
+		/*
 		if(!hasTimeLimit)
 			System.out.println(MSG_MONOLITHIC_INTERRUPT);
-		
+		*/
 		current = new ArrayList<>();
 		sol = new Solution(in);		
 		next = new ArrayList<>();
@@ -162,7 +165,6 @@ public class Main{
 			//System.out.println(next);
 			sol.incrementLevelReached();
 		} while(!current.isEmpty() && !timeLimitReached && !keyPressed);		
-		System.out.println(next);
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime);

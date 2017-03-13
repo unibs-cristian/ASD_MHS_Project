@@ -45,7 +45,7 @@ public class Solution {
 	
 	public String getSummary() {
 		String summary;
-		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n";
+		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n;;; used cols: "+in.getNumUsefulColumns()+"\n";
 		if(complete)
 			summary += ";;;Execution completed\n";
 		else {
