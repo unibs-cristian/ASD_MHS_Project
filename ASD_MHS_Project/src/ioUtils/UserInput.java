@@ -14,6 +14,7 @@ public class UserInput {
 	private final static String RISPOSTA_NO="N";
 	private final static String MSG_AMMISSIBILI1 = "Errore! I valori ammissibili sono " + "'" +  RISPOSTA_SI + " e '" + RISPOSTA_NO + "'";
 	private static final String ERRORE_INTERO = "Errore, il carattere inserito non è un intero.";
+	private static final String ERRORE_RANGE = "Errore, il numero inserito non appartiene al range richiesto.";
 	private static Scanner lettore = creaScanner();
 	 
  	/**
@@ -91,7 +92,33 @@ public class UserInput {
 			if(lettore.hasNextInt())
 			{
 				numero = lettore.nextInt();
-				fine =true;
+				fine = true;
+			}
+			else
+			{
+				System.out.println(ERRORE_INTERO);
+				@SuppressWarnings("unused")
+				String daButtare = lettore.next();
+			}
+		}
+		return numero;
+	}
+	
+	public static int leggiInt(String messaggio, int min, int max)
+	{		
+		boolean fine = false;
+		int numero = 0;		
+		while(!fine)
+		{
+			System.out.print(messaggio);
+
+			if(lettore.hasNextInt())
+			{
+				numero = lettore.nextInt();
+				if(numero>= min && numero <= max)
+					fine = true;
+				else
+					System.out.println(ERRORE_RANGE);
 			}
 			else
 			{

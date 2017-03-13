@@ -42,6 +42,29 @@ public class Instance {
 		return col;				
 	}
 	
+	//Restituisce [firtRow,lastRow) (lastRow esclusa)
+	public String getMatrixRows(int firtRow, int lastRow) {
+		int k;
+		String matrixOut = "";
+		for(int i=firtRow; i<lastRow; i++) {
+			k = 0;
+			matrixOut += "\n";
+			for(int j=0; j<inputFileCols; j++) {
+				if(usefulColumns.get(j)) {
+					if(matrix.get(i*matrixCols+ k))
+						matrixOut += "1 ";
+					else
+						matrixOut += "0 ";
+					k++;
+				}
+				else
+					matrixOut += "0 ";
+			}
+			matrixOut += "-";
+		}
+		return matrixOut;
+	}
+	
 	public int getInputFileCols() {
 		return inputFileCols;
 	}
