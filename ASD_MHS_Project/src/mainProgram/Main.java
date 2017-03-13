@@ -24,7 +24,7 @@ public class Main{
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
-	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminarla con tutti i file in essa contenuti?";
+	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno?";
 	private final static String TITOLO_SCELTA_ALG = "Seleziona l'algoritmo desiderato";
 	private final static String[] OPZIONI_SCELTA_ALG = {"Monolitico","Distribuito"};
 	/*
@@ -72,31 +72,27 @@ public class Main{
 					writeOutputData(sol.getStringForFile(),outputFilePath);
 					break;
 				case 2:
-					int a = 0;
 					//Creo cartella
 					String newDirPath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+EXTENSION_DIR;
 					File newDir = new File(newDirPath);
 					if(newDir.exists()) {
-						boolean deleteFolder = UserInput.yesOrNo(MSG_DELETE_FOLDER);
-						if(deleteFolder)
-							deleteFolder(newDir);
+						boolean deleteFileInFolder = UserInput.yesOrNo(MSG_DELETE_FOLDER);
+						if(deleteFileInFolder)
+							deleteFileInFolder(newDir);
 					}
-					newDir = new File(newDirPath);
-					newDir.mkdir();
-					while(a==0){
-						int nRigheTolte = 0;
-						int rand;
-						int i = 1;
-						while(nRigheTolte < in.getMatrixNumRows()){
-							rand = 1 + (int)(Math.random() * (((in.getMatrixNumRows()-nRigheTolte) - 1) + 1));
-							String matrixOutN = "";
-							matrixOutN = in.getMatrixRows(nRigheTolte, nRigheTolte+rand);
-							writeOutputData(matrixOutN,newDirPath+"/"+inputFilePath.substring(inputFilePath.lastIndexOf("\\"),inputFilePath.lastIndexOf(".")-1)+"_N"+i+"."+EXTENSION_INPUT);
-							nRigheTolte+=rand;
-							i++;
-						}
-						a = UserInput.leggiInt("");
-					}
+					else
+						newDir.mkdir();
+					int nRigheTolte = 0;
+					int rand;
+					int i = 1;
+					while(nRigheTolte < in.getMatrixNumRows()){
+						rand = 1 + (int)(Math.random() * (((in.getMatrixNumRows()-nRigheTolte) - 1) + 1));
+						String matrixOutN = "";
+						matrixOutN = in.getMatrixRows(nRigheTolte, nRigheTolte+rand);
+						writeOutputData(matrixOutN,newDirPath+"/"+inputFilePath.substring(inputFilePath.lastIndexOf("\\"),inputFilePath.lastIndexOf(".")-1)+"_N"+i+"."+EXTENSION_INPUT);
+						nRigheTolte+=rand;
+						i++;
+					}	
 					break;
 			}
 		}
@@ -341,17 +337,10 @@ public class Main{
 	}
 	*/	
 	
-	public static void deleteFolder(File folder) {
+	public static void deleteFileInFolder(File folder) {
 	    File[] files = folder.listFiles();
-	    if(files!=null) { //some JVMs return null for empty dirs
-	        for(File f: files) {
-	            if(f.isDirectory()) {
-	                deleteFolder(f);
-	            } else {
-	                f.delete();
-	            }
-	        }
-	    }
-	    folder.delete();
+	    if(files!=null) //some JVMs return null for empty dirs
+	        for(File f: files) 
+	            f.delete();
 	}
 }
