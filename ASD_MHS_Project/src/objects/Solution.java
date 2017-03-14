@@ -20,6 +20,14 @@ public class Solution {
 		levelReached = 0;
 	}
 	
+	public ArrayList<Hypothesis> getMhsSet() {
+		return mhsSet;
+	}
+	
+	public double getTime() {
+		return time;
+	}
+	
 	public void setComplete() {
 		complete = true;
 	}

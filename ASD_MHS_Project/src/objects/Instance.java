@@ -150,18 +150,19 @@ public class Instance {
 		return str.replace(ROW_DELIMITER, "");
 	}
 	
-	public void createNiFiles(String dirPath, String fileName) {
+	public int createNiFiles(String dirPath, String fileName) {
 		int nRigheTolte = 0;
 		int rand;
-		int i = 1;
+		int nFiles = 1;
 		while(nRigheTolte < matrixRows){
 			rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
 			String matrixOutN = "";
 			matrixOutN = getMatrixRows(nRigheTolte, nRigheTolte+rand);
-			IOFile.writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+i+"."+EXTENSION_INPUT);
+			IOFile.writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+nFiles+"."+EXTENSION_INPUT);
 			nRigheTolte+=rand;
-			i++;
+			nFiles++;
 		}
+		return nFiles;
 	}
 	
 	public int getInputFileCols() {

@@ -1,6 +1,11 @@
 package mainProgram;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.BitSet;
+
+import objects.DistributedHypothesis;
 import objects.DistributedSolution;
+import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
 import objects.Problem;
@@ -72,17 +77,32 @@ public class Main{
 					}
 					else
 						newDir.mkdir();
-					//Creazione vari file N_i
-					System.out.println(path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
-					in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
-					
+					//Creazione vari file N_i					
+					int fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));					
 					DistributedSolution distSol = new DistributedSolution(in);
-					File[] files = newDir.listFiles();
-					int fileCounter = 0;
-					for(File f:files) {
-						fileCounter++;
-					}					
 					distSol.setnFiles(fileCounter);
+					File[] files = newDir.listFiles();
+					ArrayList<Hypothesis> hsList = new ArrayList<>();
+					double totalTime = 0;
+					
+					for(File f:files) {
+						Instance i = new Instance(f.getPath());
+						MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
+						Solution sol_i = new Solution(i);
+						Problem p_i = new Problem(i, mh_i, sol_i);
+						p_i.exploreH();
+						totalTime += p_i.getSol().getTime();
+						DistributedHypothesis dh;
+						Hypothesis hCurrent;
+						for(int j=0; j<p_i.getSol().getMhsSet().size(); j++) {
+							hCurrent = p_i.getSol().getMhsSet().get(j);
+							dh = new DistributedHypothesis(hCurrent.getDimension(), fileCounter);
+							dh.setBin((BitSet)hCurrent.getBin().clone());							
+						}
+					}
+					distSol.setnGlobalMHS(hsList.size());
+					
+					distSol.setTime(totalTime);
 					break;
 			}
 		}
