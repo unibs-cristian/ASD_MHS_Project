@@ -3,6 +3,8 @@ package objects;
 import java.util.BitSet;
 
 public class Instance {
+	private final static String EXTENSION_INPUT = "matrix";
+	
 	private BitSet usefulColumns;
 	private BitSet matrix;		   
 	private int inputFileCols;        // Indica il numero di colonne della matrice contenuta nel file di input
@@ -65,6 +67,22 @@ public class Instance {
 		return matrixOut;
 	}
 	
+	//TODO Da decidere se e dove spostare il metodo writeOutputData, al momento non raggiungibile da qui
+	/*
+	public void createNiFiles(String dirPath, String fileName) {
+		int nRigheTolte = 0;
+		int rand;
+		int i = 1;
+		while(nRigheTolte < matrixRows){
+			rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
+			String matrixOutN = "";
+			matrixOutN = getMatrixRows(nRigheTolte, nRigheTolte+rand);
+			writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+i+"."+EXTENSION_INPUT);
+			nRigheTolte+=rand;
+			i++;
+		}
+	}
+	*/
 	public int getInputFileCols() {
 		return inputFileCols;
 	}

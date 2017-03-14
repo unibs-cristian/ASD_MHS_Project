@@ -79,9 +79,12 @@ public class Main{
 						boolean deleteFileInFolder = UserInput.yesOrNo(MSG_DELETE_FOLDER);
 						if(deleteFileInFolder)
 							deleteFileInFolder(newDir);
+						else
+							break;
 					}
 					else
 						newDir.mkdir();
+					//Creazione vari file N_i
 					int nRigheTolte = 0;
 					int rand;
 					int i = 1;
@@ -119,7 +122,7 @@ public class Main{
 	/**
 	 * Modulo per la scrittura del file di output
 	 * 
-	 * @return l'oggetto Instance che rappresenta i dati in input
+	 * @return void
 	 */
 	private static void writeOutputData(String output,String filename) {
 		//File f;
