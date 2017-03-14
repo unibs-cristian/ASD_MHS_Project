@@ -3,6 +3,7 @@ package objects;
 import java.util.BitSet;
 
 public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
+	// TODO verificare se possa servire metterli protected
 	private int dimension;
 	private BitSet bin;
 	

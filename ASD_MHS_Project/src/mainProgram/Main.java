@@ -1,12 +1,9 @@
 package mainProgram;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
 import objects.Problem;
@@ -60,6 +57,8 @@ public class Main{
 					MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 					Solution sol = new Solution(in);
 					Problem mono = new Problem(in, mh, sol);
+					if(hasTimeLimit)
+						mono.setTimeLimit(timeLimit);
 					mono.exploreH();
 													
 					// Modulo per il calcolo monolitico dei MHS
@@ -93,7 +92,8 @@ public class Main{
 						writeOutputData(matrixOutN,newDirPath+"/"+inputFilePath.substring(inputFilePath.lastIndexOf("\\"),inputFilePath.lastIndexOf(".")-1)+"_N"+i+"."+EXTENSION_INPUT);
 						nRigheTolte+=rand;
 						i++;
-					}	
+					}
+					
 					break;
 			}
 		}
