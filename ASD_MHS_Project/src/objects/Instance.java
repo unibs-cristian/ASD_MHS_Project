@@ -1,5 +1,7 @@
 package objects;
 
+import ioUtils.IOFile;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,6 +9,7 @@ import java.io.IOException;
 import java.util.BitSet;
 
 public class Instance {
+	private final static String EXTENSION_INPUT = "matrix";
 	private final static String COMMENT_DELIMITER = ";;;";
 	private final static String ROW_DELIMITER = "-";
 	private final static String SEPARATOR = " ";
@@ -20,12 +23,7 @@ public class Instance {
 	public Instance(String file) {
 		readMatrixFromFile(file);
 	}
-	/*
-	public Instance(int numColumns) {
-		usefulColumns = new BitSet(numColumns);
-		this.inputFileCols = numColumns;
-	}
-	*/
+	
 	public BitSet getMatrix() {
 		return matrix;
 	}
@@ -51,12 +49,13 @@ public class Instance {
 	}
 	
 	//Restituisce [firtRow,lastRow) (lastRow esclusa)
-	public String getMatrixRows(int firtRow, int lastRow) {
+	public String getMatrixRows(int firstRow, int lastRow) {
 		int k;
 		String matrixOut = "";
-		for(int i=firtRow; i<lastRow; i++) {
+		for(int i=firstRow; i<lastRow; i++) {
 			k = 0;
-			matrixOut += "\n";
+			if(i > firstRow)
+				matrixOut += "\n";
 			for(int j=0; j<inputFileCols; j++) {
 				if(usefulColumns.get(j)) {
 					if(matrix.get(i*matrixCols+ k))
@@ -95,6 +94,7 @@ public class Instance {
 			}
 			
 			usefulColumns = new BitSet(sCurrentLine.length());
+			inputFileCols = sCurrentLine.length();
 			
 			do {
 				numRows ++;
@@ -132,7 +132,6 @@ public class Instance {
 					i++;
 				}				
 			}
-			//instance.printMatrix();
 			
 			if (br != null)
 				br.close();
@@ -140,7 +139,6 @@ public class Instance {
 			if (fr != null)
 				fr.close();	
 						
-			
 		} catch (IOException e) {
 			System.out.println("I/O error");
 		}	
@@ -152,8 +150,6 @@ public class Instance {
 		return str.replace(ROW_DELIMITER, "");
 	}
 	
-	//TODO Da decidere se e dove spostare il metodo writeOutputData, al momento non raggiungibile da qui
-	/*
 	public void createNiFiles(String dirPath, String fileName) {
 		int nRigheTolte = 0;
 		int rand;
@@ -162,12 +158,12 @@ public class Instance {
 			rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
 			String matrixOutN = "";
 			matrixOutN = getMatrixRows(nRigheTolte, nRigheTolte+rand);
-			writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+i+"."+EXTENSION_INPUT);
+			IOFile.writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+i+"."+EXTENSION_INPUT);
 			nRigheTolte+=rand;
 			i++;
 		}
 	}
-	*/
+	
 	public int getInputFileCols() {
 		return inputFileCols;
 	}

@@ -22,17 +22,14 @@ public class Main{
 	private final static String TITOLO_SCELTA_ALG = "Seleziona l'algoritmo desiderato";
 	private final static String[] OPZIONI_SCELTA_ALG = {"Monolitico","Distribuito"};
 	
-	private static String inputFilePath;
-	private static boolean hasTimeLimit = false;
-	public static boolean keyPressed = false;
-	private static int timeLimit; 
-	
 	/**
 	 * Main program
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		boolean hasTimeLimit = false;
+		int timeLimit = 0;
 		MyMenu menu = new MyMenu(TITOLO_SCELTA_ALG, OPZIONI_SCELTA_ALG);
 		// Monolitico o distribuito (scelta utente)
 		int scelta = menu.scegliNZ();
@@ -59,12 +56,12 @@ public class Main{
 					System.out.print(mono.getSol().getStringForFile());
 					
 					// Scrittura file di output
-					String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
+					String outputFilePath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
 					IOFile.writeOutputData(mono.getSol().getStringForFile(),outputFilePath);
 					break;
 				case 2:
 					//Creo cartella
-					String newDirPath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+EXTENSION_DIR;
+					String newDirPath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+EXTENSION_DIR;
 					File newDir = new File(newDirPath);
 					if(newDir.exists()) {
 						boolean deleteFileInFolder = UserInput.yesOrNo(MSG_DELETE_FOLDER);
@@ -76,17 +73,9 @@ public class Main{
 					else
 						newDir.mkdir();
 					//Creazione vari file N_i
-					int nRigheTolte = 0;
-					int rand;
-					int i = 1;
-					while(nRigheTolte < in.getMatrixNumRows()){
-						rand = 1 + (int)(Math.random() * (((in.getMatrixNumRows()-nRigheTolte) - 1) + 1));
-						String matrixOutN = "";
-						matrixOutN = in.getMatrixRows(nRigheTolte, nRigheTolte+rand);
-						IOFile.writeOutputData(matrixOutN,newDirPath+"/"+inputFilePath.substring(inputFilePath.lastIndexOf("\\"),inputFilePath.lastIndexOf(".")-1)+"_N"+i+"."+EXTENSION_INPUT);
-						nRigheTolte+=rand;
-						i++;
-					}
+					System.out.println(path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+					in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+					
 					DistributedSolution distSol = new DistributedSolution(in);
 					File[] files = newDir.listFiles();
 					int fileCounter = 0;
