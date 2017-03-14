@@ -36,8 +36,15 @@ public class Instance {
 		return matrixRows;
 	}
 	
+	//TODO metodo mai usato
+	/*
 	public int getMatrixNumCols() {
 		return matrixCols;
+	}
+	*/
+	//TODO non basta ritornare numMatrixCol
+		public int getNumUsefulColumns() {
+			return usefulColumns.cardinality();
 	}
 	
 	public BitSet getMatrixColumn(int column) {
@@ -167,10 +174,6 @@ public class Instance {
 	
 	public int getInputFileCols() {
 		return inputFileCols;
-	}
-	
-	public int getNumUsefulColumns() {
-		return usefulColumns.cardinality();
 	}
 	
 	public void setUsefulColumn(int index) {

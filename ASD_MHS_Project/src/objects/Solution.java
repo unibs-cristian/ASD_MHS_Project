@@ -1,6 +1,7 @@
 package objects;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,19 @@ public class Solution {
 	
 	public ArrayList<Hypothesis> getMhsSet() {
 		return mhsSet;
+	}
+	
+	public BitSet getMhsSetElement(int index) {
+		int k=0;
+		BitSet mhs = new BitSet(in.getInputFileCols());
+		for(int j=0; j<in.getInputFileCols(); j++) {
+			if(in.getUsefulCols().get(j)) {
+				if(mhsSet.get(index).getBin().get(k))
+					mhs.set(j);
+				k++;
+			}
+		}
+		return mhs;
 	}
 	
 	public double getTime() {

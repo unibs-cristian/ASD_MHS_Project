@@ -1,7 +1,6 @@
 package mainProgram;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.BitSet;
 
 import objects.DistributedHypothesis;
 import objects.DistributedSolution;
@@ -98,7 +97,8 @@ public class Main{
 						for(int j=0; j<p_i.getSol().getMhsSet().size(); j++) {
 							hCurrent = p_i.getSol().getMhsSet().get(j);
 							dh = new DistributedHypothesis(hCurrent.getDimension(), fileCounter);
-							dh.setBin((BitSet)hCurrent.getBin().clone());
+							System.out.println(p_i.getSol().getMhsSetElement(j));
+							dh.setBin(p_i.getSol().getMhsSetElement(j));
 							dh.setVector(nFile);
 							nFile ++;
 							hsList.add(dh);
