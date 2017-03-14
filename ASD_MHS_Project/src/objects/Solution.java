@@ -1,3 +1,75 @@
+/**
+package objects;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class Solution {
+	private ArrayList<Hypothesis> mhsSet; 
+	private HashMap<Integer, Integer> cardDistribution;
+	private boolean complete;
+	private int levelReached;
+	private double time;
+	
+	public Solution() {
+		mhsSet = new ArrayList<>();
+		cardDistribution = new HashMap<>();
+		complete = false;
+		levelReached = 0;
+	}
+	
+	public void setComplete() {
+		complete = true;
+	}
+	
+	public void setTime(double time) {
+		this.time = time;
+	}
+	
+	public void incrementLevelReached() {
+		levelReached++;
+	}
+	
+	public void add(Hypothesis mhs) {
+		mhsSet.add(mhs);
+		int value;
+		if(cardDistribution.get(mhs.getBin().cardinality()) != null)
+			value = cardDistribution.get(mhs.getBin().cardinality());
+		else 
+			value = 0;
+		
+		cardDistribution.put(mhs.getBin().cardinality(), ++value);
+	}
+	
+	public abstract String getSummary(); 
+	
+	public String toString() {
+		String mhsMatrix = "";
+		int k;
+		for(int i=0; i<mhsSet.size(); i++) {
+			k = 0;
+			mhsMatrix += "\n";
+			for(int j=0; j<in.getInputFileCols(); j++) {
+				if(in.getUsefulCols().get(j)) {
+					if(mhsSet.get(i).getBin().get(k))
+						mhsMatrix += "1 ";
+					else
+						mhsMatrix += "0 ";
+					k++;
+				}
+				else
+					mhsMatrix += "0 ";
+			}
+			mhsMatrix += "-";
+		}
+		return mhsMatrix;
+	}
+	
+	public String getStringForFile() {
+		return getSummary()+toString();
+	}
+}*/
 package objects;
 
 import java.util.ArrayList;
@@ -87,3 +159,4 @@ public class Solution {
 		return getSummary()+toString();
 	}
 }
+

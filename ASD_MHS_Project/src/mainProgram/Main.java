@@ -9,6 +9,7 @@ import java.io.IOException;
 import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
+import objects.Problem;
 import objects.Solution;
 import ioUtils.*;
 
@@ -23,7 +24,6 @@ public class Main{
 	private final static String EXTENSION_DIR = "_dist";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
-	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
 	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno?";
 	private final static String TITOLO_SCELTA_ALG = "Seleziona l'algoritmo desiderato";
 	private final static String[] OPZIONI_SCELTA_ALG = {"Monolitico","Distribuito"};
@@ -31,11 +31,7 @@ public class Main{
 	private final static String MSG_MONOLITHIC_INTERRUPT = "Per interrompere l'elaborazione inserire Q e premere ENTER";
 	private final static String EXIT_KEY = "Q";
 	*/
-	private final static int NANO_TO_SEC = 1000000000;
 	
-	private static ArrayList<Hypothesis> current;
-	private static Solution sol;		
-	private static ArrayList<Hypothesis> next;
 	private static String inputFilePath;
 	private static boolean hasTimeLimit = false;
 	public static boolean keyPressed = false;
@@ -48,7 +44,7 @@ public class Main{
 	 */
 	public static void main(String[] args) {
 		MyMenu menu = new MyMenu(TITOLO_SCELTA_ALG, OPZIONI_SCELTA_ALG);
-		//Monolitico o distribuito (scelta utente)
+		// Monolitico o distribuito (scelta utente)
 		int scelta = menu.scegliNZ();
 		
 		// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
@@ -62,14 +58,16 @@ public class Main{
 			switch(scelta) {
 				case 1:
 					MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
-					exploreH(in, mh);
-								
+					Solution sol = new Solution(in);
+					Problem mono = new Problem(in, mh, sol);
+					mono.exploreH();
+													
 					// Modulo per il calcolo monolitico dei MHS
-					System.out.print(sol.getStringForFile());
+					System.out.print(mono.getSol().getStringForFile());
 					
 					// Scrittura file di output
 					String outputFilePath = inputFilePath.substring(0, inputFilePath.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
-					writeOutputData(sol.getStringForFile(),outputFilePath);
+					writeOutputData(mono.getSol().getStringForFile(),outputFilePath);
 					break;
 				case 2:
 					//Creo cartella
@@ -146,199 +144,6 @@ public class Main{
 			}
 		}
 	}
-	
-		
-	/**
-	 * Modulo per effettuare il calcolo monolitico dei MHS sui dati in ingresso 
-	 * 
-	 * @param in : l'oggetto Instance che rappresenta i dati in input
-	 */
-	private static void exploreH(Instance in, Hypothesis h) {
-		boolean timeLimitReached = false;
-		//String key = "";
-		System.out.println(MSG_MONOLITHIC_START);
-		/*
-		if(!hasTimeLimit)
-			System.out.println(MSG_MONOLITHIC_INTERRUPT);
-		*/
-		current = new ArrayList<>();
-		sol = new Solution(in);		
-		next = new ArrayList<>();
-		
-		long startTime = System.nanoTime();
-		h.setField(in);
-		current.add(h);		
-		do {
-			next.clear();
-			for(int i=0; i<current.size(); i++) {
-				//key = UserInput.leggiString("");
-				//System.out.println(current.get(i).getBin());
-				if(current.get(i).check()) {
-					sol.add(current.get(i));
-					current.remove(i);
-					i--;//Se viene rimosso un elemento tutti gli altri shiftano a sx quindi devo decrementare i per non saltarne uno
-				}
-				else {
-					generateChildren(current.get(i), in);
-				}
-				// Se e' stato fissato un limite di tempo per l'elaborazione, controllo che questo non sia stato superato
-				if(hasTimeLimit) {
-					if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
-						timeLimitReached = true;
-						break;
-					}
-				}
-				/*
-				else { // Se c'e' un tasto per uscire, controllo se questo e' stato premuto
-					if(key.equalsIgnoreCase(EXIT_KEY)) {
-						keyPressed = true;
-						break;
-					}
-				}
-				*/
-			}			
-			Collections.sort(next, Collections.reverseOrder());
-			current = new ArrayList<>(next);
-			//System.out.println(next);
-			sol.incrementLevelReached();
-		} while(!current.isEmpty() && !timeLimitReached && !keyPressed);		
-		long endTime = System.nanoTime();
-		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
-		sol.setTime(executionTime);
-		System.out.println("Monolithic Execution time: " + executionTime);
-		if(!timeLimitReached && !keyPressed)
-			sol.setComplete();						
-	}
-	
-	
-	private static void generateChildren(Hypothesis h, Instance in) {
-		Hypothesis h1 = h.clone();
-		Hypothesis h2 = h.clone();
-		Hypothesis pred = h.clone(); 
-		Hypothesis last = h.clone();
-		//Hypothesis fin = h.clone();
-		int cont = 0;
-		int predIndex;
-		boolean cond = false;
-		
-		if(h.isEmpty()) {
-			for(int i=0; i<h.getDimension(); i++) {		
-				h1 = h.clone();
-				h1.setBin(i);
-				h1.setField(in);
-				h1.propagate(h);
-				next.add(h1);
-			}
-			return;
-		}
-		
-		pred = h.clone();
-		predIndex = current.indexOf(h);
-		do {
-			//pred = prev(pred);
-			predIndex--;
-			if(predIndex<0)
-				pred = null;
-			else
-				pred = current.get(predIndex);
-		} while(!(pred == null || h.getHammingDistance(pred) == 2));
-				
-		if(pred!=null)
-			cont = 0;
-			
-		for(int i=h.getBin().nextSetBit(0)-1; i>=0; i--) {
-			if(pred!=null) {
-				h1 = h.clone();
-				h1.setBin(i);
-				h1.setField(in);
-				h1.propagate(h);
-				
-				cond = true;
-				for(int j=h.getBin().nextSetBit(0); j<h.getBin().length(); j++) {
-					h2 = h1.clone();
-					if(h2.getBin().get(j)!=false) {
-						h2.set(j,false);
-						//TODO codice tratto dallo pseudo-codice (non è corretto)
-						/*
-						if(!h2.equals(pred)) {
-							cond = false;
-							fin = h1.clone();
-							fin.set(h.getBin().length()-1, false);
-							//pred <= fin
-							while(pred!=null && pred.compareTo(fin)<=0) {
-								do {
-									pred = prev(pred);
-								} while(!(pred == null || h.getHammingDistance(pred) == 2));
-							}
-							break;							
-						}
-						else {
-							h1.propagate(h2);
-							do {
-								pred = prev(pred);
-							} while(!(pred == null || h.getHammingDistance(pred) == 2));
-						}
-						*/
-						//metodo rozzo ma corretto (sembra più efficiente)
-						/*
-						if(!current.contains(h2)) {
-							cond = false;
-							break;
-						}
-						*/
-						
-						//metodo più efficiente
-						//TODO controllare gli else
-						if(h2.compareTo(pred)!=0) {
-							while(pred!=null && pred.compareTo(h2)==-1) {
-								//pred = prev(pred);
-								predIndex--;
-								if(predIndex<0)
-									pred = null;
-								else
-									pred = current.get(predIndex);
-							}
-							
-							if(pred == null || h2.compareTo(pred)!=0) {
-								cond = false;
-								break;
-							}
-							else {
-								h1.propagate(h2);
-							}
-						}
-						else {
-							h1.propagate(h2);
-						}
-						
-					}
-				}
-
-				if(cond) {
-					if(cont == 0)
-						next.add(h1);
-					else {
-						if(next.isEmpty())
-							next.add(h1);
-						else
-							next.add(next.indexOf(last), h1);
-					}
-					
-					last = h1.clone();
-					cont++;
-				}
-			}
-		}
-			
-	}
-	/*
-	private static Hypothesis prev(Hypothesis h) {
-		if(current.indexOf(h) - 1 < 0)
-			return null;
-		else 
-			return current.get(current.indexOf(h) - 1);
-	}
-	*/	
 	
 	public static void deleteFileInFolder(File folder) {
 	    File[] files = folder.listFiles();
