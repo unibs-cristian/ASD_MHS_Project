@@ -84,6 +84,7 @@ public class Main{
 					File[] files = newDir.listFiles();
 					ArrayList<Hypothesis> hsList = new ArrayList<>();
 					double totalTime = 0;
+					int nFile = 0;
 					
 					for(File f:files) {
 						Instance i = new Instance(f.getPath());
@@ -97,9 +98,13 @@ public class Main{
 						for(int j=0; j<p_i.getSol().getMhsSet().size(); j++) {
 							hCurrent = p_i.getSol().getMhsSet().get(j);
 							dh = new DistributedHypothesis(hCurrent.getDimension(), fileCounter);
-							dh.setBin((BitSet)hCurrent.getBin().clone());							
-						}
+							dh.setBin((BitSet)hCurrent.getBin().clone());
+							dh.setVector(nFile);
+							nFile ++;
+							hsList.add(dh);
+						}							
 					}
+					System.out.println(hsList);
 					distSol.setnGlobalMHS(hsList.size());
 					
 					distSol.setTime(totalTime);

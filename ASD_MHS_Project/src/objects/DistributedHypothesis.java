@@ -15,6 +15,10 @@ public class DistributedHypothesis extends Hypothesis{
 	public BitSet getVector() {
 		return vector;
 	}
+	
+	public void setVector(int index) {
+		vector.set(index);
+	}
 
 	@Override
 	public Hypothesis clone() {
