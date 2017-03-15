@@ -35,7 +35,7 @@ public class Main{
 		boolean hasTimeLimit = false;
 		int timeLimit = 0;
 		MyMenu menu = new MyMenu(TITOLO_SCELTA_ALG, OPZIONI_SCELTA_ALG);
-		// Monolitico o distribuito (scelta utente)
+		// Monolitico o distribuito (scelta utente tramite menu')
 		int scelta = menu.scegliNZ();
 		
 		// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
@@ -48,7 +48,7 @@ public class Main{
 		Instance in = new Instance(path);
 		if(in != null) {
 			switch(scelta) {
-				case 1:
+				case 1: // Calcolo monolitico
 					MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 					Solution sol = new Solution(in);
 					Problem mono = new Problem(in, mh, sol);
@@ -64,19 +64,17 @@ public class Main{
 					IOFile.writeOutputData(mono.getSol().getStringForFile(),outputFilePath);
 					break;
 				case 2:
-					//Creo cartella
+					// Creazione cartella contenente l'input cumulativo per il calcolo distribuito. 
 					String newDirPath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+EXTENSION_DIR;
 					File newDir = new File(newDirPath);
-					if(newDir.exists()) {
-						boolean deleteFileInFolder = UserInput.yesOrNo(MSG_DELETE_FOLDER);
-						if(deleteFileInFolder)
+					// Se la cartella _dist per quell'istanza esiste gia', e' possibile riutilizzare i file al suo interno oppure rimuoverne il contenuto 
+					if(newDir.exists()) {						
+						if(UserInput.yesOrNo(MSG_DELETE_FOLDER))
 							IOFile.deleteFileInFolder(newDir);
-						else
-							break;
 					}
 					else
 						newDir.mkdir();
-					//Creazione vari file N_i					
+					//Creazione dei file N_i e dei componenti				
 					int fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));					
 					DistributedSolution distSol = new DistributedSolution(in);
 					distSol.setnFiles(fileCounter);
