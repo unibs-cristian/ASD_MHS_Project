@@ -1,14 +1,24 @@
 package objects;
 
 import java.util.BitSet;
+import java.util.ArrayList;
 
 public class DistributedHypothesis extends Hypothesis{
 	private int nComponenti;
 	private BitSet vector;
+	private ArrayList<ArrayList<BitSet>> componentsList;
 	
-	public DistributedHypothesis(int dimension, int nComponenti) {
+	public DistributedHypothesis(int dimension, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
 		super(dimension);
 		this.nComponenti = nComponenti;
+		this.componentsList = componentsList;
+		vector = new BitSet(nComponenti);
+	}
+	
+	public DistributedHypothesis(int dimension, BitSet bin, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
+		super(dimension,bin);
+		this.nComponenti = nComponenti;
+		this.componentsList = componentsList;
 		vector = new BitSet(nComponenti);
 	}
 	
@@ -22,8 +32,7 @@ public class DistributedHypothesis extends Hypothesis{
 
 	@Override
 	public Hypothesis clone() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DistributedHypothesis(getDimension(), (BitSet)getBin().clone(), nComponenti, componentsList);
 	}
 
 	@Override
@@ -31,14 +40,12 @@ public class DistributedHypothesis extends Hypothesis{
 		if(getBin().cardinality() == 0) // Controllo se l'ipotesi e' vuota
 			vector.set(0, nComponenti, false); // TODO e' utile?
 		else {
-			/*
 			for(int i=0; i<nComponenti; i++)
-				//TODO if h is a MHS in Ci
-				if(true)
+				//if h is a MHS in Ci
+				if(componentsList.get(i).contains(getBin()))
 					vector.set(i);
 				else
 					vector.set(i,false);
-			 */
 		}
 		
 	}

@@ -38,4 +38,8 @@ public class DistributedSolution extends Solution {
 		}
 		return summary;
 	}
+	
+	public String getStringForFile() {
+		return getSummary()+toString();
+	}
 }

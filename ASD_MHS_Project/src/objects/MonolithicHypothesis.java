@@ -55,7 +55,6 @@ public class MonolithicHypothesis extends Hypothesis {
 
 	@Override
 	public void propagate(Hypothesis h) {
-		// TODO Auto-generated method stub
 		//empty
 	}
 	

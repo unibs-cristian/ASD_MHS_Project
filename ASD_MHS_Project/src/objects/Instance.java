@@ -160,7 +160,7 @@ public class Instance {
 	public int createNiFiles(String dirPath, String fileName) {
 		int nRigheTolte = 0;
 		int rand;
-		int nFiles = 1;
+		int nFiles = 0;
 		while(nRigheTolte < matrixRows){
 			rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
 			String matrixOutN = "";

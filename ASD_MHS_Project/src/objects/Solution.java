@@ -25,7 +25,7 @@ public class Solution {
 		return mhsSet;
 	}
 	
-	public BitSet getMhsSetElement(int index) {
+	public BitSet getMhsSetElementExpanded(int index) {
 		int k=0;
 		BitSet mhs = new BitSet(in.getInputFileCols());
 		for(int j=0; j<in.getInputFileCols(); j++) {
@@ -36,6 +36,13 @@ public class Solution {
 			}
 		}
 		return mhs;
+	}
+	
+	public ArrayList<BitSet> getMhsSetExpanded() {
+		ArrayList<BitSet> list = new ArrayList<>();
+		for(int j=0; j<mhsSet.size(); j++)
+			list.add(getMhsSetElementExpanded(j));
+		return list;
 	}
 	
 	public double getTime() {

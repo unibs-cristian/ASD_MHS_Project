@@ -1,10 +1,10 @@
 package mainProgram;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.BitSet;
 
 import objects.DistributedHypothesis;
 import objects.DistributedSolution;
-import objects.Hypothesis;
 import objects.Instance;
 import objects.MonolithicHypothesis;
 import objects.Problem;
@@ -34,6 +34,7 @@ public class Main{
 	public static void main(String[] args) {
 		boolean hasTimeLimit = false;
 		int timeLimit = 0;
+		String outputFilePath = "";
 		MyMenu menu = new MyMenu(TITOLO_SCELTA_ALG, OPZIONI_SCELTA_ALG);
 		// Monolitico o distribuito (scelta utente tramite menu')
 		int scelta = menu.scegliNZ();
@@ -56,33 +57,37 @@ public class Main{
 						mono.setTimeLimit(timeLimit);
 					mono.exploreH();
 													
-					// Modulo per il calcolo monolitico dei MHS
 					System.out.print(mono.getSol().getStringForFile());
 					
 					// Scrittura file di output
-					String outputFilePath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
+					outputFilePath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
 					IOFile.writeOutputData(mono.getSol().getStringForFile(),outputFilePath);
 					break;
 				case 2:
 					// Creazione cartella contenente l'input cumulativo per il calcolo distribuito. 
 					String newDirPath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+EXTENSION_DIR;
 					File newDir = new File(newDirPath);
+					int fileCounter;
 					// Se la cartella _dist per quell'istanza esiste gia', e' possibile riutilizzare i file al suo interno oppure rimuoverne il contenuto 
 					if(newDir.exists()) {						
-						if(UserInput.yesOrNo(MSG_DELETE_FOLDER))
+						if(UserInput.yesOrNo(MSG_DELETE_FOLDER)) {
 							IOFile.deleteFileInFolder(newDir);
+							//Creazione dei file N_i e dei componenti
+							fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+						}
+						else
+							fileCounter = newDir.listFiles().length;
 					}
-					else
+					else {
 						newDir.mkdir();
-					//Creazione dei file N_i e dei componenti				
-					int fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));					
+						//Creazione dei file N_i e dei componenti
+						fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+					}				 					
 					DistributedSolution distSol = new DistributedSolution(in);
 					distSol.setnFiles(fileCounter);
 					File[] files = newDir.listFiles();
-					ArrayList<Hypothesis> hsList = new ArrayList<>();
+					ArrayList<ArrayList<BitSet>> hsList = new ArrayList<>();
 					double totalTime = 0;
-					int nFile = 0;
-					
 					for(File f:files) {
 						Instance i = new Instance(f.getPath());
 						MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
@@ -90,22 +95,26 @@ public class Main{
 						Problem p_i = new Problem(i, mh_i, sol_i);
 						p_i.exploreH();
 						totalTime += p_i.getSol().getTime();
-						DistributedHypothesis dh;
-						Hypothesis hCurrent;
-						for(int j=0; j<p_i.getSol().getMhsSet().size(); j++) {
-							hCurrent = p_i.getSol().getMhsSet().get(j);
-							dh = new DistributedHypothesis(hCurrent.getDimension(), fileCounter);
-							System.out.println(p_i.getSol().getMhsSetElement(j));
-							dh.setBin(p_i.getSol().getMhsSetElement(j));
-							dh.setVector(nFile);
-							nFile ++;
-							hsList.add(dh);
-						}							
+						hsList.add(p_i.getSol().getMhsSetExpanded());
 					}
 					System.out.println(hsList);
 					distSol.setnGlobalMHS(hsList.size());
+					DistributedHypothesis dh = new DistributedHypothesis(in.getNumUsefulColumns(), fileCounter, hsList);
+					Problem dist = new Problem(in, dh, distSol);
 					
-					distSol.setTime(totalTime);
+					if(hasTimeLimit)
+						dist.setTimeLimit(timeLimit);
+					dist.exploreH();
+													
+					System.out.print(dist.getSol().getStringForFile());
+					
+					// Scrittura file di output
+					outputFilePath = newDirPath+"."+EXTENSION_OUTPUT;
+					IOFile.writeOutputData(dist.getSol().getStringForFile(),outputFilePath);
+					
+					//Durata totale (calcolo Ci e composizione)
+					totalTime+=dist.getSol().getTime();
+					System.out.println(totalTime);
 					break;
 			}
 		}
