@@ -44,7 +44,8 @@ public class Problem {
 		System.out.println(MSG_MONOLITHIC_START);
 
 		current = new ArrayList<>();
-		sol = new Solution(in);		
+		//TODO da rimuovere
+		//sol = new Solution(in);		
 		next = new ArrayList<>();
 		
 		long startTime = System.nanoTime();
@@ -177,11 +178,13 @@ public class Problem {
 								break;
 							}
 							else {
-								h1.propagate(h2);
+								//h1.propagate(h2);
+								h1.propagate(pred);
 							}
 						}
 						else {
-							h1.propagate(h2);
+							//h1.propagate(h2);
+							h1.propagate(pred);
 						}
 						
 					}

@@ -7,8 +7,8 @@ import objects.DistributedHypothesis;
 import objects.DistributedSolution;
 import objects.Instance;
 import objects.MonolithicHypothesis;
+import objects.MonolithicSolution;
 import objects.Problem;
-import objects.Solution;
 import ioUtils.*;
 
 /**
@@ -45,14 +45,15 @@ public class Main{
 			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
 		
 		// Lettura file di input
-		String path = IOFile.selectFile(EXTENSION_INPUT);		
+		String path = IOFile.selectFile(EXTENSION_INPUT);
+		//TODO mettere controllo se si annula la selezione del file
 		Instance in = new Instance(path);
 		if(in != null) {
 			switch(scelta) {
 				case 1: // Calcolo monolitico
 					MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
-					Solution sol = new Solution(in);
-					Problem mono = new Problem(in, mh, sol);
+					MonolithicSolution monoSol = new MonolithicSolution(in);
+					Problem mono = new Problem(in, mh, monoSol);
 					if(hasTimeLimit)
 						mono.setTimeLimit(timeLimit);
 					mono.exploreH();
@@ -91,8 +92,8 @@ public class Main{
 					for(File f:files) {
 						Instance i = new Instance(f.getPath());
 						MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
-						Solution sol_i = new Solution(i);
-						Problem p_i = new Problem(i, mh_i, sol_i);
+						MonolithicSolution mSol_i = new MonolithicSolution(i);
+						Problem p_i = new Problem(i, mh_i, mSol_i);
 						p_i.exploreH();
 						totalTime += p_i.getSol().getTime();
 						hsList.add(p_i.getSol().getMhsSetExpanded());

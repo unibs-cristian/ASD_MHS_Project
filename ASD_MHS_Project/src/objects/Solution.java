@@ -3,9 +3,8 @@ package objects;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
-import java.util.Map;
 
-public class Solution {
+public abstract class Solution {
 	protected ArrayList<Hypothesis> mhsSet; 
 	protected HashMap<Integer, Integer> cardDistribution;
 	protected Instance in;
@@ -72,24 +71,6 @@ public class Solution {
 		cardDistribution.put(mhs.getBin().cardinality(), ++value);
 	}
 	
-	public String getSummary() {
-		String summary;
-		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n;;; used cols: "+in.getNumUsefulColumns()+"\n";
-		if(complete)
-			summary += ";;;Execution completed\n";
-		else {
-			summary += ";;;Execution interrupted\n";
-			summary += ";;;Level reached: "+levelReached+"\n";
-		}
-		summary += ";;;Time elapsed: "+time+"\n";
-		summary += ";;;MHS found: "+mhsSet.size()+"\n";
-		summary += ";;;MHS cardinality distribution:";
-		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
-			summary += "\n;;; Card " + entry.getKey() + " -> " + entry.getValue();
-		}
-		return summary;
-	}
-	
 	public String toString() {
 		String mhsMatrix = "";
 		int k;
@@ -115,4 +96,6 @@ public class Solution {
 	public String getStringForFile() {
 		return getSummary()+toString();
 	}
+	
+	public abstract String getSummary();
 }

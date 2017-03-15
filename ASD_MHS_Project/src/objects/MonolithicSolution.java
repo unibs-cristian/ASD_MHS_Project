@@ -2,23 +2,12 @@ package objects;
 
 import java.util.Map;
 
-public class DistributedSolution extends Solution {
+public class MonolithicSolution extends Solution{
 	
-	private int nFiles;
-	private int nGlobalMHS;
-	
-	public DistributedSolution(Instance in) {
+	public MonolithicSolution(Instance in) {
 		super(in);		
 	}
 	
-	public void setnFiles(int nFiles) {
-		this.nFiles = nFiles;
-	}
-
-	public void setnGlobalMHS(int nGlobalMHS) {
-		this.nGlobalMHS = nGlobalMHS;
-	}
-
 	public String getSummary() {
 		String summary;
 		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n;;; used cols: "+in.getNumUsefulColumns()+"\n";
@@ -29,14 +18,11 @@ public class DistributedSolution extends Solution {
 			summary += ";;;Level reached: "+levelReached+"\n";
 		}
 		summary += ";;;Time elapsed: "+time+"\n";
-		summary += ";;;Files created: "+nFiles+"\n";
-		summary += ";;;Global MHS found (before composition): "+nGlobalMHS+"\n";
-		summary += ";;;MHS found (after composition): "+mhsSet.size()+"\n";
+		summary += ";;;MHS found: "+mhsSet.size()+"\n";
 		summary += ";;;MHS cardinality distribution:";
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
 			summary += "\n;;; Card " + entry.getKey() + " -> " + entry.getValue();
 		}
 		return summary;
 	}
-
 }
