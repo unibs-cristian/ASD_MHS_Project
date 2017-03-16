@@ -42,15 +42,10 @@ public class Instance {
 		return matrixRows;
 	}
 	
-	//TODO metodo mai usato
-	/*
-	public int getMatrixNumCols() {
+	//TODO OPT non basta ritornare numMatrixCol
+	public int getNumUsefulColumns() {
+		//return usefulColumns.cardinality();
 		return matrixCols;
-	}
-	*/
-	//TODO non basta ritornare numMatrixCol
-		public int getNumUsefulColumns() {
-			return usefulColumns.cardinality();
 	}
 	
 	public BitSet getMatrixColumn(int column) {
@@ -194,13 +189,15 @@ public class Instance {
 	}
 	
 	public void createMatrix(int numRows) {
-		matrix = new BitSet(numRows*usefulColumns.cardinality());
 		matrixRows = numRows;
 		matrixCols = usefulColumns.cardinality();
+		matrix = new BitSet(numRows*matrixCols);
+		
 	}
 	
+	//TODO OPT usare matrixCols invece che usefulColumns.cardinality()
 	public void setElement(int row, int column) {		
-		matrix.set(row*usefulColumns.cardinality() + column);
+		matrix.set(row*matrixCols + column);
 	}
 	
 	public boolean isUseful(int col) {

@@ -25,6 +25,7 @@ public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 		return dimension;
 	}
 	
+	//TODO OPT 
 	public boolean isEmpty() {
 		return bin.cardinality() == 0;
 	}
