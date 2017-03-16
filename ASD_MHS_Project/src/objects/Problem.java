@@ -86,11 +86,7 @@ public class Problem {
 	
 	
 	private void generateChildren(Hypothesis h) {
-		Hypothesis h1 = h.clone();
-		Hypothesis h2 = h.clone();
-		Hypothesis pred = h.clone(); 
-		Hypothesis last = h.clone();
-		//Hypothesis fin = h.clone();
+		Hypothesis h1, h2, pred, last = null;	
 		int cont = 0;
 		int predIndex;
 		boolean cond = false;
