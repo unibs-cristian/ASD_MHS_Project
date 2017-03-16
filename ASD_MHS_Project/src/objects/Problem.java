@@ -43,9 +43,7 @@ public class Problem {
 		boolean timeLimitReached = false;
 		System.out.println(MSG_MONOLITHIC_START);
 
-		current = new ArrayList<>();
-		//TODO da rimuovere
-		//sol = new Solution(in);		
+		current = new ArrayList<>();		
 		next = new ArrayList<>();
 		
 		long startTime = System.nanoTime();
@@ -86,9 +84,9 @@ public class Problem {
 	
 	
 	private void generateChildren(Hypothesis h) {
-		Hypothesis h1, h2, pred, last = null;	
+		Hypothesis h1, h2, pred;	
 		int cont = 0;
-		int predIndex;
+		int predIndex, lastIndex = 0;
 		boolean cond = false;
 		
 		if(h.isEmpty()) {
@@ -187,29 +185,23 @@ public class Problem {
 				}
 
 				if(cond) {
-					if(cont == 0)
+					if(cont == 0) {
 						next.add(h1);
-					else {
-						if(next.isEmpty())
-							next.add(h1);
-						else
-							next.add(next.indexOf(last), h1);
+						lastIndex++;
 					}
-					
-					last = h1.clone();
+					else {
+						if(next.isEmpty()) {
+							next.add(h1);
+							lastIndex = 0;
+						}
+						else {
+							next.add(lastIndex, h1);
+							lastIndex++;
+						}
+					}
 					cont++;
 				}
 			}
-		}
-			
+		}	
 	}
-
-	/*
-	private static Hypothesis prev(Hypothesis h) {
-		if(current.indexOf(h) - 1 < 0)
-			return null;
-		else 
-			return current.get(current.indexOf(h) - 1);
-	}
-	*/	
 }
