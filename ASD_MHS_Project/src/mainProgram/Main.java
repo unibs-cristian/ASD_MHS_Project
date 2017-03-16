@@ -45,7 +45,8 @@ public class Main{
 			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
 		
 		// Lettura file di input
-		String path = IOFile.selectFile(EXTENSION_INPUT);
+		//String path = IOFile.selectFile(EXTENSION_INPUT);
+		String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74181.000.matrix";
 		//TODO mettere controllo se si annula la selezione del file
 		Instance in = new Instance(path);
 		if(in != null) {
@@ -88,6 +89,12 @@ public class Main{
 					distSol.setnFiles(fileCounter);
 					File[] files = newDir.listFiles();
 					ArrayList<ArrayList<BitSet>> hsList = new ArrayList<>();
+					
+					ArrayList<BitSet> Ci = new ArrayList<>();
+					ArrayList<BitSet> hsList_iShrink;
+					BitSet hsShrink;
+					int w;
+					
 					double totalTime = 0;
 					for(File f:files) {
 						Instance i = new Instance(f.getPath());
@@ -96,7 +103,21 @@ public class Main{
 						Problem p_i = new Problem(i, mh_i, mSol_i);
 						p_i.exploreH();
 						totalTime += p_i.getSol().getTime();
-						hsList.add(p_i.getSol().getMhsSetExpanded());
+						
+						Ci = p_i.getSol().getMhsSetExpanded();
+						hsList_iShrink = new ArrayList<>();
+						for(int j = 0; j < Ci.size(); j++) {
+							w = 0;
+							hsShrink = new BitSet(in.getNumUsefulColumns());
+							for(int k=0; k < in.getInputFileCols(); k++) {
+								if(in.getUsefulCols().get(k)) {
+									hsShrink.set(w,Ci.get(j).get(k));
+									w++;
+								}
+							}
+							hsList_iShrink.add(hsShrink);
+						}
+						hsList.add(hsList_iShrink);
 					}
 					System.out.println(hsList);
 					distSol.setnGlobalMHS(hsList.size());
@@ -115,7 +136,7 @@ public class Main{
 					
 					//Durata totale (calcolo Ci e composizione)
 					totalTime+=dist.getSol().getTime();
-					System.out.println(totalTime);
+					System.out.println("\n Total time: "+totalTime);
 					break;
 			}
 		}
