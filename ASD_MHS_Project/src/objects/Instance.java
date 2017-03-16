@@ -29,8 +29,13 @@ public class Instance {
 		return matrix;
 	}
 	
+	//TODO è ancora utile?
 	public BitSet getUsefulCols() {
 		return usefulColumns;
+	}
+	
+	public boolean isUsefulCol(int col) {
+		return usefulColumns.get(col);
 	}
 	
 	public int getMatrixNumRows() {

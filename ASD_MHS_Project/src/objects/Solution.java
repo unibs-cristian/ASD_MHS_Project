@@ -28,7 +28,7 @@ public abstract class Solution {
 		int k=0;
 		BitSet mhs = new BitSet(in.getInputFileCols());
 		for(int j=0; j<in.getInputFileCols(); j++) {
-			if(in.getUsefulCols().get(j)) {
+			if(in.isUsefulCol(j)) {
 				if(mhsSet.get(index).getBin().get(k))
 					mhs.set(j);
 				k++;
@@ -78,7 +78,7 @@ public abstract class Solution {
 			k = 0;
 			mhsMatrix += "\n";
 			for(int j=0; j<in.getInputFileCols(); j++) {
-				if(in.getUsefulCols().get(j)) {
+				if(in.isUsefulCol(j)) {
 					if(mhsSet.get(i).getBin().get(k))
 						mhsMatrix += "1 ";
 					else

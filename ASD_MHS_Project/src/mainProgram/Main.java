@@ -110,7 +110,7 @@ public class Main{
 							w = 0;
 							hsShrink = new BitSet(in.getNumUsefulColumns());
 							for(int k=0; k < in.getInputFileCols(); k++) {
-								if(in.getUsefulCols().get(k)) {
+								if(in.isUsefulCol(k)) {
 									hsShrink.set(w,Ci.get(j).get(k));
 									w++;
 								}
