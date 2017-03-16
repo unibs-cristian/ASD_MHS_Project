@@ -114,8 +114,9 @@ public class Main{
 									w = 0;
 									hsShrink = new BitSet(in.getNumUsefulColumns());
 									for(int k=0; k < in.getInputFileCols(); k++) {
-										if(in.isUsefulCol(k) && Ci.get(j).get(k)) {
-											hsShrink.set(w);
+										if(in.isUsefulCol(k)) {
+											if(Ci.get(j).get(k))
+												hsShrink.set(w);
 											w++;
 										}
 									}
