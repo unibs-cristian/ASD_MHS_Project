@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.BitSet;
+import java.util.Random;
 
 public class Instance {
 	private final static String EXTENSION_INPUT = "matrix";
@@ -161,8 +162,15 @@ public class Instance {
 		int nRigheTolte = 0;
 		int rand;
 		int nFiles = 0;
+		Random r = new Random();
 		while(nRigheTolte < matrixRows){
-			rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
+			// 1 <= rand <= matrixRows
+			//rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
+			// 1 <= rand < matrixRows
+			if((matrixRows-nRigheTolte) == 1)
+				rand = 1;
+			else
+				rand = r.nextInt((matrixRows-nRigheTolte)-1)+1;
 			String matrixOutN = "";
 			matrixOutN = getMatrixRows(nRigheTolte, nRigheTolte+rand);
 			IOFile.writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+nFiles+"."+EXTENSION_INPUT);
