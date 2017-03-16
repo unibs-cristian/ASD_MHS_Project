@@ -42,12 +42,30 @@ public class DistributedHypothesis extends Hypothesis{
 		else {
 			for(int i=0; i<nComponenti; i++)
 				//if h is a MHS in Ci
-				if(componentsList.get(i).contains(getBin()))
+				//TODO è ottimizzabile?
+				//if(componentsList.get(i).contains(getBin()))
+				if(isMHSinCi(i))
 					vector.set(i);
 				else
 					vector.set(i,false);
 		}
 		
+	}
+	
+	//Metodo per ottimizzare la ricerca del bin in un Ci sfruttandone l'ordinamento
+	private boolean isMHSinCi(int i) {
+		BitSet b;
+		for(int j=0; j<componentsList.get(i).size(); j++) {
+			if(componentsList.get(i).get(j).equals(getBin()))
+				return true;
+			
+			b = (BitSet)getBin().clone();
+			b.xor(componentsList.get(i).get(j));
+			//getBin() > componentsList.get(i).get(j)
+			if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
+				return false;
+		}
+		return false;
 	}
 
 	@Override
