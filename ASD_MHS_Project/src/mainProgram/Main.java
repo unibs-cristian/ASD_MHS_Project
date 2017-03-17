@@ -100,8 +100,10 @@ public class Main{
 							BitSet hsShrink;
 							int w;
 							
-							double totalTime = 0;
+							double totalTime = 0, ctr = 0;
 							for(File f:files) {
+								System.out.println("Collezione N" + ctr);
+								ctr++;
 								Instance i = new Instance(f.getPath());
 								MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
 								MonolithicSolution mSol_i = new MonolithicSolution(i);

@@ -12,7 +12,7 @@ public class Problem {
 	private boolean hasTimeLimit;
 	private int timeLimit;
 	
-	private final static String MSG_MONOLITHIC_START = "Iniziato calcolo monolitico dei MHS";
+	private final static String MSG_MONOLITHIC_START = "Iniziata esplorazione dello spazio delle ipotesi";
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	public Problem(Instance in, Hypothesis h, Solution sol) {
@@ -71,8 +71,8 @@ public class Problem {
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
-			System.out.print(next.size()+" * ");
-			System.out.println(next);
+//			System.out.print(next.size()+" * ");
+//			System.out.println(next);
 			sol.incrementLevelReached();
 		} while(!current.isEmpty() && !timeLimitReached);		
 		long endTime = System.nanoTime();
