@@ -166,7 +166,8 @@ public class Instance {
 		while(nRigheTolte < matrixRows){
 			// 1 <= rand <= matrixRows
 			//rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
-			// 1 <= rand < matrixRows
+			
+			// 1 <= rand < righeRimanenti
 			if((matrixRows-nRigheTolte) == 1)
 				rand = 1;
 			else

@@ -17,7 +17,7 @@ public abstract class Solution {
 		mhsSet = new ArrayList<>();
 		cardDistribution = new HashMap<>();
 		complete = false;
-		levelReached = 0;
+		levelReached = -1;
 	}
 	
 	public ArrayList<Hypothesis> getMhsSet() {
