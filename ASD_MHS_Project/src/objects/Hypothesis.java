@@ -27,7 +27,11 @@ public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 	
 	//TODO OPT 
 	public boolean isEmpty() {
-		return bin.cardinality() == 0;
+		if(bin.nextSetBit(0)==-1)
+			return true;
+		else
+			return false;
+		//return bin.cardinality() == 0;
 	}
 	
 	public void setBin(int index) {
