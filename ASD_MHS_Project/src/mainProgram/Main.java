@@ -47,7 +47,7 @@ public class Main{
 		
 		// Lettura file di input
 		String path = IOFile.selectFile(EXTENSION_INPUT);
-		//String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74181.028.matrix";
+		//String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74L85.001.matrix";
 		if(path!=null) {
 			File fileToOpen = new File(path);		
 			if(!fileToOpen.exists())

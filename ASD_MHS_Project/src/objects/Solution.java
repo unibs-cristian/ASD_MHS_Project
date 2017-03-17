@@ -2,6 +2,7 @@ package objects;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 
 public abstract class Solution {
@@ -39,6 +40,8 @@ public abstract class Solution {
 	
 	public ArrayList<BitSet> getMhsSetExpanded() {
 		ArrayList<BitSet> list = new ArrayList<>();
+		//Ordinamento descrescente effetuato per ottimizzare isMHSinCi
+		Collections.sort(mhsSet, Collections.reverseOrder());
 		for(int j=0; j<mhsSet.size(); j++)
 			list.add(getMhsSetElementExpanded(j));
 		return list;

@@ -71,7 +71,8 @@ public class Problem {
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
-			//System.out.println(next);
+			System.out.print(next.size()+" * ");
+			System.out.println(next);
 			sol.incrementLevelReached();
 		} while(!current.isEmpty() && !timeLimitReached);		
 		long endTime = System.nanoTime();
