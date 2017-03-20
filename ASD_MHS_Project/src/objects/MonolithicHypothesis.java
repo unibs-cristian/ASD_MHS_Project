@@ -3,18 +3,18 @@ package objects;
 import java.util.BitSet;
 
 public class MonolithicHypothesis extends Hypothesis {
-	private int nInsiemi;
+	private int nSets;
 	private BitSet vector;
 	
 	public MonolithicHypothesis(int dimension, int nInsiemi) {
 		super(dimension);
-		this.nInsiemi = nInsiemi;
+		this.nSets = nInsiemi;
 		vector = new BitSet(nInsiemi);
 	}
 	
 	public MonolithicHypothesis(int dimension, BitSet bin, int nInsiemi) {
 		super(dimension,bin);
-		this.nInsiemi = nInsiemi;
+		this.nSets = nInsiemi;
 		vector = new BitSet(nInsiemi);
 	}
 	
@@ -25,7 +25,7 @@ public class MonolithicHypothesis extends Hypothesis {
 	@Override
 	public void setField(Instance instance) {
 		if(bin.nextSetBit(0) == -1) // Controllo se l'ipotesi e' vuota
-			vector.set(0, nInsiemi, false);
+			vector.set(0, nSets, false);
 		else {
 			if(bin.cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
 				vector = instance.getMatrixColumn(bin.length()-1);
@@ -42,7 +42,7 @@ public class MonolithicHypothesis extends Hypothesis {
 
 	@Override
 	public boolean check() {
-		if(vector.cardinality() == nInsiemi)
+		if(vector.cardinality() == nSets)
 			return true;
 		else
 			return false;
@@ -55,6 +55,6 @@ public class MonolithicHypothesis extends Hypothesis {
 	
 	@Override
 	public Hypothesis clone() {
-		return new MonolithicHypothesis(dimension, (BitSet)bin.clone(), nInsiemi);
+		return new MonolithicHypothesis(dimension, (BitSet)bin.clone(), nSets);
 	}
 }

@@ -2,8 +2,8 @@ package ioUtils;
 
 public class MyMenu {
 	  final private static String BORDO = "-";
-	  final private static String VOCE_USCITA = "0\tExit";
-	  final private static String RICHIESTA_INSERIMENTO = "Enter the number of the desired option > ";
+	  final private static String VOCE_USCITA = "0\tEsci";
+	  final private static String RICHIESTA_INSERIMENTO = "Inserisci il numero dell'opzione desiderata > ";
 	
 	  private String titolo;
 	  private String [] voci;

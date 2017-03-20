@@ -2,7 +2,6 @@ package mainProgram;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.BitSet;
-
 import objects.DistributedHypothesis;
 import objects.DistributedSolution;
 import objects.Instance;
@@ -25,8 +24,8 @@ public class Main{
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno?";
 	private final static String MSG_FILE_NOT_FOUND = "Esecuzione terminata, il file specificato non esiste";
-	private final static String TITOLO_SCELTA_ALG = "Seleziona l'algoritmo desiderato";
-	private final static String[] OPZIONI_SCELTA_ALG = {"Monolitico","Distribuito"};
+	private final static String TITLE_ALG_CHOICE = "Seleziona l'algoritmo desiderato";
+	private final static String[] OPTIONS_ALG_CHOICE = {"Monolitico","Distribuito"};
 	
 	/**
 	 * Main program
@@ -34,13 +33,13 @@ public class Main{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		boolean hasTimeLimit = false, eseguiTutti = false;
+		boolean hasTimeLimit = false, runAll = false;
 		int timeLimit = 0;
 		String outputFilePath = "";
 		File[] inputFiles;
-		MyMenu menu = new MyMenu(TITOLO_SCELTA_ALG, OPZIONI_SCELTA_ALG);
+		MyMenu menu = new MyMenu(TITLE_ALG_CHOICE, OPTIONS_ALG_CHOICE);
 		// Monolitico o distribuito (scelta utente tramite menu')
-		int scelta = menu.scegliNZ();
+		int choice = menu.scegliNZ();
 		
 		// Viene chiesto all'utente di fissare l'eventuale durata massima dell'elaborazione
 		hasTimeLimit = UserInput.yesOrNo(MSG_EXECUTION_TIME_1);
@@ -48,13 +47,13 @@ public class Main{
 			timeLimit = UserInput.leggiInt(MSG_EXECUTION_TIME_2);
 		
 		// Viene chiesto se si vuole eseguire l'algoritmo su tutti i file contenuti in una cartella
-		eseguiTutti = UserInput.yesOrNo(MSG_ESEGUI_TUTTI);
+		runAll = UserInput.yesOrNo(MSG_ESEGUI_TUTTI);
 		
 		// Lettura file di input
 		String path = IOFile.selectFile(EXTENSION_INPUT);
 		//String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74L85.001.matrix";
 		
-		if(eseguiTutti){
+		if(runAll){
 			File fileDir = new File(path.substring(0, path.lastIndexOf("\\")));
 			inputFiles = fileDir.listFiles();
 		}
@@ -74,7 +73,7 @@ public class Main{
 					else {				
 						Instance in = new Instance(path);
 						if(in != null) {
-							switch(scelta) {
+							switch(choice) {
 								case 1: // Calcolo monolitico
 									MonolithicHypothesis mh = new MonolithicHypothesis(in.getNumUsefulColumns(), in.getMatrixNumRows());
 									MonolithicSolution monoSol = new MonolithicSolution(in);

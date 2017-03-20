@@ -152,23 +152,23 @@ public class Instance {
 	}
 	
 	public int createNiFiles(String dirPath, String fileName) {
-		int nRigheTolte = 0;
+		int nRowsPicked = 0;
 		int rand;
 		int nFiles = 0;
 		Random r = new Random();
-		while(nRigheTolte < matrixRows){
+		while(nRowsPicked < matrixRows){
 			// 1 <= rand <= matrixRows
 			//rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
 			
 			// 1 <= rand < righeRimanenti
-			if((matrixRows-nRigheTolte) == 1)
+			if((matrixRows-nRowsPicked) == 1)
 				rand = 1;
 			else
-				rand = r.nextInt((matrixRows-nRigheTolte)-1)+1;
+				rand = r.nextInt((matrixRows-nRowsPicked)-1)+1;
 			String matrixOutN = "";
-			matrixOutN = getMatrixRows(nRigheTolte, nRigheTolte+rand);
+			matrixOutN = getMatrixRows(nRowsPicked, nRowsPicked+rand);
 			IOFile.writeOutputData(matrixOutN,dirPath+"/"+fileName+"_N"+nFiles+"."+EXTENSION_INPUT);
-			nRigheTolte+=rand;
+			nRowsPicked+=rand;
 			nFiles++;
 		}
 		return nFiles;

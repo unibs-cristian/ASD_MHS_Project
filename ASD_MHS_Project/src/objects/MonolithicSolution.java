@@ -10,16 +10,16 @@ public class MonolithicSolution extends Solution{
 	
 	public String getSummary() {
 		String summary;
-		summary = ";;;Input matrix\n;;; rows: "+in.getMatrixNumRows()+"\n;;; cols: "+in.getInputFileCols()+"\n;;; used cols: "+in.getNumUsefulColumns()+"\n";
+		summary = ";;;Matrice in input\n;;; righe: "+in.getMatrixNumRows()+"\n;;; colonne: "+in.getInputFileCols()+"\n;;; colonne utili: "+in.getNumUsefulColumns()+"\n";
 		if(complete)
-			summary += ";;;Execution completed\n";
+			summary += ";;;Esecuzione completata\n";
 		else {
-			summary += ";;;Execution interrupted\n";
-			summary += ";;;Level reached: "+levelReached+"\n";
+			summary += ";;;Esecuzione interrotta\n";
+			summary += ";;;Livello raggiunto: "+levelReached+"\n";
 		}
-		summary += ";;;Time elapsed: "+time+"\n";
-		summary += ";;;MHS found: "+mhsSet.size()+"\n";
-		summary += ";;;MHS cardinality distribution:";
+		summary += ";;;Tempo trascorso: "+time+"\n";
+		summary += ";;;MHS trovati: "+mhsSet.size()+"\n";
+		summary += ";;;MHS distribuzione cardinalità:";
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
 			summary += "\n;;; Card " + entry.getKey() + " -> " + entry.getValue();
 		}

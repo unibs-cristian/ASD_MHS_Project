@@ -4,20 +4,20 @@ import java.util.BitSet;
 import java.util.ArrayList;
 
 public class DistributedHypothesis extends Hypothesis{
-	private int nComponenti;
+	private int nComponents;
 	private BitSet vector;
 	private ArrayList<ArrayList<BitSet>> componentsList;
 	
 	public DistributedHypothesis(int dimension, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
 		super(dimension);
-		this.nComponenti = nComponenti;
+		this.nComponents = nComponenti;
 		this.componentsList = componentsList;
 		vector = new BitSet(nComponenti);
 	}
 	
 	public DistributedHypothesis(int dimension, BitSet bin, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
 		super(dimension,bin);
-		this.nComponenti = nComponenti;
+		this.nComponents = nComponenti;
 		this.componentsList = componentsList;
 		vector = new BitSet(nComponenti);
 	}
@@ -32,15 +32,15 @@ public class DistributedHypothesis extends Hypothesis{
 
 	@Override
 	public Hypothesis clone() {
-		return new DistributedHypothesis(dimension, (BitSet)bin.clone(), nComponenti, componentsList);
+		return new DistributedHypothesis(dimension, (BitSet)bin.clone(), nComponents, componentsList);
 	}
 
 	@Override
 	public void setField(Instance instance) {
 		if(bin.nextSetBit(0) == -1) // Controllo se l'ipotesi e' vuota
-			vector.set(0, nComponenti, false);
+			vector.set(0, nComponents, false);
 		else {
-			for(int i=0; i<nComponenti; i++)
+			for(int i=0; i<nComponents; i++)
 				//if h is a MHS in Ci
 				if(isMHSinCi(i))
 					vector.set(i);
@@ -70,7 +70,7 @@ public class DistributedHypothesis extends Hypothesis{
 	public boolean check() {
 		boolean cond = true;
 		int i = 0;
-		while(i < nComponenti && cond) {
+		while(i < nComponents && cond) {
 			if(!vector.get(i))
 				cond = false;
 			i++;
