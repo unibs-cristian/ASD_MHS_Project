@@ -24,21 +24,16 @@ public class MonolithicHypothesis extends Hypothesis {
 
 	@Override
 	public void setField(Instance instance) {
-		if(getBin().cardinality() == 0) // Controllo se l'ipotesi e' vuota
-			vector.set(0, nInsiemi, false); // TODO e' utile?
+		if(bin.nextSetBit(0) == -1) // Controllo se l'ipotesi e' vuota
+			vector.set(0, nInsiemi, false);
 		else {
-			if(getBin().cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
-				vector = instance.getMatrixColumn(getBin().length()-1);
+			if(bin.cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
+				vector = instance.getMatrixColumn(bin.length()-1);
 			}
 			else {
-				/*
-				MonolithicHypothesis hA = (MonolithicHypothesis)generateLeftMostPredecessor(instance);
-				vector = hA.getVector();
-				vector.or(((MonolithicHypothesis)generateRightMostPredecessor(instance)).getVector());
-				*/
-				//TODO controllare se questa procedura è corretta
-				for(int i = getBin().nextSetBit(0); i<getBin().length(); i++)
-					if(getBin().get(i))
+				//TODO OPT controllare se questa procedura è corretta
+				for(int i = bin.nextSetBit(0); i<bin.length(); i++)
+					if(bin.get(i))
 						vector.or(instance.getMatrixColumn(i));
 			}
 		}
@@ -59,26 +54,7 @@ public class MonolithicHypothesis extends Hypothesis {
 	}
 	
 	@Override
-	public Hypothesis generateLeftMostPredecessor(Instance instance) {
-		BitSet leftMostPredecessor = (BitSet)getBin().clone();
-		leftMostPredecessor.set(leftMostPredecessor.length()-1, false);
-		MonolithicHypothesis hLeftMostPredecessor = new MonolithicHypothesis(getDimension(),leftMostPredecessor,nInsiemi);
-		hLeftMostPredecessor.setField(instance);
-		return hLeftMostPredecessor;
-	}
-	
-	@Override
-	public Hypothesis generateRightMostPredecessor(Instance instance) {
-		BitSet rightMostPredecessor = (BitSet)getBin().clone();
-		rightMostPredecessor.set(rightMostPredecessor.nextSetBit(0), false);
-		MonolithicHypothesis hRightMostPredecessor = new MonolithicHypothesis(getDimension(),rightMostPredecessor,nInsiemi);
-		hRightMostPredecessor.setField(instance);
-		return hRightMostPredecessor;
-	}
-
-	
-	@Override
 	public Hypothesis clone() {
-		return new MonolithicHypothesis(getDimension(), (BitSet)getBin().clone(), nInsiemi);
+		return new MonolithicHypothesis(dimension, (BitSet)bin.clone(), nInsiemi);
 	}
 }

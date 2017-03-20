@@ -3,9 +3,8 @@ package objects;
 import java.util.BitSet;
 
 public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
-	// TODO verificare se possa servire metterli protected
-	private int dimension;
-	private BitSet bin;
+	protected int dimension;
+	protected BitSet bin;
 	
 	public Hypothesis(int dimension){
 		bin = new BitSet(dimension);
@@ -91,7 +90,4 @@ public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 	public abstract void setField(Instance instance);
 	public abstract boolean check();
 	public abstract void propagate(Hypothesis h);
-	public abstract Hypothesis generateLeftMostPredecessor(Instance instance);
-	public abstract Hypothesis generateRightMostPredecessor(Instance instance);
-
 }

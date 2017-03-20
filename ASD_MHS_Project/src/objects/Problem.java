@@ -127,7 +127,7 @@ public class Problem {
 					h2 = h1.clone();
 					if(h2.getBin().get(j)!=false) {
 						h2.set(j,false);
-						//TODO codice tratto dallo pseudo-codice (non è corretto)
+						// codice tratto dallo pseudo-codice (non è corretto)
 						/*
 						if(!h2.equals(pred)) {
 							cond = false;
@@ -148,7 +148,7 @@ public class Problem {
 							} while(!(pred == null || h.getHammingDistance(pred) == 2));
 						}
 						*/
-						//metodo rozzo ma corretto (sembra più efficiente)
+						//metodo rozzo ma corretto
 						/*
 						if(!current.contains(h2)) {
 							cond = false;
@@ -157,7 +157,6 @@ public class Problem {
 						*/
 						
 						//metodo più efficiente
-						//TODO controllare gli else
 						if(h2.compareTo(pred)!=0) {
 							while(pred!=null && pred.compareTo(h2)==-1) {
 								//pred = prev(pred);
@@ -180,8 +179,7 @@ public class Problem {
 						else {
 							//h1.propagate(h2);
 							h1.propagate(pred);
-						}
-						
+						}					
 					}
 				}
 

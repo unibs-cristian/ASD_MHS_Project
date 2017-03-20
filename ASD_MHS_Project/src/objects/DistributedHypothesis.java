@@ -32,18 +32,16 @@ public class DistributedHypothesis extends Hypothesis{
 
 	@Override
 	public Hypothesis clone() {
-		return new DistributedHypothesis(getDimension(), (BitSet)getBin().clone(), nComponenti, componentsList);
+		return new DistributedHypothesis(dimension, (BitSet)bin.clone(), nComponenti, componentsList);
 	}
 
 	@Override
 	public void setField(Instance instance) {
-		if(getBin().cardinality() == 0) // Controllo se l'ipotesi e' vuota
-			vector.set(0, nComponenti, false); // TODO e' utile?
+		if(bin.nextSetBit(0) == -1) // Controllo se l'ipotesi e' vuota
+			vector.set(0, nComponenti, false);
 		else {
 			for(int i=0; i<nComponenti; i++)
 				//if h is a MHS in Ci
-				//TODO è ottimizzabile?
-				//if(componentsList.get(i).contains(getBin()))
 				if(isMHSinCi(i))
 					vector.set(i);
 				else
@@ -56,10 +54,10 @@ public class DistributedHypothesis extends Hypothesis{
 	private boolean isMHSinCi(int i) {
 		BitSet b;
 		for(int j=0; j<componentsList.get(i).size(); j++) {
-			if(componentsList.get(i).get(j).equals(getBin()))
+			if(componentsList.get(i).get(j).equals(bin))
 				return true;
 			
-			b = (BitSet)getBin().clone();
+			b = (BitSet)bin.clone();
 			b.xor(componentsList.get(i).get(j));
 			//getBin() > componentsList.get(i).get(j)
 			if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
@@ -78,29 +76,11 @@ public class DistributedHypothesis extends Hypothesis{
 			i++;
 		}
 		return cond;
-		/*TODO potenziale implementazione equivalente (più efficiente?)
-		if(vector.cardinality() == nComponenti)
-			return true;
-		else 
-			return false;
-		*/
 	}
 
 	@Override
 	public void propagate(Hypothesis h) {
 		vector.or(((DistributedHypothesis) h).getVector());
-	}
-
-	@Override
-	public Hypothesis generateLeftMostPredecessor(Instance instance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Hypothesis generateRightMostPredecessor(Instance instance) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

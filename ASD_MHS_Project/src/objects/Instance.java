@@ -29,11 +29,6 @@ public class Instance {
 		return matrix;
 	}
 	
-	//TODO è ancora utile?
-	public BitSet getUsefulCols() {
-		return usefulColumns;
-	}
-	
 	public boolean isUsefulCol(int col) {
 		return usefulColumns.get(col);
 	}
@@ -42,9 +37,7 @@ public class Instance {
 		return matrixRows;
 	}
 	
-	//TODO OPT non basta ritornare numMatrixCol
 	public int getNumUsefulColumns() {
-		//return usefulColumns.cardinality();
 		return matrixCols;
 	}
 	
@@ -196,7 +189,6 @@ public class Instance {
 		
 	}
 	
-	//TODO OPT usare matrixCols invece che usefulColumns.cardinality()
 	public void setElement(int row, int column) {		
 		matrix.set(row*matrixCols + column);
 	}
