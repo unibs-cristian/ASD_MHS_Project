@@ -66,12 +66,13 @@ public abstract class Solution {
 	public void add(Hypothesis mhs) {
 		mhsSet.add(mhs);
 		int value;
-		if(cardDistribution.get(mhs.getBin().cardinality()) != null)
-			value = cardDistribution.get(mhs.getBin().cardinality());
+		int mhsCardinality = mhs.getBin().cardinality();
+		if(cardDistribution.get(mhsCardinality) != null)
+			value = cardDistribution.get(mhsCardinality);
 		else 
 			value = 0;
 		
-		cardDistribution.put(mhs.getBin().cardinality(), ++value);
+		cardDistribution.put(mhsCardinality, ++value);
 	}
 	
 	public String toString() {

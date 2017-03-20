@@ -77,7 +77,7 @@ public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 	public int compareTo(Hypothesis h) {
 		BitSet b = (BitSet)getBin().clone();
 		b.xor(h.getBin());
-		if(b.cardinality() == 0)
+		if(b.nextSetBit(0) == -1)
 			return 0;
 		else if (getBin().get(b.nextSetBit(0)) == false)
 			return -1;//minore
