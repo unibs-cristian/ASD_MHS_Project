@@ -9,20 +9,21 @@ public class MonolithicSolution extends Solution{
 	}
 	
 	public String getSummary() {
-		String summary;
-		summary = ";;;Matrice in input\n;;; righe: "+in.getMatrixNumRows()+"\n;;; colonne: "+in.getInputFileCols()+"\n;;; colonne utili: "+in.getNumUsefulColumns()+"\n";
+		StringBuilder summary = new StringBuilder();
+		summary.append(";;;Matrice in input\n;;; righe: "+in.getMatrixNumRows()+"\n;;; colonne: "+in.getInputFileCols()+"\n;;; colonne utili: "+in.getNumUsefulColumns()+"\n");
+		summary.append(";;; N. d'ordine colonne soppresse: "+in.listUselessCols()+"\n");
 		if(complete)
-			summary += ";;;Esecuzione completata\n";
+			summary.append(";;;Esecuzione completata\n");
 		else {
-			summary += ";;;Esecuzione interrotta\n";
-			summary += ";;;Livello raggiunto: "+levelReached+"\n";
+			summary.append(";;;Esecuzione interrotta\n");
+			summary.append(";;;Livello raggiunto: "+levelReached+"\n");
 		}
-		summary += ";;;Tempo trascorso: "+time+"\n";
-		summary += ";;;MHS trovati: "+mhsSet.size()+"\n";
-		summary += ";;;MHS distribuzione cardinalità:";
+		summary.append(";;;Tempo trascorso: "+time+"\n");
+		summary.append(";;;MHS trovati: "+mhsSet.size()+"\n");
+		summary.append(";;;MHS distribuzione cardinalità:");
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
-			summary += "\n;;; Card " + entry.getKey() + " -> " + entry.getValue();
+			summary.append("\n;;; Card " + entry.getKey() + " -> " + entry.getValue());
 		}
-		return summary;
+		return summary.toString();
 	}
 }

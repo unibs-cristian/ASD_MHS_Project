@@ -216,4 +216,16 @@ public class Instance {
 	public void printMatrixElem(int i, int j) {
 		System.out.println(matrix.get(i*matrixCols+ j));
 	}
+	
+	public String listUselessCols() {
+		StringBuilder list = new StringBuilder();
+		if(inputFileCols == matrixCols)
+			return "-";
+		else {
+			for(int i=0; i < inputFileCols; i++)
+				if(!usefulColumns.get(i))
+					list.append(i+",");
+			return list.toString().substring(0, list.toString().length()-1);
+		}
+	}
 }
