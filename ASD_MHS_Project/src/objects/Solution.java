@@ -76,25 +76,25 @@ public abstract class Solution {
 	}
 	
 	public String toString() {
-		String mhsMatrix = "";
+		StringBuilder mhsMatrix = new StringBuilder();
 		int k;
 		for(int i=0; i<mhsSet.size(); i++) {
 			k = 0;
-			mhsMatrix += "\n";
+			mhsMatrix.append("\n");
 			for(int j=0; j<in.getInputFileCols(); j++) {
 				if(in.isUsefulCol(j)) {
 					if(mhsSet.get(i).getBin().get(k))
-						mhsMatrix += "1 ";
+						mhsMatrix.append("1 ");
 					else
-						mhsMatrix += "0 ";
+						mhsMatrix.append("0 ");
 					k++;
 				}
 				else
-					mhsMatrix += "0 ";
+					mhsMatrix.append("0 ");
 			}
-			mhsMatrix += "-";
+			mhsMatrix.append("-");
 		}
-		return mhsMatrix;
+		return mhsMatrix.toString();
 	}
 	
 	public String getStringForFile() {

@@ -78,7 +78,7 @@ public class Problem {
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime);
-		System.out.println("Monolithic Execution time: " + executionTime);
+		System.out.println("Tempo esecuzione Monolitico: " + executionTime);
 		if(!timeLimitReached)
 			sol.setComplete();						
 	}

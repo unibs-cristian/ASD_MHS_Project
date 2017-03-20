@@ -82,7 +82,7 @@ public class Main{
 										mono.setTimeLimit(timeLimit);
 									mono.exploreH();
 																	
-									System.out.print(mono.getSol().getStringForFile());
+									//System.out.print(mono.getSol().getStringForFile());
 									
 									// Scrittura file di output
 									outputFilePath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+"."+EXTENSION_OUTPUT;
