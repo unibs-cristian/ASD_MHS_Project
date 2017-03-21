@@ -13,6 +13,7 @@ import objects.Instance;
 import objects.MonolithicHypothesis;
 import objects.MonolithicSolution;
 import objects.Problem;
+import objects.Test;
 import ioUtils.*;
 
 /**
@@ -29,8 +30,12 @@ public class Main{
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno?";
 	private final static String MSG_FILE_NOT_FOUND = "Esecuzione terminata, il file specificato non esiste";
+	private final static String MSG_INPUT_N_ROWS = "Inserire numero righe ";
+	private final static String MSG_INPUT_N_COLS = "Inserire numero colonne ";
+	private final static String MSG_INPUT_PROBABILITY = "Inserire probabilità presenza di un 1 (0-100)";
+	private final static String MSG_INPUT_N_FILE = "Inserire numero di test che si vogliono generare ";
 	private final static String TITLE_CHOICE = "Seleziona l'opzione desiderata";
-	private final static String[] OPTIONS_CHOICE = {"Monolitico","Distribuito","Confronto"};
+	private final static String[] OPTIONS_CHOICE = {"Monolitico","Distribuito","Confronto","Crea"};
 	
 	/**
 	 * Main program
@@ -43,6 +48,7 @@ public class Main{
 		String path = "", outputFilePath = "";
 		File[] inputFiles;
 		File fileDir;
+		
 		MyMenu menu = new MyMenu(TITLE_CHOICE, OPTIONS_CHOICE);
 		// Monolitico o distribuito (scelta utente tramite menu')
 		int choice = menu.scegliNZ();
@@ -207,6 +213,17 @@ public class Main{
 					}
 				}
 				IOFile.writeOutputData(report.toString(),fileDir.getAbsolutePath()+"\\report.txt");
+				break;
+			case 4:
+				int nRows = UserInput.leggiInt(MSG_INPUT_N_ROWS);
+				int nCols = UserInput.leggiInt(MSG_INPUT_N_COLS);
+				int probability1 = UserInput.leggiInt(MSG_INPUT_PROBABILITY);
+				int nFile = UserInput.leggiInt(MSG_INPUT_N_FILE);
+				Test t;
+				for(int i=0; i<nFile; i++) {
+					t = new Test(nRows, nCols, probability1);
+					IOFile.writeOutputData(t.getStringForFile(),System.currentTimeMillis()+"_"+i+"."+EXTENSION_INPUT);
+				}
 				break;
 		}
 	}
