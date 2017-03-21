@@ -41,12 +41,15 @@ public class UserInput {
 		return lettore.next();
 	}
 	
-	public static File chooseInputFile() {
+	public static File chooseInputFile(boolean isDir) {
 		JFileChooser fileChooser = new JFileChooser();
 		int result;
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		
+		if(isDir)
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		//do {
-			result = fileChooser.showOpenDialog(null);
+		result = fileChooser.showOpenDialog(null);
 		//} while(result != JFileChooser.APPROVE_OPTION);
 		if(result == JFileChooser.APPROVE_OPTION)
 			System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());

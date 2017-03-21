@@ -25,7 +25,7 @@ public class Main{
 	private final static String EXTENSION_INPUT = "matrix";
 	private final static String EXTENSION_OUTPUT = "mhs";
 	private final static String TAG_DIST = "_dist";
-	private final static String MSG_ESEGUI_TUTTI = "Si desidera eseguire l'algoritmo su tutti i file di una cartella? In caso affermativo selezionare un file all'interno della cartella stessa.";
+	private final static String MSG_ESEGUI_TUTTI = "Si desidera eseguire l'algoritmo su tutti i file di una cartella? In caso affermativo selezionare la cartella contenente i file.";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione?";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi";
 	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno?";
@@ -64,11 +64,14 @@ public class Main{
 				runAll = UserInput.yesOrNo(MSG_ESEGUI_TUTTI);
 				
 				// Lettura file di input
-				path = IOFile.selectFile(EXTENSION_INPUT);
+				if(runAll)
+					path = IOFile.selectDir();
+				else
+					path = IOFile.selectFile(EXTENSION_INPUT);
 				//String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74L85.001.matrix";
 				
 				if(runAll){
-					fileDir = new File(path.substring(0, path.lastIndexOf("\\")));
+					fileDir = new File(path);
 					inputFiles = fileDir.listFiles();
 				}
 				else {
@@ -77,7 +80,7 @@ public class Main{
 				}
 				
 				for(File inF:inputFiles) {
-					System.out.println("\n File: "+inF.getName());
+					System.out.println("\nInput File: "+inF.getName());
 					if(UserInput.check_extension(inF.getName(), EXTENSION_INPUT)){
 						path = inF.getAbsolutePath();
 						if(path!=null) {
@@ -132,7 +135,9 @@ public class Main{
 											BitSet hsShrink;
 											int w;
 											
-											double totalTime = 0, ctr = 0;
+											double totalTime = 0;
+											int ctr = 0;
+											boolean componentExplorationNotCompleted = false;
 											for(File f:files) {
 												System.out.println("Collezione N" + ctr);
 												ctr++;
@@ -140,8 +145,13 @@ public class Main{
 												MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
 												MonolithicSolution mSol_i = new MonolithicSolution(i);
 												Problem p_i = new Problem(i, mh_i, mSol_i);
+												if(hasTimeLimit)
+													p_i.setTimeLimit(timeLimit);
 												p_i.exploreH();
 												totalTime += p_i.getSol().getTime();
+												componentExplorationNotCompleted = p_i.hasExplorationStopped();
+												if(componentExplorationNotCompleted)
+													break;
 												
 												Ci = p_i.getSol().getMhsSetExpanded();
 												hsList_iShrink = new ArrayList<>();
@@ -159,14 +169,17 @@ public class Main{
 												}
 												hsList.add(hsList_iShrink);
 											}
-											System.out.println(hsList);
+
+											//System.out.println(hsList);
 											distSol.setnGlobalMHS(hsList.size());
 											DistributedHypothesis dh = new DistributedHypothesis(in.getNumUsefulColumns(), fileCounter, hsList);
 											Problem dist = new Problem(in, dh, distSol);
 											
-											if(hasTimeLimit)
-												dist.setTimeLimit(timeLimit);
-											dist.exploreH();
+											if(!componentExplorationNotCompleted) {
+												if(hasTimeLimit)
+													dist.setTimeLimit(timeLimit);
+												dist.exploreH();
+											}
 																			
 											System.out.print(dist.getSol().getStringForFile());
 											

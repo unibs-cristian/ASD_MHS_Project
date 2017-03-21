@@ -52,25 +52,25 @@ public class Instance{
 	//Restituisce [firtRow,lastRow) (lastRow esclusa)
 	public String getMatrixRows(int firstRow, int lastRow) {
 		int k;
-		String matrixOut = "";
+		StringBuilder matrixOut = new StringBuilder();
 		for(int i=firstRow; i<lastRow; i++) {
 			k = 0;
 			if(i > firstRow)
-				matrixOut += "\n";
+				matrixOut.append("\n");
 			for(int j=0; j<inputFileCols; j++) {
 				if(usefulColumns.get(j)) {
 					if(matrix.get(i*matrixCols+ k))
-						matrixOut += "1 ";
+						matrixOut.append("1 ");
 					else
-						matrixOut += "0 ";
+						matrixOut.append("0 ");
 					k++;
 				}
 				else
-					matrixOut += "0 ";
+					matrixOut.append("0 ");
 			}
-			matrixOut += "-";
+			matrixOut.append("-");
 		}
-		return matrixOut;
+		return matrixOut.toString();
 	}
 	
 	public void readMatrixFromFile(String path) {

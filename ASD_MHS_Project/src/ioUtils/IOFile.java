@@ -10,17 +10,27 @@ public class IOFile {
 	/**
 	 * Metodo che consente di scegliere il file di input.
 	 * 
+	 * @param extension : l'estensione che deve avere il file da selezionare
+	 * @param isDir : booleano che ci dice se l'utente deve selezionare un file o una directory (per eseguirci tutti i file al suo interno)
 	 * @return il percorso del file scelto
 	 */
 	public static String selectFile(String extension) {
 		File f;
 		// Lettura tramite File Chooser e controllo del formato del file scelto
 		do {
-			f = UserInput.chooseInputFile();
+			f = UserInput.chooseInputFile(false);
 			if(f==null)
 				return null;
 		} while(!UserInput.check_extension(f.getName(), extension));	
-		return f.getPath();		
+		return f.getPath();
+	}
+	
+	public static String selectDir() {
+		File f;
+		f = UserInput.chooseInputFile(true);
+		if(f==null)
+			return null;
+		return f.getPath();
 	}
 	
 	/**

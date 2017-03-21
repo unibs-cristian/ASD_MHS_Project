@@ -10,6 +10,7 @@ public class Problem {
 	private Instance in;
 	private Hypothesis h;
 	private boolean hasTimeLimit;
+	private boolean hasExplorationStopped;
 	private int timeLimit;
 	
 	private final static String MSG_MONOLITHIC_START = "Iniziata esplorazione dello spazio delle ipotesi";
@@ -22,11 +23,20 @@ public class Problem {
 		this.h = h;
 		this.sol = sol;
 		this.hasTimeLimit = false;
+		this.hasExplorationStopped = false;
 		this.timeLimit = 0;
 	}
 	
 	public Solution getSol() {
 		return sol;
+	}
+	
+	public boolean hasExplorationStopped() {
+		return hasExplorationStopped;
+	}
+	
+	public void setExplorationStopped() {
+		hasExplorationStopped = true;
 	}
 	
 	public void setTimeLimit(int limit) {
@@ -40,7 +50,7 @@ public class Problem {
 	 * @param in : l'oggetto Instance che rappresenta i dati in input
 	 */
 	public void exploreH() {
-		boolean timeLimitReached = false;
+		hasExplorationStopped = false;
 		System.out.println(MSG_MONOLITHIC_START);
 
 		current = new ArrayList<>();		
@@ -65,7 +75,7 @@ public class Problem {
 				// Se e' stato fissato un limite di tempo per l'elaborazione, controllo che questo non sia stato superato
 				if(hasTimeLimit) {
 					if(((double)(System.nanoTime() - startTime)/NANO_TO_SEC) >= timeLimit) {
-						timeLimitReached = true;
+						setExplorationStopped();
 						break;
 					}
 				}
@@ -75,12 +85,12 @@ public class Problem {
 //			System.out.print(next.size()+" * ");
 //			System.out.println(next);
 			sol.incrementLevelReached();
-		} while(!current.isEmpty() && !timeLimitReached);		
+		} while(!current.isEmpty() && !hasExplorationStopped);		
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime);
 		System.out.println("Tempo esecuzione Monolitico: " + executionTime);
-		if(!timeLimitReached)
+		if(!hasExplorationStopped)
 			sol.setComplete();						
 	}
 	
