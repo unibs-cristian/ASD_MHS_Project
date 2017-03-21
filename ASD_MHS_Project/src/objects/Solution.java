@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Vector;
 
 public abstract class Solution {
 	protected ArrayList<Hypothesis> mhsSet; 
@@ -12,6 +13,7 @@ public abstract class Solution {
 	protected boolean complete;
 	protected int levelReached;
 	protected double time;
+	protected Vector<Integer> nHypothesisPerLevel;
 	
 	public Solution(Instance in) {
 		this.in = in;
@@ -19,6 +21,7 @@ public abstract class Solution {
 		cardDistribution = new HashMap<>();
 		complete = false;
 		levelReached = -1;
+		nHypothesisPerLevel = new Vector<Integer>();
 	}
 	
 	public ArrayList<Hypothesis> getMhsSet() {
@@ -61,6 +64,17 @@ public abstract class Solution {
 	
 	public void incrementLevelReached() {
 		levelReached++;
+	}
+	
+	public void setN_HypothesisPerLevel(int nHypothesis) {
+		nHypothesisPerLevel.addElement(nHypothesis);
+	}
+	
+	public String listN_HypothesisPerLevel() {
+		StringBuilder list = new StringBuilder();
+		for(int i = 0; i< nHypothesisPerLevel.size(); i++)
+			list.append(";;; lv "+i+" -> "+nHypothesisPerLevel.get(i)+"\n");
+		return list.toString();
 	}
 	
 	public void add(Hypothesis mhs) {

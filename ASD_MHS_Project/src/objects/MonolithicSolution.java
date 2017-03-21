@@ -18,6 +18,8 @@ public class MonolithicSolution extends Solution{
 			summary.append(";;;Esecuzione interrotta\n");
 			summary.append(";;;Livello raggiunto: "+levelReached+"\n");
 		}
+		summary.append(";;;Ipotesi create per livello:\n");
+		summary.append(listN_HypothesisPerLevel());
 		summary.append(";;;Tempo trascorso: "+time+"\n");
 		summary.append(";;;MHS trovati: "+mhsSet.size()+"\n");
 		summary.append(";;;MHS distribuzione cardinalità:");

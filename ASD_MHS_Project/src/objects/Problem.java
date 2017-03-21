@@ -50,6 +50,7 @@ public class Problem {
 		h.setField(in);
 		current.add(h);		
 		do {
+			sol.setN_HypothesisPerLevel(current.size());
 			next.clear();
 			for(int i=0; i<current.size(); i++) {				
 				//System.out.println(current.get(i).getBin());

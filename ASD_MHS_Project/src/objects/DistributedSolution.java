@@ -29,6 +29,8 @@ public class DistributedSolution extends Solution {
 			summary.append(";;;Esecuzione interrotta\n");
 			summary.append(";;;Livello raggiunto: "+levelReached+"\n");
 		}
+		summary.append(";;;Ipotesi create per livello:\n");
+		summary.append(listN_HypothesisPerLevel());
 		summary.append(";;;Tempo trascorso: "+time+"\n");
 		summary.append(";;;File creati: "+nFiles+"\n");
 		summary.append(";;;MHS globali trovati (pre composizione): "+nGlobalMHS+"\n");

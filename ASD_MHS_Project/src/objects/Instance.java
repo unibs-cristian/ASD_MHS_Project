@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.BitSet;
 import java.util.Random;
 
-public class Instance {
+public class Instance{
 	private final static String EXTENSION_INPUT = "matrix";
 	private final static String COMMENT_DELIMITER = ";;;";
 	private final static String ROW_DELIMITER = "-";
@@ -227,5 +227,33 @@ public class Instance {
 					list.append(i+",");
 			return list.toString().substring(0, list.toString().length()-1);
 		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Instance other = (Instance) obj;
+		if (inputFileCols != other.inputFileCols)
+			return false;
+		if (matrix == null) {
+			if (other.matrix != null)
+				return false;
+		} else if (!matrix.equals(other.matrix))
+			return false;
+		if (matrixCols != other.matrixCols)
+			return false;
+		if (matrixRows != other.matrixRows)
+			return false;
+		if (usefulColumns == null) {
+			if (other.usefulColumns != null)
+				return false;
+		} else if (!usefulColumns.equals(other.usefulColumns))
+			return false;
+		return true;
 	}
 }
