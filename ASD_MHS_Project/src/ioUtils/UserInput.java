@@ -9,8 +9,8 @@ public class UserInput {
 	
 	private final static String MSG_FILE_SELECTED = "File selezionato: ";
 	private final static String MSG_FILE_NOT_SELECTED = "Nessun file selezionato.";
-	private final static String MSG_DIR_SELECTED = "Cartella selezionato: ";
-	private final static String MSG_DIR_NOT_SELECTED = "Nessuna cartella selezionato.";
+	private final static String MSG_DIR_SELECTED = "Cartella selezionata: ";
+	private final static String MSG_DIR_NOT_SELECTED = "Nessuna cartella selezionata.";
 	private final static String POSITIVE_ANSWER="S";
 	private final static String NEGATIVE_ANSWER="N";
 	private final static String MSG_ILLEGAL_VALUE = "Errore! I valori ammissibili sono " + "'" +  POSITIVE_ANSWER + " e '" + NEGATIVE_ANSWER + "'";

@@ -35,6 +35,7 @@ public class Main{
 	private final static String MSG_INPUT_N_COLS = "Inserire numero colonne ";
 	private final static String MSG_INPUT_PROBABILITY = "Inserire probabilità presenza di un 1 (0-100) ";
 	private final static String MSG_INPUT_N_FILE = "Inserire numero di test che si vogliono generare ";
+	private final static String MSG_START_FINAL_PHASE_DIST = "Inizio fase finale del calcolo distribuito";
 	private final static String TITLE_CHOICE = "Seleziona l'opzione desiderata";
 	private final static String[] OPTIONS_CHOICE = {"Monolitico","Distribuito","Confronto","Crea"};
 	
@@ -173,6 +174,7 @@ public class Main{
 												}
 	
 												//System.out.println(hsList);
+												System.out.println(MSG_START_FINAL_PHASE_DIST);
 												distSol.setnGlobalMHS(hsList.size());
 												DistributedHypothesis dh = new DistributedHypothesis(in.getNumUsefulColumns(), fileCounter, hsList);
 												Problem dist = new Problem(in, dh, distSol);
@@ -183,7 +185,7 @@ public class Main{
 													dist.exploreH();
 												}
 																				
-												System.out.print(dist.getSol().getStringForFile());
+												//System.out.print(dist.getSol().getStringForFile());
 												
 												// Scrittura file di output
 												outputFilePath = newDirPath+"."+EXTENSION_OUTPUT;
