@@ -134,8 +134,7 @@ public class Main{
 												ArrayList<BitSet> Ci = new ArrayList<>();
 												ArrayList<BitSet> hsList_iShrink;
 												BitSet hsShrink;
-												int w;
-												
+												int w, countMHS = 0;
 												double totalTime = 0;
 												boolean componentExplorationNotCompleted = false;
 												for(File f:files) {
@@ -168,13 +167,15 @@ public class Main{
 															}
 															hsList_iShrink.add(hsShrink);
 														}
+														countMHS+=hsList_iShrink.size();
 														hsList.add(hsList_iShrink);
 													}
 												}
 												distSol.setnFiles(fileCounter);
 												//System.out.println(hsList);
 												System.out.println(MSG_START_FINAL_PHASE_DIST);
-												distSol.setnGlobalMHS(hsList.size());
+												//TODO contiene doppioni
+												distSol.setnGlobalMHS(countMHS);
 												DistributedHypothesis dh = new DistributedHypothesis(in.getNumUsefulColumns(), fileCounter, hsList);
 												Problem dist = new Problem(in, dh, distSol);
 												
