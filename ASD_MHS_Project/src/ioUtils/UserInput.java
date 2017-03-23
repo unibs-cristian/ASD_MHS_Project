@@ -7,38 +7,39 @@ import java.util.Scanner;
 
 public class UserInput {
 	
-	private final static String MSG_ERRORE_FORMATO_FILE = "Errore, formato file di input non corretto.";
-	private final static String MSG_FILE_SELEZIONATO = "File selezionato: ";
-	private final static String MSG_FILE_NON_SELEZIONATO = "Esecuzione annullata.";
-	private final static String RISPOSTA_SI="S";
-	private final static String RISPOSTA_NO="N";
-	private final static String MSG_AMMISSIBILI1 = "Errore! I valori ammissibili sono " + "'" +  RISPOSTA_SI + " e '" + RISPOSTA_NO + "'";
-	private static final String ERRORE_INTERO = "Errore, il carattere inserito non è un intero.";
-	private static final String ERRORE_RANGE = "Errore, il numero inserito non appartiene al range richiesto.";
-	private static Scanner lettore = creaScanner();
+	private final static String MSG_FILE_SELECTED = "File selezionato: ";
+	private final static String MSG_FILE_NOT_SELECTED = "Nessun file selezionato.";
+	private final static String MSG_DIR_SELECTED = "Cartella selezionato: ";
+	private final static String MSG_DIR_NOT_SELECTED = "Nessuna cartella selezionato.";
+	private final static String POSITIVE_ANSWER="S";
+	private final static String NEGATIVE_ANSWER="N";
+	private final static String MSG_ILLEGAL_VALUE = "Errore! I valori ammissibili sono " + "'" +  POSITIVE_ANSWER + " e '" + NEGATIVE_ANSWER + "'";
+	private static final String ERROR_INT = "Errore, il carattere inserito non è un intero.";
+	private static final String ERROR_RANGE = "Errore, il numero inserito non appartiene al range richiesto.";
+	private static Scanner reader = createScanner();
 	 
  	/**
  	 * Crea scanner.
  	 *
  	 * @return the scanner
  	 */
-	 private static Scanner creaScanner ()
+	 private static Scanner createScanner ()
 	  {
-	   Scanner creato = new Scanner(System.in);
-	   creato.useDelimiter(System.getProperty("line.separator"));
-	   return creato;
+	   Scanner created = new Scanner(System.in);
+	   created.useDelimiter(System.getProperty("line.separator"));
+	   return created;
 	  }
 	
 	 /**
  	 * Leggi string.
  	 *
- 	 * @param messaggio the messaggio
+ 	 * @param message the messaggio
  	 * @return the string
  	 */
-	public static String leggiString(String messaggio)
+	public static String readString(String message)
 	{
-		System.out.print(messaggio);
-		return lettore.next();
+		System.out.print(message);
+		return reader.next();
 	}
 	
 	public static File chooseInputFile(boolean isDir) {
@@ -52,84 +53,88 @@ public class UserInput {
 		result = fileChooser.showOpenDialog(null);
 		//} while(result != JFileChooser.APPROVE_OPTION);
 		if(result == JFileChooser.APPROVE_OPTION)
-			System.out.println(MSG_FILE_SELEZIONATO + fileChooser.getSelectedFile().getName());
+			if(isDir)
+				System.out.println(MSG_DIR_SELECTED + fileChooser.getSelectedFile().getName());
+			else
+				System.out.println(MSG_FILE_SELECTED + fileChooser.getSelectedFile().getName());
 		else
-			System.out.println(MSG_FILE_NON_SELEZIONATO);
+			if(isDir)
+				System.out.println(MSG_DIR_NOT_SELECTED);
+			else
+				System.out.println(MSG_FILE_NOT_SELECTED);
 		return fileChooser.getSelectedFile();
 	}
 	
 	public static boolean check_extension(String fileName, String extension) {
 		if(fileName.matches(".*" + extension))
 			return true;
-		else {
-			System.out.println(MSG_ERRORE_FORMATO_FILE);
+		else 
 			return false;
-		}
 	}
 	
-	public static boolean yesOrNo(String messaggio)
+	public static boolean yesOrNo(String message)
 	{
-		  String mioMessaggio = messaggio + "(" + RISPOSTA_SI + "/" + RISPOSTA_NO + ")";
-		  String inputDati = "";
-		  boolean valoreCorretto = false;
+		  String myMessage = message + "(" + POSITIVE_ANSWER + "/" + NEGATIVE_ANSWER + ")";
+		  String inputData = "";
+		  boolean legalValue = false;
 		  do {
-			  inputDati = leggiString(mioMessaggio);
-			  if(inputDati.equalsIgnoreCase(RISPOSTA_SI)) 
-				  valoreCorretto = true;
-			  else if(inputDati.equalsIgnoreCase(RISPOSTA_NO))
+			  inputData = readString(myMessage);
+			  if(inputData.equalsIgnoreCase(POSITIVE_ANSWER)) 
+				  legalValue = true;
+			  else if(inputData.equalsIgnoreCase(NEGATIVE_ANSWER))
 				  return false;
 			  else
-				  System.out.println(MSG_AMMISSIBILI1);
-		  } while(valoreCorretto==false);
-		  return valoreCorretto;
+				  System.out.println(MSG_ILLEGAL_VALUE);
+		  } while(legalValue==false);
+		  return legalValue;
 	}
 	
-	public static int leggiInt(String messaggio)
+	public static int leggiInt(String message)
 	{		
-		boolean fine = false;
-		int numero = 0;		
-		while(!fine)
+		boolean end = false;
+		int number = 0;		
+		while(!end)
 		{
-			System.out.print(messaggio);
+			System.out.print(message);
 
-			if(lettore.hasNextInt())
+			if(reader.hasNextInt())
 			{
-				numero = lettore.nextInt();
-				fine = true;
+				number = reader.nextInt();
+				end = true;
 			}
 			else
 			{
-				System.out.println(ERRORE_INTERO);
+				System.out.println(ERROR_INT);
 				@SuppressWarnings("unused")
-				String daButtare = lettore.next();
+				String daButtare = reader.next();
 			}
 		}
-		return numero;
+		return number;
 	}
 	
-	public static int leggiInt(String messaggio, int min, int max)
+	public static int readInt(String message, int min, int max)
 	{		
-		boolean fine = false;
-		int numero = 0;		
-		while(!fine)
+		boolean end = false;
+		int number = 0;		
+		while(!end)
 		{
-			System.out.print(messaggio);
+			System.out.print(message);
 
-			if(lettore.hasNextInt())
+			if(reader.hasNextInt())
 			{
-				numero = lettore.nextInt();
-				if(numero>= min && numero <= max)
-					fine = true;
+				number = reader.nextInt();
+				if(number>= min && number <= max)
+					end = true;
 				else
-					System.out.println(ERRORE_RANGE);
+					System.out.println(ERROR_RANGE);
 			}
 			else
 			{
-				System.out.println(ERRORE_INTERO);
+				System.out.println(ERROR_INT);
 				@SuppressWarnings("unused")
-				String daButtare = lettore.next();
+				String daButtare = reader.next();
 			}
 		}
-		return numero;
+		return number;
 	}	
 }

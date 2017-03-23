@@ -22,7 +22,7 @@ public class MonolithicSolution extends Solution{
 		summary.append(listN_HypothesisPerLevel());
 		summary.append(";;;Tempo trascorso: "+time+"\n");
 		summary.append(";;;MHS trovati: "+mhsSet.size()+"\n");
-		summary.append(";;;MHS distribuzione cardinalità:");
+		summary.append(";;;MHS distribuzione cardinalita':");
 		for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
 			summary.append("\n;;; Card " + entry.getKey() + " -> " + entry.getValue());
 		}

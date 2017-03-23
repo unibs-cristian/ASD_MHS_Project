@@ -1,68 +1,68 @@
 package ioUtils;
 
 public class MyMenu {
-	  final private static String BORDO = "-";
-	  final private static String VOCE_USCITA = "0\tEsci";
-	  final private static String RICHIESTA_INSERIMENTO = "Inserisci il numero dell'opzione desiderata > ";
+	  final private static String BORDER = "-";
+	  final private static String EXIT_ITEM = "0\tEsci";
+	  final private static String MSG_REQUEST_INPUT = "Inserisci il numero dell'opzione desiderata > ";
 	
-	  private String titolo;
-	  private String [] voci;
+	  private String title;
+	  private String [] items;
 	
 	
-	  public MyMenu (String titolo, String [] voci)
+	  public MyMenu (String title, String [] items)
 	  {
-		  	this.titolo = titolo;
-		  	this.voci = voci;
+		  	this.title = title;
+		  	this.items = items;
 	  }
 	
-	  public int scegli ()
+	  public int choose ()
 	  { 
-			stampaMenu();
-			return UserInput.leggiInt(RICHIESTA_INSERIMENTO, 0, voci.length);	 
+			printMenu();
+			return UserInput.readInt(MSG_REQUEST_INPUT, 0, items.length);	 
 	  }
 		
-	  public void stampaMenu ()
+	  public void printMenu ()
 	  {
-			System.out.println(bordoStringa(BORDO,titolo.length()));
-			System.out.println(titolo);
-			System.out.println(bordoStringa(BORDO,titolo.length()));
-		    for (int i=0; i<voci.length; i++)
+			System.out.println(stringBorder(BORDER,title.length()));
+			System.out.println(title);
+			System.out.println(stringBorder(BORDER,title.length()));
+		    for (int i=0; i<items.length; i++)
 		    {
-		    	System.out.println( (i+1) + "\t" + voci[i]);
+		    	System.out.println( (i+1) + "\t" + items[i]);
 		    }
 		    System.out.println();
-			System.out.println(VOCE_USCITA);
+			System.out.println(EXIT_ITEM);
 		    System.out.println();
 	  }
 	  
-	  public String bordoStringa(String carattere,int lunghezzaStringa)
+	  public String stringBorder(String character,int stringLength)
 	  {
-			StringBuffer risultato = new StringBuffer();
-			for(int i = 0; i < lunghezzaStringa; i++)
+			StringBuffer result = new StringBuffer();
+			for(int i = 0; i < stringLength; i++)
 			{
-				risultato.append(carattere);
+				result.append(character);
 			}
-			return risultato.toString();
+			return result.toString();
 	  }
 	  
 	  
 	  
 	  //stampamenu ma senza lo zero per l'uscita
-	  public void stampaMenuNZ()
+	  public void printMenuNZ()
 	  {
-		  	System.out.println(bordoStringa(BORDO,titolo.length()));
-			System.out.println(titolo);
-			System.out.println(bordoStringa(BORDO,titolo.length()));
-		    for (int i=0; i<voci.length; i++)
+		  	System.out.println(stringBorder(BORDER,title.length()));
+			System.out.println(title);
+			System.out.println(stringBorder(BORDER,title.length()));
+		    for (int i=0; i<items.length; i++)
 		    {
-		    	System.out.println( (i+1) + "\t" + voci[i]);
+		    	System.out.println( (i+1) + "\t" + items[i]);
 		    }
 		    System.out.println();
 	  }
 	  
-	  public int scegliNZ()
+	  public int chooseNZ()
 	  {
-		  stampaMenuNZ();
-		  return UserInput.leggiInt(RICHIESTA_INSERIMENTO,1,voci.length);
+		  printMenuNZ();
+		  return UserInput.readInt(MSG_REQUEST_INPUT,1,items.length);
 	  }
 }

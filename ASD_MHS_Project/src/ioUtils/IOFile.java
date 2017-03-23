@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class IOFile {
 	
+	private final static String MSG_ERROR_FORMAT_FILE = "Errore, formato file di input non corretto.";
 	/**
 	 * Metodo che consente di scegliere il file di input.
 	 * 
@@ -21,6 +22,8 @@ public class IOFile {
 			f = UserInput.chooseInputFile(false);
 			if(f==null)
 				return null;
+			if(!UserInput.check_extension(f.getName(), extension))
+				System.out.println(MSG_ERROR_FORMAT_FILE);
 		} while(!UserInput.check_extension(f.getName(), extension));	
 		return f.getPath();
 	}
