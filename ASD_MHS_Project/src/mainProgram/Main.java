@@ -37,6 +37,7 @@ public class Main{
 	private final static String MSG_INPUT_PROBABILITY = "Inserire probabilità presenza di un 1 (0-100) ";
 	private final static String MSG_INPUT_N_FILE = "Inserire numero di test che si vogliono generare ";
 	private final static String MSG_START_FINAL_PHASE_DIST = "Inizio fase finale del calcolo distribuito";
+	private final static String MSG_INPUT_FILE = "\nInput File: ";
 	private final static String TITLE_CHOICE = "Seleziona l'opzione desiderata";
 	private final static String[] OPTIONS_CHOICE = {"Monolitico","Distribuito","Confronto","Crea"};
 	
@@ -87,8 +88,8 @@ public class Main{
 					}
 					
 					for(File inF:inputFiles) {
-						System.out.println("\nInput File: "+inF.getName());
 						if(UserInput.check_extension(inF.getName(), EXTENSION_INPUT)){
+							System.out.println(MSG_INPUT_FILE+inF.getName());
 							path = inF.getAbsolutePath();
 							if(path!=null) {
 								File fileToOpen = new File(path);		
