@@ -112,24 +112,22 @@ public class Main{
 												// Creazione cartella contenente l'input cumulativo per il calcolo distribuito. 
 												String newDirPath = path.substring(0, path.lastIndexOf("."+EXTENSION_INPUT))+TAG_DIST;
 												File newDir = new File(newDirPath);
-												int fileCounter;
+												int fileCounter = 0;
 												// Se la cartella _dist per quell'istanza esiste gia', e' possibile riutilizzare i file al suo interno oppure rimuoverne il contenuto 
 												if(newDir.exists()) {						
 													if(UserInput.yesOrNo(MSG_DELETE_FOLDER)) {
 														IOFile.deleteFileInFolder(newDir);
 														//Creazione dei file N_i e dei componenti
-														fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+														in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
 													}
-													else
-														fileCounter = newDir.listFiles().length;
 												}
 												else {
 													newDir.mkdir();
 													//Creazione dei file N_i e dei componenti
-													fileCounter = in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
+													in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
 												}				 					
 												DistributedSolution distSol = new DistributedSolution(in);
-												distSol.setnFiles(fileCounter);
+												
 												File[] files = newDir.listFiles();
 												ArrayList<ArrayList<BitSet>> hsList = new ArrayList<>();
 												
@@ -139,40 +137,41 @@ public class Main{
 												int w;
 												
 												double totalTime = 0;
-												int ctr = 0;
 												boolean componentExplorationNotCompleted = false;
 												for(File f:files) {
-													System.out.println("Collezione N" + ctr);
-													ctr++;
-													Instance i = new Instance(f.getPath());
-													MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
-													MonolithicSolution mSol_i = new MonolithicSolution(i);
-													Problem p_i = new Problem(i, mh_i, mSol_i);
-													if(hasTimeLimit)
-														p_i.setTimeLimit(timeLimit);
-													p_i.exploreH();
-													totalTime += p_i.getSol().getTime();
-													componentExplorationNotCompleted = p_i.hasExplorationStopped();
-													if(componentExplorationNotCompleted)
-														break;
-													
-													Ci = p_i.getSol().getMhsSetExpanded();
-													hsList_iShrink = new ArrayList<>();
-													for(int j = 0; j < Ci.size(); j++) {
-														w = 0;
-														hsShrink = new BitSet(in.getNumUsefulColumns());
-														for(int k=0; k < in.getInputFileCols(); k++) {
-															if(in.isUsefulCol(k)) {
-																if(Ci.get(j).get(k))
-																	hsShrink.set(w);
-																w++;
+													if(UserInput.check_extension(f.getName(), EXTENSION_INPUT)) {
+														System.out.println("Collezione N" + fileCounter);
+														fileCounter++;
+														Instance i = new Instance(f.getPath());
+														MonolithicHypothesis mh_i = new MonolithicHypothesis(i.getNumUsefulColumns(), i.getMatrixNumRows()); 
+														MonolithicSolution mSol_i = new MonolithicSolution(i);
+														Problem p_i = new Problem(i, mh_i, mSol_i);
+														if(hasTimeLimit)
+															p_i.setTimeLimit(timeLimit);
+														p_i.exploreH();
+														totalTime += p_i.getSol().getTime();
+														componentExplorationNotCompleted = p_i.hasExplorationStopped();
+														if(componentExplorationNotCompleted)
+															break;
+														
+														Ci = p_i.getSol().getMhsSetExpanded();
+														hsList_iShrink = new ArrayList<>();
+														for(int j = 0; j < Ci.size(); j++) {
+															w = 0;
+															hsShrink = new BitSet(in.getNumUsefulColumns());
+															for(int k=0; k < in.getInputFileCols(); k++) {
+																if(in.isUsefulCol(k)) {
+																	if(Ci.get(j).get(k))
+																		hsShrink.set(w);
+																	w++;
+																}
 															}
+															hsList_iShrink.add(hsShrink);
 														}
-														hsList_iShrink.add(hsShrink);
+														hsList.add(hsList_iShrink);
 													}
-													hsList.add(hsList_iShrink);
 												}
-	
+												distSol.setnFiles(fileCounter);
 												//System.out.println(hsList);
 												System.out.println(MSG_START_FINAL_PHASE_DIST);
 												distSol.setnGlobalMHS(hsList.size());

@@ -151,7 +151,7 @@ public class Instance{
 		return str.replace(ROW_DELIMITER, "");
 	}
 	
-	public int createNiFiles(String dirPath, String fileName) {
+	public void createNiFiles(String dirPath, String fileName) {
 		int nRowsPicked = 0;
 		int rand;
 		int nFiles = 0;
@@ -171,7 +171,6 @@ public class Instance{
 			nRowsPicked+=rand;
 			nFiles++;
 		}
-		return nFiles;
 	}
 	
 	public int getInputFileCols() {
