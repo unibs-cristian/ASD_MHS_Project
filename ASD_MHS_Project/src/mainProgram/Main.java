@@ -27,6 +27,7 @@ public class Main{
 	private final static String TAG_DIST = "_dist";
 	private final static String MSG_EXECUTION_CANCELED = "Esecuzione annullata.";
 	private final static String MSG_RUN_ALL = "Si desidera eseguire l'algoritmo su tutti i file di una cartella? ";
+	private final static String MSG_RECREATE_ALL_PARTITIONS = "Si desidera eliminare tutte le partizioni già presenti? ";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione? ";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi ";
 	private final static String MSG_DELETE_FOLDER = "Esiste già una cartella _dist per questo benchmark, vuoi eliminare tutti i file al suo interno? ";
@@ -45,7 +46,7 @@ public class Main{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		boolean hasTimeLimit = false, runAll = false;
+		boolean hasTimeLimit = false, runAll = false, recreateAllPartitions = false;
 		int timeLimit = 0;
 		String path = "", outputFilePath = "";
 		File[] inputFiles;
@@ -66,8 +67,11 @@ public class Main{
 				runAll = UserInput.yesOrNo(MSG_RUN_ALL);
 				
 				// Lettura file di input
-				if(runAll)
+				if(runAll) {
 					path = IOFile.selectDir();
+					if(choice == 2)
+						recreateAllPartitions = UserInput.yesOrNo(MSG_RECREATE_ALL_PARTITIONS);
+				}
 				else
 					path = IOFile.selectFile(EXTENSION_INPUT);
 				//String path = "C:\\Users\\Daniele\\Desktop\\UniBS LM\\I\\alg e str dati\\progetto\\benchmarks1\\74L85.001.matrix";
@@ -115,7 +119,7 @@ public class Main{
 												int fileCounter = 0;
 												// Se la cartella _dist per quell'istanza esiste gia', e' possibile riutilizzare i file al suo interno oppure rimuoverne il contenuto 
 												if(newDir.exists()) {						
-													if(UserInput.yesOrNo(MSG_DELETE_FOLDER)) {
+													if((!runAll&&UserInput.yesOrNo(MSG_DELETE_FOLDER))||(runAll&&recreateAllPartitions)) {
 														IOFile.deleteFileInFolder(newDir);
 														//Creazione dei file N_i e dei componenti
 														in.createNiFiles(newDirPath, path.substring(path.lastIndexOf("\\")+1, path.lastIndexOf(".")));
