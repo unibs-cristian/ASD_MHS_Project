@@ -19,7 +19,7 @@ public class Instance{
 	private BitSet matrix;		   
 	private int inputFileCols;        // Indica il numero di colonne della matrice contenuta nel file di input
 	private int matrixCols;        // Indica il numero di colonne della matrice composta solo dalle colonne utili
-	private int matrixRows; 	
+	private int matrixRows;
 	
 	public Instance(String file) {
 		readMatrixFromFile(file);
@@ -125,7 +125,7 @@ public class Instance{
 					while(j<getNumUsefulColumns() && k<inputFileCols) {												
 						if(isUseful(k)) {							
 							if(sCurrentLine.charAt(k) == '1') {															
-								setElement(i, j);								
+								matrix.set(i*matrixCols + j);								
 							}							
 							j++;
 						}						
@@ -187,10 +187,6 @@ public class Instance{
 		matrixCols = usefulColumns.cardinality();
 		matrix = new BitSet(numRows*matrixCols);
 		
-	}
-	
-	public void setElement(int row, int column) {		
-		matrix.set(row*matrixCols + column);
 	}
 	
 	public boolean isUseful(int col) {
