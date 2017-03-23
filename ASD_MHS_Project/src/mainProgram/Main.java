@@ -211,33 +211,36 @@ public class Main{
 					System.out.println(MSG_EXECUTION_CANCELED);
 				break;
 			case 3:
-				path = IOFile.selectFile(EXTENSION_INPUT);
-				fileDir = new File(path.substring(0, path.lastIndexOf("\\")));
-				inputFiles = fileDir.listFiles();
-				String benchmark;
-				StringBuilder report = new StringBuilder();
-				for(File inF:inputFiles) {
-					if(UserInput.check_extension(inF.getName(), EXTENSION_OUTPUT)&&inF.getName().contains(TAG_DIST)){
-						String pathDist = inF.getAbsolutePath();
-						String pathMono = inF.getAbsolutePath().replace(TAG_DIST, "");
-						File fileSolMono = new File(pathMono);
-						if(fileSolMono.exists()) {
-							Instance solDist = new Instance(pathDist);
-							Instance solMono = new Instance(pathMono);
-							benchmark = inF.getName().substring(0, inF.getName().indexOf(TAG_DIST));
-							if(isSolComplete(pathDist)&&isSolComplete(pathMono)) {
-								if(solDist.equals(solMono))
-									report.append(benchmark+" sol uguali\n");
-								else
-									report.append(benchmark+" sol diverse\n");
-							}
-							else {
-								report.append(benchmark+" non completo\n");
+				path = IOFile.selectDir();
+				if(path!=null) {
+					fileDir = new File(path.substring(0, path.lastIndexOf("\\")));
+					inputFiles = fileDir.listFiles();
+					String benchmark;
+					StringBuilder report = new StringBuilder();
+					for(File inF:inputFiles) {
+						if(UserInput.check_extension(inF.getName(), EXTENSION_OUTPUT)&&inF.getName().contains(TAG_DIST)){
+							System.out.println(inF.getName());
+							String pathDist = inF.getAbsolutePath();
+							String pathMono = inF.getAbsolutePath().replace(TAG_DIST, "");
+							File fileSolMono = new File(pathMono);
+							if(fileSolMono.exists()) {
+								Instance solDist = new Instance(pathDist);
+								Instance solMono = new Instance(pathMono);
+								benchmark = inF.getName().substring(0, inF.getName().indexOf(TAG_DIST));
+								if(isSolComplete(pathDist)&&isSolComplete(pathMono)) {
+									if(solDist.equals(solMono))
+										report.append(benchmark+" sol uguali\n");
+									else
+										report.append(benchmark+" sol diverse\n");
+								}
+								else {
+									report.append(benchmark+" non completo\n");
+								}
 							}
 						}
 					}
+					IOFile.writeOutputData(report.toString(),fileDir.getAbsolutePath()+"\\report.txt");
 				}
-				IOFile.writeOutputData(report.toString(),fileDir.getAbsolutePath()+"\\report.txt");
 				break;
 			case 4:
 				int nRows = UserInput.leggiInt(MSG_INPUT_N_ROWS);
