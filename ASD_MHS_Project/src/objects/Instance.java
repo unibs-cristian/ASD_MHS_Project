@@ -94,13 +94,14 @@ public class Instance{
 				}
 			}
 			
-			usefulColumns = new BitSet(sCurrentLine.length());
 			inputFileCols = sCurrentLine.length();
+			usefulColumns = new BitSet(inputFileCols);
+			
 			
 			do {
 				numRows ++;
 				sCurrentLine = cleanString(sCurrentLine);
-				for(int i=0; i<sCurrentLine.length(); i++) {
+				for(int i=0; i<inputFileCols; i++) {
 					if(sCurrentLine.charAt(i) == '1')
 						setUsefulColumn(i);
 				}
@@ -121,7 +122,7 @@ public class Instance{
 					sCurrentLine = cleanString(sCurrentLine);
 					int j = 0, k = 0;
 					
-					while(j<getNumUsefulColumns() && k<sCurrentLine.length()) {												
+					while(j<getNumUsefulColumns() && k<inputFileCols) {												
 						if(isUseful(k)) {							
 							if(sCurrentLine.charAt(k) == '1') {															
 								setElement(i, j);								
