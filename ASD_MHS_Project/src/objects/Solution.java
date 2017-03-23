@@ -125,7 +125,7 @@ public abstract class Solution {
 		else {
 			summary.append(";;;Esecuzione interrotta\n");
 			if(levelReached == -1)
-				summary.append(";;;Nessun livello esplorato\n");
+				summary.append(";;;Nessun livello esplorato");
 			else
 				summary.append(";;;Livello raggiunto: "+levelReached+"\n");
 		}
@@ -133,9 +133,9 @@ public abstract class Solution {
 			summary.append(";;;Ipotesi create per livello:\n");
 			summary.append(listN_HypothesisPerLevel());
 			summary.append(";;;Tempo trascorso: "+time+"\n");
-			summary.append(";;;MHS trovati: "+mhsSet.size()+"\n");
+			summary.append(";;;MHS trovati: "+mhsSet.size());
 			if(mhsSet.size() > 0) {
-				summary.append(";;;MHS distribuzione cardinalita':");
+				summary.append("\n;;;MHS distribuzione cardinalita':");
 				for(Map.Entry<Integer, Integer> entry : cardDistribution.entrySet()) {
 					summary.append("\n;;; Card " + entry.getKey() + " -> " + entry.getValue());
 				}

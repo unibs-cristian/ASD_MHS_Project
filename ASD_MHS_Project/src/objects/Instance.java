@@ -94,47 +94,56 @@ public class Instance{
 				}
 			}
 			
-			inputFileCols = sCurrentLine.length();
-			usefulColumns = new BitSet(inputFileCols);
-			
-			
-			do {
-				numRows ++;
-				sCurrentLine = cleanString(sCurrentLine);
-				for(int i=0; i<inputFileCols; i++) {
-					if(sCurrentLine.charAt(i) == '1')
-						setUsefulColumn(i);
-				}
-			} while((sCurrentLine = br.readLine()) != null);		
-
-			createMatrix(numRows);
-			try {
-				fr = new FileReader(path);
-			} catch (FileNotFoundException e) {
-				System.out.println("File not found.");
-			}
-			br = new BufferedReader(fr);
-					
-			int i = 0;
-			
-			while ((sCurrentLine = br.readLine()) != null) {
-				if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
+			if(sCurrentLine!=null) {
+				inputFileCols = sCurrentLine.length();
+				usefulColumns = new BitSet(inputFileCols);
+				
+				
+				do {
+					numRows ++;
 					sCurrentLine = cleanString(sCurrentLine);
-					int j = 0, k = 0;
-					
-					while(j<getNumUsefulColumns() && k<inputFileCols) {												
-						if(isUseful(k)) {							
-							if(sCurrentLine.charAt(k) == '1') {															
-								matrix.set(i*matrixCols + j);								
-							}							
-							j++;
-						}						
-						k++;
-					}					
-					i++;
-				}				
+					for(int i=0; i<inputFileCols; i++) {
+						if(sCurrentLine.charAt(i) == '1')
+							setUsefulColumn(i);
+					}
+				} while((sCurrentLine = br.readLine()) != null);		
+	
+				createMatrix(numRows);
+				try {
+					fr = new FileReader(path);
+				} catch (FileNotFoundException e) {
+					System.out.println("File not found.");
+				}
+				br = new BufferedReader(fr);
+						
+				int i = 0;
+				
+				while ((sCurrentLine = br.readLine()) != null) {
+					if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
+						sCurrentLine = cleanString(sCurrentLine);
+						int j = 0, k = 0;
+						
+						while(j<getNumUsefulColumns() && k<inputFileCols) {												
+							if(isUseful(k)) {							
+								if(sCurrentLine.charAt(k) == '1') {															
+									matrix.set(i*matrixCols + j);								
+								}							
+								j++;
+							}						
+							k++;
+						}					
+						i++;
+					}				
+				}
 			}
-			
+			else {
+				//non è presente una matrice nel file d'ingresso
+				matrixCols = 0;
+				matrixRows = 0;
+				inputFileCols = 0;
+				matrix = new BitSet();
+				usefulColumns = new BitSet();
+			}
 			if (br != null)
 				br.close();
 
