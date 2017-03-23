@@ -94,7 +94,8 @@ public class Instance{
 				}
 			}
 			
-			if(sCurrentLine!=null) {
+			//TODO da verificare
+			if(sCurrentLine!=null&&sCurrentLine!="") {
 				inputFileCols = sCurrentLine.length();
 				usefulColumns = new BitSet(inputFileCols);
 				
