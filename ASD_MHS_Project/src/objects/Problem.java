@@ -46,6 +46,7 @@ public class Problem {
 	
 	/**
 	 * Modulo per effettuare il calcolo monolitico dei MHS sui dati in ingresso 
+	 * Algoritmo principale per l'esplorazione di H
 	 * 
 	 * @param in : l'oggetto Instance che rappresenta i dati in input
 	 */
@@ -53,24 +54,24 @@ public class Problem {
 		hasExplorationStopped = false;
 		System.out.println(MSG_MONOLITHIC_START);
 
+		// Current e Next sono 2 sequenze di ipotesi
 		current = new ArrayList<>();		
 		next = new ArrayList<>();
 		
 		long startTime = System.nanoTime();
-		h.setField(in);
+		h.setField(in); // Invocazione del modulo set_fields (in contiene la matrice privata di colonne vuote)
 		current.add(h);		
-		do {
-			sol.setN_HypothesisPerLevel(current.size());
+		do {			
+			sol.setN_HypothesisPerLevel(current.size());  // All'oggetto soluzione viene aggiunto il numero di ipotesi generate per livello 
 			next.clear();
 			for(int i=0; i<current.size(); i++) {				
-				//System.out.println(current.get(i).getBin());
-				if(current.get(i).check()) {
+				if(current.get(i).check()) { // Controllo se l'ipotesi i-esima in current e' soluzione
 					sol.add(current.get(i));
 					current.remove(i);
-					i--;//Se viene rimosso un elemento tutti gli altri shiftano a sx quindi devo decrementare i per non saltarne uno
+					i--; //Se viene rimosso un elemento tutti gli altri shiftano a sx quindi si deve decrementare i per non saltarne uno
 				}
 				else {
-					generateChildren(current.get(i));
+					generateChildren(current.get(i)); // Modulo per la generazione dei successori immediati di un'ipotesi
 				}
 				// Se e' stato fissato un limite di tempo per l'elaborazione, controllo che questo non sia stato superato
 				if(hasTimeLimit) {
@@ -82,14 +83,12 @@ public class Problem {
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
-//			System.out.print(next.size()+" * ");
-//			System.out.println(next);
-			sol.incrementLevelReached();
+			sol.incrementLevelReached(); // Livello raggiunto nell'esplorazione
 		} while(!current.isEmpty() && !hasExplorationStopped);		
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
-		sol.setTime(executionTime);
-		System.out.println("Tempo esecuzione Monolitico: " + executionTime);
+		sol.setTime(executionTime); 
+		//System.out.println("Tempo per esplorazione di H: " + executionTime);
 		if(!hasExplorationStopped)
 			sol.setComplete();						
 	}
@@ -115,7 +114,6 @@ public class Problem {
 		pred = h.clone();
 		predIndex = current.indexOf(h);
 		do {
-			//pred = prev(pred);
 			predIndex--;
 			if(predIndex<0)
 				pred = null;
@@ -125,7 +123,7 @@ public class Problem {
 				
 		if(pred!=null)
 			cont = 0;
-			
+		
 		for(int i=h.getBin().nextSetBit(0)-1; i>=0; i--) {
 			if(pred!=null) {
 				h1 = h.clone();
@@ -159,7 +157,7 @@ public class Problem {
 							} while(!(pred == null || h.getHammingDistance(pred) == 2));
 						}
 						*/
-						//metodo rozzo ma corretto
+						//metodo corretto ma inefficiente
 						/*
 						if(!current.contains(h2)) {
 							cond = false;
@@ -167,7 +165,7 @@ public class Problem {
 						}
 						*/
 						
-						//metodo più efficiente
+						//metodo corretto e piu' efficiente
 						if(h2.compareTo(pred)!=0) {
 							while(pred!=null && pred.compareTo(h2)==-1) {
 								//pred = prev(pred);

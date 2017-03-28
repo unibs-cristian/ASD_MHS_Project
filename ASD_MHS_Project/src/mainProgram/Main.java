@@ -213,7 +213,7 @@ public class Main{
 			case 3:
 				path = IOFile.selectDir();
 				if(path!=null) {
-					fileDir = new File(path.substring(0, path.lastIndexOf("\\")));
+					fileDir = new File(path);
 					inputFiles = fileDir.listFiles();
 					String benchmark;
 					StringBuilder report = new StringBuilder();
