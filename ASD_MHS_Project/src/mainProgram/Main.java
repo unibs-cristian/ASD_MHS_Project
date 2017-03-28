@@ -38,6 +38,7 @@ public class Main{
 	private final static String MSG_INPUT_N_FILE = "Inserire numero di test che si vogliono generare ";
 	private final static String MSG_START_FINAL_PHASE_DIST = "Inizio fase finale del calcolo distribuito";
 	private final static String MSG_INPUT_FILE = "\nInput File: ";
+	private final static String MSG_FILES_CREATED = "Creazione dei file terminata. I file sono contenuti nella cartella ";
 	private final static String TITLE_CHOICE = "Seleziona l'opzione desiderata";
 	private final static String[] OPTIONS_CHOICE = {"Monolitico","Distribuito","Confronto","Crea"};
 	
@@ -248,10 +249,14 @@ public class Main{
 				int probability1 = UserInput.leggiInt(MSG_INPUT_PROBABILITY);
 				int nFile = UserInput.leggiInt(MSG_INPUT_N_FILE);
 				Test t;
+				String testDirName = "test_"+nRows+"x"+nCols+"p"+probability1+"_n"+nFile+"_"+System.currentTimeMillis();
+				File testDir = new File(testDirName);
+				testDir.mkdir();
 				for(int i=0; i<nFile; i++) {
 					t = new Test(nRows, nCols, probability1);
-					IOFile.writeOutputData(t.getStringForFile(),System.currentTimeMillis()+"_"+i+"."+EXTENSION_INPUT);
+					IOFile.writeOutputData(t.getStringForFile(),testDirName+"\\"+i+"."+EXTENSION_INPUT);
 				}
+				System.out.println(MSG_FILES_CREATED+testDirName);
 				break;
 		}
 	}
