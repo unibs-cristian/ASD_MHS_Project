@@ -21,6 +21,7 @@ public class Instance{
 	private int matrixCols;        // Indica il numero di colonne della matrice composta solo dalle colonne utili.
 	private int matrixRows;        // Indica il numero di righe della matrice, cioe' il numero di elementi della collezione.
 	
+	// Il costruttore invoca il metodo per leggere la matrice da file
 	public Instance(String file) {
 		readMatrixFromFile(file);
 	}
@@ -50,7 +51,7 @@ public class Instance{
 	}
 	
 	//Restituisce [firtRow,lastRow) (lastRow esclusa)
-	public String getMatrixRows(int firstRow, int lastRow) {
+	private String getMatrixRows(int firstRow, int lastRow) {
 		int k;
 		StringBuilder matrixOut = new StringBuilder();
 		for(int i=firstRow; i<lastRow; i++) {
@@ -73,7 +74,7 @@ public class Instance{
 		return matrixOut.toString();
 	}
 	
-	public void readMatrixFromFile(String path) {
+	private void readMatrixFromFile(String path) {
 		FileReader fr = null;
 		BufferedReader br;
 		try {
@@ -87,6 +88,7 @@ public class Instance{
 		int numRows = 0;
 
 		try {
+			// Lettura riga per riga con rimozione di spazi bianchi e separatori di riga (si ottiene una sequenza di 0 e 1)
 			while ((sCurrentLine = br.readLine()) != null) {
 				if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
 					sCurrentLine = cleanString(sCurrentLine);
@@ -94,21 +96,20 @@ public class Instance{
 				}
 			}
 			
-			//TODO da verificare
 			if(sCurrentLine!=null&&sCurrentLine!="") {
 				inputFileCols = sCurrentLine.length();
 				usefulColumns = new BitSet(inputFileCols);
-				
-				
+								
 				do {
 					numRows ++;
 					sCurrentLine = cleanString(sCurrentLine);
 					for(int i=0; i<inputFileCols; i++) {
+						// Se nella posizione i-esima si trova un 1, allora la relativa colonna della matrice e' useful 
 						if(sCurrentLine.charAt(i) == '1')
 							setUsefulColumn(i);
 					}
 				} while((sCurrentLine = br.readLine()) != null);		
-	
+				// Creazione del BitSet rappresentante la matrice
 				createMatrix(numRows);
 				try {
 					fr = new FileReader(path);
@@ -117,8 +118,7 @@ public class Instance{
 				}
 				br = new BufferedReader(fr);
 						
-				int i = 0;
-				
+				int i = 0;				
 				while ((sCurrentLine = br.readLine()) != null) {
 					if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
 						sCurrentLine = cleanString(sCurrentLine);
@@ -154,7 +154,6 @@ public class Instance{
 		} catch (IOException e) {
 			System.out.println("I/O error");
 		}	
-	
 	}
 	
 	private String cleanString(String str) {
@@ -162,15 +161,13 @@ public class Instance{
 		return str.replace(ROW_DELIMITER, "");
 	}
 	
+	// Partiziona randomicamente per righe la matrice
 	public void createNiFiles(String dirPath, String fileName) {
 		int nRowsPicked = 0;
 		int rand;
 		int nFiles = 0;
 		Random r = new Random();
 		while(nRowsPicked < matrixRows){
-			// 1 <= rand <= matrixRows
-			//rand = 1 + (int)(Math.random() * (((matrixRows-nRigheTolte) - 1) + 1));
-			
 			// 1 <= rand < righeRimanenti
 			if((matrixRows-nRowsPicked) == 1)
 				rand = 1;
@@ -188,39 +185,19 @@ public class Instance{
 		return inputFileCols;
 	}
 	
-	public void setUsefulColumn(int index) {
+	private void setUsefulColumn(int index) {
 		usefulColumns.set(index);
 	}
 	
-	public void createMatrix(int numRows) {
+	private void createMatrix(int numRows) {
 		matrixRows = numRows;
 		matrixCols = usefulColumns.cardinality();
 		matrix = new BitSet(numRows*matrixCols);
 		
 	}
 	
-	public boolean isUseful(int col) {
+	private boolean isUseful(int col) {
 		return usefulColumns.get(col);
-	}
-	
-	public void printUsefulColumns() {
-		for(int i=0; i<inputFileCols; i++) {
-			System.out.println(usefulColumns.get(i) + " ");
-		}
- 	}
-	
-	public void printMatrix() {
-		System.out.println("Numero di righe: " + matrixRows + " Numero di colonne: "  + matrixCols);
-		for(int i=0; i<matrixRows; i++) {
-			for(int j=0; j<matrixCols; j++) {
-				System.out.print(matrix.get(i*matrixCols + j) + " ");
-			}
-			System.out.println();
-		}
-	}
-	
-	public void printMatrixElem(int i, int j) {
-		System.out.println(matrix.get(i*matrixCols+ j));
 	}
 	
 	public String listUselessCols() {
