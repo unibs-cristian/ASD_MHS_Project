@@ -46,8 +46,7 @@ public class DistributedHypothesis extends Hypothesis{
 					vector.set(i);
 				else
 					vector.set(i,false);
-		}
-		
+		}	
 	}
 	
 	//Metodo per ottimizzare la ricerca del bin in un Ci sfruttandone l'ordinamento

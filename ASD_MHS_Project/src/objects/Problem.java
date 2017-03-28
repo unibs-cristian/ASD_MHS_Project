@@ -59,7 +59,7 @@ public class Problem {
 		next = new ArrayList<>();
 		
 		long startTime = System.nanoTime();
-		h.setField(in); // Invocazione del modulo set_fields (in contiene la matrice privata di colonne vuote)
+		h.setField(in); // Invocazione del modulo set_fields ('in' contiene la matrice privata di colonne vuote)
 		current.add(h);		
 		do {			
 			sol.setN_HypothesisPerLevel(current.size());  // All'oggetto soluzione viene aggiunto il numero di ipotesi generate per livello 
@@ -88,7 +88,7 @@ public class Problem {
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime); 
-		//System.out.println("Tempo per esplorazione di H: " + executionTime);
+		System.out.println("Esplorazione di H completata in " + executionTime);
 		if(!hasExplorationStopped)
 			sol.setComplete();						
 	}

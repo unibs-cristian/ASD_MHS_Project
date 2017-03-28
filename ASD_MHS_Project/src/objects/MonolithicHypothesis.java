@@ -4,6 +4,11 @@ import java.util.BitSet;
 
 public class MonolithicHypothesis extends Hypothesis {
 	private int nSets;
+	/**
+	 * Nel calcolo monolitico vector ha lunghezza |N| e rappresenta la j-esima colonna della matrice, se h
+	 * e' un singoletto che contiene solo l'elemento j-esimo del dominio. Altrimenti il vector è il risultato
+	 * del bitwise or delle colonne della matrice relative a tutti gli elementi contenuti in h. 
+	 */
 	private BitSet vector;
 	
 	public MonolithicHypothesis(int dimension, int nInsiemi) {
@@ -27,17 +32,15 @@ public class MonolithicHypothesis extends Hypothesis {
 		if(bin.nextSetBit(0) == -1) // Controllo se l'ipotesi e' vuota
 			vector.set(0, nSets, false);
 		else {
-			if(bin.cardinality() == 1) {// Controllo se e' un'ipotesi di livello 1
+			if(bin.cardinality() == 1) { // Controllo se e' un'ipotesi di livello 1
 				vector = instance.getMatrixColumn(bin.length()-1);
 			}
-			else {
-				//TODO OPT controllare se questa procedura è corretta
+			else {				
 				for(int i = bin.nextSetBit(0); i<bin.length(); i++)
 					if(bin.get(i))
 						vector.or(instance.getMatrixColumn(i));
 			}
 		}
-	
 	}
 
 	@Override

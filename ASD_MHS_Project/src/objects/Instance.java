@@ -14,12 +14,12 @@ public class Instance{
 	private final static String COMMENT_DELIMITER = ";;;";
 	private final static String ROW_DELIMITER = "-";
 	private final static String SEPARATOR = " ";
-	
-	private BitSet usefulColumns;
-	private BitSet matrix;		   
-	private int inputFileCols;        // Indica il numero di colonne della matrice contenuta nel file di input
-	private int matrixCols;        // Indica il numero di colonne della matrice composta solo dalle colonne utili
-	private int matrixRows;
+	 
+	private BitSet usefulColumns;  // BitSet di lunghezza 'inputFileCols'. Gli elementi aventi valore 'true' indicano le colonne utili
+	private BitSet matrix;		   // BitSet che contiene i singoli elementi della matrice
+	private int inputFileCols;     // Indica il numero di colonne della matrice contenuta nel file di input, cioe' la cardinalita' del dominio.
+	private int matrixCols;        // Indica il numero di colonne della matrice composta solo dalle colonne utili.
+	private int matrixRows;        // Indica il numero di righe della matrice, cioe' il numero di elementi della collezione.
 	
 	public Instance(String file) {
 		readMatrixFromFile(file);
