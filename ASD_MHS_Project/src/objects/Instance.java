@@ -26,6 +26,14 @@ public class Instance{
 		readMatrixFromFile(file);
 	}
 	
+	public Instance(BitSet usefulColumns, int inputFileCols) {
+		this.usefulColumns = usefulColumns;
+		this.inputFileCols = inputFileCols;
+		this.matrix = new BitSet();		   
+		this.matrixCols = 0;
+		this.matrixRows = 0; 
+	}
+	
 	public BitSet getMatrix() {
 		return matrix;
 	}
@@ -48,6 +56,19 @@ public class Instance{
 			col.set(i, matrix.get(i*matrixCols + column));
 	
 		return col;				
+	}
+	
+	public BitSet getMatrixRow(int rowIndex) {
+		int k = 0;
+		BitSet row = new BitSet(inputFileCols);
+		for(int j=0; j<inputFileCols; j++) {
+			if(usefulColumns.get(j)) {
+				if(matrix.get(rowIndex*matrixCols+ k))
+					row.set(j);
+				k++;
+			}
+		}
+		return row;
 	}
 	
 	//Restituisce [firtRow,lastRow) (lastRow esclusa)
