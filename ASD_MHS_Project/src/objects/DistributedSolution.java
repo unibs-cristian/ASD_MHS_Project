@@ -19,7 +19,7 @@ public class DistributedSolution extends Solution {
 
 	public String getSummary() {
 		StringBuilder summary = new StringBuilder();
-		summary.append(";;;Componenti\n;;; |M|: "+in.getInputFileCols()+"\n;;; |M'|: "+in.getNumUsefulColumns()+"\n");
+		summary.append(";;;Componenti\n;;; Cardinalità M: "+in.getInputFileCols()+"\n;;; Cardinalità M': "+in.getNumUsefulColumns()+"\n");
 		summary.append(super.getSummary());
 		summary.append("\n;;;File creati: "+nFiles+"\n");
 		summary.append(";;;MHS globali trovati (pre composizione): "+nGlobalMHS);
