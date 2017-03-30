@@ -8,12 +8,19 @@ import java.util.Map;
 import java.util.Vector;
 
 public abstract class Solution {
+	// Struttura dati contenente le ipotesi che sono i MHS del problema
 	protected ArrayList<Hypothesis> mhsSet; 
+	// Struttura dati contenente la distribuzione per cardinalita' degli MHS 
 	protected HashMap<Integer, Integer> cardDistribution;
+	// Oggetto contenente informazioni sulla matrice 
 	protected Instance in;
+	// Flag che dice se l'esplorazione e' stata completata
 	protected boolean complete;
+	// Il livello raggiunto dal modulo per l'esplorazione dello spazio di ricerca
 	protected int levelReached;
+	// Tempo impiegato dal modulo per l'esplorazione dello spazio di ricerca
 	protected double time;
+	// Struttura dati che tiene traccia di quante ipotesi sono state generate in ciascun livello
 	protected Vector<Integer> nHypothesisPerLevel;
 	
 	public Solution(Instance in) {
@@ -29,6 +36,7 @@ public abstract class Solution {
 		return mhsSet;
 	}
 	
+	// Espande un MHS 
 	public BitSet getMhsSetElementExpanded(int index) {
 		int k=0;
 		BitSet mhs = new BitSet(in.getInputFileCols());

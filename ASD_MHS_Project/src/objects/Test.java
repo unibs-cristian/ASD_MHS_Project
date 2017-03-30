@@ -3,10 +3,10 @@ package objects;
 import java.util.BitSet;
 
 public class Test {
-	private int nRows;
-	private int nCols;
-	private int probability1;
-	private BitSet matrix;
+	private int nRows;         // n. righe matrice da creare
+	private int nCols;         // n. colonne matrice da creare 
+	private int probability1;  // probabilita' che ciascun elemento sia 1
+	private BitSet matrix;     // Struttura dati che rappresenta la matrice creata
 	
 	public Test(int nRows, int nCols, int probability1) {
 		this.nRows = nRows;
@@ -16,6 +16,7 @@ public class Test {
 		createMatrix();
 	}
 	
+	// Crea la matrice avente le informazioni specificate
 	private void createMatrix() {
 		boolean isRowEmpty = true;
 		for(int i=0; i< nRows; i++) {
