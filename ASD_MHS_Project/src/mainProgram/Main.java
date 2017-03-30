@@ -183,7 +183,8 @@ public class Main{
 																break;
 														}
 													}
-													pathDirComponents = newDirPath;
+													if(!componentExplorationNotCompleted)
+														pathDirComponents = newDirPath;
 												}
 											}
 										}
