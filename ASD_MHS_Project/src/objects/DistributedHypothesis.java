@@ -62,8 +62,9 @@ public class DistributedHypothesis extends Hypothesis{
 			b = (BitSet)bin.clone();
 			b.xor(componentsList.get(i).get(j));
 			//getBin() > componentsList.get(i).get(j)
-			if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
-				return false;
+			//TODO controllare questa ottimizzazione 
+			/*if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
+				return false;*/
 		}
 		return false;
 	}

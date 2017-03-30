@@ -83,6 +83,7 @@ public class Problem {
 			}			
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
+			System.out.println(current);
 			sol.incrementLevelReached(); // Livello raggiunto nell'esplorazione
 		} while(!current.isEmpty() && !hasExplorationStopped);		
 		long endTime = System.nanoTime();

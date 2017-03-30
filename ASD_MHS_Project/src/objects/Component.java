@@ -80,6 +80,7 @@ public class Component {
 				br = new BufferedReader(fr);
 						
 				BitSet mhs;
+				mhsList = new ArrayList<BitSet>();
 				while ((sCurrentLine = br.readLine()) != null) {
 					if(!sCurrentLine.startsWith(COMMENT_DELIMITER)) {
 						mhs = new BitSet(inputFileCols);
@@ -89,7 +90,7 @@ public class Component {
 						while(j<usefulColumns.cardinality() && k<inputFileCols) {												
 							if(usefulColumns.get(k)) {							
 								if(sCurrentLine.charAt(k) == '1') {															
-									mhs.set(j);								
+									mhs.set(k);								
 								}							
 								j++;
 							}						
