@@ -3,7 +3,7 @@ package objects;
 import java.util.BitSet;
 
 public class MonolithicHypothesis extends Hypothesis {
-	private int nSets;
+	private int nSets;   // Il numero di insiemi che formano la collezione N 
 	/**
 	 * Nel calcolo monolitico vector ha lunghezza |N| e rappresenta la j-esima colonna della matrice, se h
 	 * e' un singoletto che contiene solo l'elemento j-esimo del dominio. Altrimenti il vector è il risultato
@@ -45,6 +45,7 @@ public class MonolithicHypothesis extends Hypothesis {
 
 	@Override
 	public boolean check() {
+		// Controllo se il vector e' costituito da tutti 1, cioe' se la sua cardinalita' e' pari al n. di insiemi della collezione N
 		if(vector.cardinality() == nSets)
 			return true;
 		else

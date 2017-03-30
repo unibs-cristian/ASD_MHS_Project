@@ -3,8 +3,8 @@ package objects;
 import java.util.BitSet;
 
 public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
-	protected int dimension;
-	protected BitSet bin;
+	protected int dimension;   // Numero di cifre binarie dell'ipotesi
+	protected BitSet bin;      // BitSet che costituisce la rappresentazione binaria dell'ipotesi 
 	
 	public Hypothesis(int dimension){
 		bin = new BitSet(dimension);

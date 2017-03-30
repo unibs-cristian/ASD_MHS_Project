@@ -4,8 +4,11 @@ import java.util.BitSet;
 import java.util.ArrayList;
 
 public class DistributedHypothesis extends Hypothesis{
-	private int nComponents;
-	private BitSet vector;
+	// Contiene il numero dei componenti
+	private int nComponents;      							
+	// BitSet con 'nComponents' elementi, ciascuno dei quali 1 uno se l'ipotesi è HS per quel componenente
+	private BitSet vector;                             
+	// Struttura dati contenente gli insiemi di MHS relativi a ciascuna partizione
 	private ArrayList<ArrayList<BitSet>> componentsList;
 	
 	public DistributedHypothesis(int dimension, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {

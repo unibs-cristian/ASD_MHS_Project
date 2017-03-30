@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Problem {
-	private ArrayList<Hypothesis> current;
-	private Solution sol;		
-	private ArrayList<Hypothesis> next;
-	private Instance in;
-	private Hypothesis h;
-	private boolean hasTimeLimit;
-	private boolean hasExplorationStopped;
-	private int timeLimit;
+	private ArrayList<Hypothesis> current;   // Sequenza di ipotesi usata nell'algoritmo di esplorazione di H
+	private Solution sol;		             // Oggetto contenente informazioni sulla soluzione per questo problema
+	private ArrayList<Hypothesis> next;      // Sequenza di ipotesi usata nell'algoritmo di esplorazione di H
+	private Instance in;                     // Oggetto contenente informazioni sulla matrice fornita in input
+	private Hypothesis h;                    // L'ipotesi iniziale (può essere monolitica o distribuita) da cui iniziare l'esplorazione 
+	private boolean hasTimeLimit;            // Flag che ci dice se l'utente ha fissato un limite massimo di tempo per l'esplorazione
+	private boolean hasExplorationStopped;   // Flag che ci dice se è stato raggiunto il limite massimo di tempo per l'esplorazione
+	private int timeLimit;                   // Limite di tempo (in secondi)
 	
 	private final static String MSG_MONOLITHIC_START = "Iniziata esplorazione dello spazio delle ipotesi";
 	private final static int NANO_TO_SEC = 1000000000;

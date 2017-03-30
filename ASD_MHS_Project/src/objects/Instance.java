@@ -161,7 +161,7 @@ public class Instance{
 		return str.replace(ROW_DELIMITER, "");
 	}
 	
-	// Partiziona randomicamente per righe la matrice
+	// Partiziona randomicamente per righe la matrice (utilizzato per creare le partizioni nel metodo distribuito)
 	public void createNiFiles(String dirPath, String fileName) {
 		int nRowsPicked = 0;
 		int rand;
@@ -212,6 +212,7 @@ public class Instance{
 		}
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
