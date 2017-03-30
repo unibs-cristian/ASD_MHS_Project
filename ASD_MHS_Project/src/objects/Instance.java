@@ -30,7 +30,7 @@ public class Instance{
 		this.usefulColumns = usefulColumns;
 		this.inputFileCols = inputFileCols;
 		this.matrix = new BitSet();		   
-		this.matrixCols = 0;
+		this.matrixCols = usefulColumns.cardinality();
 		this.matrixRows = 0; 
 	}
 	
@@ -229,7 +229,7 @@ public class Instance{
 			for(int i=0; i < inputFileCols; i++)
 				if(!usefulColumns.get(i))
 					list.append(i+",");
-			return list.toString().substring(0, list.toString().length()-1);
+				return list.toString().substring(0, list.toString().length()-1);
 		}
 	}
 
