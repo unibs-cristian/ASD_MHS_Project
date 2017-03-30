@@ -90,7 +90,7 @@ public class Component {
 						while(j<usefulColumns.cardinality() && k<inputFileCols) {												
 							if(usefulColumns.get(k)) {							
 								if(sCurrentLine.charAt(k) == '1') {															
-									mhs.set(j);								
+									mhs.set(k);								
 								}							
 								j++;
 							}						

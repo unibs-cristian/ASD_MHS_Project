@@ -85,7 +85,7 @@ public class Main{
 						do {
 							//selezione cartella contenente i componenti (deve terminare con _dist)
 							path = IOFile.selectDir();
-						}while (!path.endsWith(TAG_DIST));
+						}while (path!=null&&!path.endsWith(TAG_DIST));
 					}
 				}
 				
@@ -230,10 +230,13 @@ public class Main{
 															w++;
 														}
 													}
+													System.out.println(componentsList.get(i).getMHS(j));
+													System.out.println(hsShrink);
 													hsList_iShrink.add(hsShrink);
 												}
 												hsList.add(hsList_iShrink);
 											}
+											System.out.println(hsList);
 											
 											Instance inDist = new Instance(usefulColums,inputFileCols);
 											DistributedSolution distSol = new DistributedSolution(inDist);
@@ -250,7 +253,8 @@ public class Main{
 											if(hasTimeLimit)
 												dist.setTimeLimit(timeLimit);
 											dist.exploreH();
-																			
+											
+											System.out.println(dist.getSol().getMhsSet());
 
 											// Scrittura file di output
 											outputFilePath = pathDirComponents+"."+EXTENSION_OUTPUT;
