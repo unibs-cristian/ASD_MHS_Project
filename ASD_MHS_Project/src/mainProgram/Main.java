@@ -199,7 +199,7 @@ public class Main{
 											File[] components = dirComponents.listFiles();
 											ArrayList<Component> componentsList = new ArrayList<>();
 											ArrayList<ArrayList<BitSet>> hsList = new ArrayList<>();
-											BitSet usefulColums = new BitSet();
+											BitSet usefulColumns = new BitSet();
 											
 											int countMHS = 0, w = 0, inputFileCols = 0;
 											fileCounter = 0;
@@ -209,7 +209,7 @@ public class Main{
 											for(File file_c:components) {
 												if(UserInput.check_extension(file_c.getName(), EXTENSION_OUTPUT)) {
 													c = new Component(file_c.getAbsolutePath());
-													usefulColums.or(c.getUsefulColum());
+													usefulColumns.or(c.getUsefulColum());
 													componentsList.add(c);
 													fileCounter++;
 													countMHS+=c.getN_MHS();
@@ -225,21 +225,21 @@ public class Main{
 													hsShrink = new BitSet();
 													inputFileCols = componentsList.get(i).getInputFileCols();
 													for(int k=0; k < inputFileCols; k++) {
-														if(usefulColums.get(k)) {
+														if(usefulColumns.get(k)) {
 															if(componentsList.get(i).getMHS(j).get(k))
 																hsShrink.set(w);
 															w++;
 														}
 													}
-													System.out.println(componentsList.get(i).getMHS(j));
-													System.out.println(hsShrink);
+													//System.out.println(componentsList.get(i).getMHS(j));
+													//System.out.println(hsShrink);
 													hsList_iShrink.add(hsShrink);
 												}
 												hsList.add(hsList_iShrink);
 											}
-											System.out.println(hsList);
+											//System.out.println(hsList);
 											
-											Instance inDist = new Instance(usefulColums,inputFileCols);
+											Instance inDist = new Instance(usefulColumns,inputFileCols);
 											DistributedSolution distSol = new DistributedSolution(inDist);
 											
 											distSol.setnFiles(fileCounter);
@@ -248,14 +248,14 @@ public class Main{
 											
 											System.out.println(MSG_START_FINAL_PHASE_DIST);
 											
-											DistributedHypothesis dh = new DistributedHypothesis(inputFileCols, fileCounter, hsList);
+											DistributedHypothesis dh = new DistributedHypothesis(usefulColumns.cardinality(), fileCounter, hsList);
 											Problem dist = new Problem(inDist, dh, distSol);
 											
 											if(hasTimeLimit)
 												dist.setTimeLimit(timeLimit);
 											dist.exploreH();
 											
-											System.out.println(dist.getSol().getMhsSet());
+											//System.out.println(dist.getSol().getMhsSet());
 
 											// Scrittura file di output
 											outputFilePath = pathDirComponents+"."+EXTENSION_OUTPUT;
