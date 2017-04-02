@@ -63,8 +63,8 @@ public class DistributedHypothesis extends Hypothesis{
 			b.xor(componentsList.get(i).get(j));
 			//getBin() > componentsList.get(i).get(j)
 			//TODO controllare questa ottimizzazione 
-			/*if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
-				return false;*/
+			if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
+				return false;
 		}
 		return false;
 	}

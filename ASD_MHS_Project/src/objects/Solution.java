@@ -101,6 +101,8 @@ public abstract class Solution {
 	public String toString() {
 		StringBuilder mhsMatrix = new StringBuilder();
 		int k;
+		//TODO ordino
+		Collections.sort(mhsSet, Collections.reverseOrder());
 		for(int i=0; i<mhsSet.size(); i++) {
 			k = 0;
 			mhsMatrix.append("\n");
