@@ -51,7 +51,7 @@ public class IOFile {
 			bw = new BufferedWriter(fw);
 			bw.write(output);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				if(bw!=null)
@@ -59,7 +59,7 @@ public class IOFile {
 				if(fw!=null)
 					fw.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
