@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 
 import objects.Component;
 import objects.DistributedHypothesis;
@@ -31,6 +32,8 @@ public class Main{
 	private final static String MSG_USE_COMPONENTS = "Si desidera utilizare componenti già creati (In caso di risposta negativa i componenti già presenti verranno cancellati)? ";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione? ";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi ";
+	private final static String MSG_EXECUTION_COMPLETE = "Esecuzione completata";
+	private final static String MSG__EXECUTION_INTERRUPTED = "Esecuzione interrotta";
 	private final static String MSG_FILE_NOT_FOUND = "Esecuzione terminata, il file specificato non esiste";
 	private final static String MSG_INPUT_N_ROWS = "Inserire numero righe ";
 	private final static String MSG_INPUT_N_COLS = "Inserire numero colonne ";
@@ -157,7 +160,6 @@ public class Main{
 													
 													File[] files = newDir.listFiles();
 													
-													boolean componentExplorationNotCompleted = false;
 													for(File f:files) {
 														if(UserInput.check_extension(f.getName(), EXTENSION_INPUT)) {
 															System.out.println("Collezione N" + fileCounter);
@@ -171,7 +173,6 @@ public class Main{
 															p_i.exploreH();
 															
 															totalTime += p_i.getSol().getTime();
-															componentExplorationNotCompleted = p_i.hasExplorationStopped();
 															
 															//-------------------------------------
 															// Scrittura file di output
@@ -179,12 +180,10 @@ public class Main{
 															IOFile.writeOutputData(p_i.getSol().getStringForFile(),outputFilePath);
 															//-------------------------------------
 															
-															if(componentExplorationNotCompleted)
-																break;
+															
 														}
 													}
-													if(!componentExplorationNotCompleted)
-														pathDirComponents = newDirPath;
+													pathDirComponents = newDirPath;
 												}
 											}
 										}
@@ -203,6 +202,7 @@ public class Main{
 											
 											int countMHS = 0, w = 0, inputFileCols = 0;
 											fileCounter = 0;
+											HashMap<Integer, Integer> mhsPerComponents = new HashMap<>();
 											Component c;
 											ArrayList<BitSet> hsList_iShrink;
 											BitSet hsShrink;
@@ -211,10 +211,12 @@ public class Main{
 													c = new Component(file_c.getAbsolutePath());
 													usefulColumns.or(c.getUsefulColum());
 													componentsList.add(c);
+													mhsPerComponents.put(fileCounter, c.getN_MHS());
 													fileCounter++;
 													countMHS+=c.getN_MHS();
 												}
 											}
+											
 											
 											
 											
@@ -237,14 +239,13 @@ public class Main{
 												}
 												hsList.add(hsList_iShrink);
 											}
-											//System.out.println(hsList);
 											
 											Instance inDist = new Instance(usefulColumns,inputFileCols);
 											DistributedSolution distSol = new DistributedSolution(inDist);
 											
 											distSol.setnFiles(fileCounter);
-											//TODO contiene doppioni
 											distSol.setnGlobalMHS(countMHS);
+											distSol.setMHSPerComponents(mhsPerComponents);
 											
 											System.out.println(MSG_START_FINAL_PHASE_DIST);
 											
@@ -254,8 +255,6 @@ public class Main{
 											if(hasTimeLimit)
 												dist.setTimeLimit(timeLimit);
 											dist.exploreH();
-											
-											//System.out.println(dist.getSol().getMhsSet());
 
 											// Scrittura file di output
 											outputFilePath = pathDirComponents+"."+EXTENSION_OUTPUT;
@@ -339,11 +338,11 @@ public class Main{
 
 		try {
 			while ((sCurrentLine = br.readLine()) != null) {
-				if(sCurrentLine.contains("Esecuzione completata")) {
+				if(sCurrentLine.contains(MSG_EXECUTION_COMPLETE)) {
 					complete = true;
 					break;
 				}
-				if(sCurrentLine.contains("Esecuzione interrotta")) {
+				if(sCurrentLine.contains(MSG__EXECUTION_INTERRUPTED)) {
 					complete = false;
 					break;
 				}
