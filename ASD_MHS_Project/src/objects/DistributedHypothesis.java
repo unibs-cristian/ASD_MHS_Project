@@ -11,11 +11,11 @@ public class DistributedHypothesis extends Hypothesis{
 	// Struttura dati contenente gli insiemi di MHS relativi a ciascuna partizione
 	private ArrayList<ArrayList<BitSet>> componentsList;
 	
-	public DistributedHypothesis(int dimension, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
+	public DistributedHypothesis(int dimension, int nComponents, ArrayList<ArrayList<BitSet>> componentsList) {
 		super(dimension);
-		this.nComponents = nComponenti;
+		this.nComponents = nComponents;
 		this.componentsList = componentsList;
-		vector = new BitSet(nComponenti);
+		vector = new BitSet(nComponents);
 	}
 	
 	public DistributedHypothesis(int dimension, BitSet bin, int nComponenti, ArrayList<ArrayList<BitSet>> componentsList) {
@@ -54,17 +54,27 @@ public class DistributedHypothesis extends Hypothesis{
 	
 	//Metodo per ottimizzare la ricerca del bin in un Ci sfruttandone l'ordinamento
 	private boolean isMHSinCi(int i) {
-		BitSet b;
+		BitSet componentElement,bXor;
+		int componentElementCard;
+		int binCard = bin.cardinality();
 		for(int j=0; j<componentsList.get(i).size(); j++) {
-			if(componentsList.get(i).get(j).equals(bin))
+			componentElement = componentsList.get(i).get(j);
+			componentElementCard = componentElement.cardinality();
+			if(componentElement.equals(bin))
 				return true;
-			
-			b = (BitSet)bin.clone();
-			b.xor(componentsList.get(i).get(j));
-			//getBin() > componentsList.get(i).get(j)
-			//TODO controllare questa ottimizzazione 
-			if(!componentsList.get(i).get(j).get(b.nextSetBit(0)))
+			//Gli mhs sono raggruppati per cardinalità, se quella del mhs letto è maggiore di quella
+			//dell'ipotesi cercata essa non è presente
+			if(componentElementCard > binCard)
 				return false;
+			//Gli mhs, per cardinalità, sono ordinati in modo decrescente quindi se l'ipotesi cercata
+			//è maggiore del mhs letto essa non è presente
+			if(componentElementCard == binCard) {
+				bXor = (BitSet)bin.clone();
+				bXor.xor(componentElement);
+				//bin > componentElement
+				if(!componentElement.get(bXor.nextSetBit(0)))
+					return false;
+			}
 		}
 		return false;
 	}

@@ -11,10 +11,10 @@ public class MonolithicHypothesis extends Hypothesis {
 	 */
 	private BitSet vector;
 	
-	public MonolithicHypothesis(int dimension, int nInsiemi) {
+	public MonolithicHypothesis(int dimension, int nSets) {
 		super(dimension);
-		this.nSets = nInsiemi;
-		vector = new BitSet(nInsiemi);
+		this.nSets = nSets;
+		vector = new BitSet(nSets);
 	}
 	
 	public MonolithicHypothesis(int dimension, BitSet bin, int nInsiemi) {

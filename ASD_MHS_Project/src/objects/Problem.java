@@ -14,6 +14,8 @@ public class Problem {
 	private int timeLimit;                   // Limite di tempo (in secondi)
 	
 	private final static String MSG_MONOLITHIC_START = "Iniziata esplorazione dello spazio delle ipotesi";
+	private final static String MSG_EXPLORATION_COMPLETED = "Esplorazione di H completata in %f secondi";
+	private final static String MSG_EXPLORATION_INTERRUPTED = "Esplorazione di H interrotta dopo %d secondi";
 	private final static int NANO_TO_SEC = 1000000000;
 	
 	public Problem(Instance in, Hypothesis h, Solution sol) {
@@ -89,9 +91,14 @@ public class Problem {
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime); 
-		System.out.println("Esplorazione di H completata in " + executionTime);
-		if(!hasExplorationStopped)
-			sol.setComplete();						
+		if(!hasExplorationStopped) {
+			sol.setComplete();
+			System.out.println(String.format(MSG_EXPLORATION_COMPLETED, executionTime) );
+		}
+		else {
+			System.out.println(String.format(MSG_EXPLORATION_INTERRUPTED, timeLimit) );
+		}
+									
 	}
 	
 	
