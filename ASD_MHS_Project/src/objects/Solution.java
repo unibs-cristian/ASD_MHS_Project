@@ -1,7 +1,6 @@
 package objects;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,29 +33,6 @@ public abstract class Solution {
 	
 	public ArrayList<Hypothesis> getMhsSet() {
 		return mhsSet;
-	}
-	
-	// Espande un MHS 
-	public BitSet getMhsSetElementExpanded(int index) {
-		int k=0;
-		BitSet mhs = new BitSet(in.getInputFileCols());
-		for(int j=0; j<in.getInputFileCols(); j++) {
-			if(in.isUsefulCol(j)) {
-				if(mhsSet.get(index).getBin().get(k))
-					mhs.set(j);
-				k++;
-			}
-		}
-		return mhs;
-	}
-	
-	public ArrayList<BitSet> getMhsSetExpanded() {
-		ArrayList<BitSet> list = new ArrayList<>();
-		//Ordinamento descrescente effetuato per ottimizzare isMHSinCi
-		Collections.sort(mhsSet, Collections.reverseOrder());
-		for(int j=0; j<mhsSet.size(); j++)
-			list.add(getMhsSetElementExpanded(j));
-		return list;
 	}
 	
 	public double getTime() {
