@@ -233,8 +233,6 @@ public class Main{
 															w++;
 														}
 													}
-													//System.out.println(componentsList.get(i).getMHS(j));
-													//System.out.println(hsShrink);
 													hsList_iShrink.add(hsShrink);
 												}
 												hsList.add(hsList_iShrink);
