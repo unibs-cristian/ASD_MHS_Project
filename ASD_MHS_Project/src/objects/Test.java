@@ -19,15 +19,21 @@ public class Test {
 	// Crea la matrice avente le informazioni specificate
 	private void createMatrix() {
 		boolean isRowEmpty = true;
+		int randIndex = 0;
 		for(int i=0; i< nRows; i++) {
 			isRowEmpty = true;
 			for(int j=0; j< nCols; j++) {
-				//In caso tutta la riga sia vuota automaticamente l'ultimo elemento viene settato a 1
-				if(Math.random() < probability1/100.0 || ((j==(nCols-1))&& isRowEmpty)) {
+				if(Math.random() < probability1/100.0) {
 					matrix.set(i*nCols+j);
 					isRowEmpty = false;
 				}
 			}
+			//In caso tutta la riga sia vuota viene settato a 1 una cella a caso
+			if(isRowEmpty) {
+				randIndex = (int)(Math.random() * nCols);
+				matrix.set(i*nCols+randIndex);
+			}
+			
 		}
 	}
 	
