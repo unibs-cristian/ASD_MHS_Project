@@ -12,9 +12,12 @@ public class Component {
 	private final static String ROW_DELIMITER = "-";
 	private final static String SEPARATOR = " ";
 	 
-	private BitSet usefulColumns;		// BitSet di lunghezza 'inputFileCols'. Gli elementi aventi valore 'true' indicano le colonne utili
-	private ArrayList<BitSet> mhsList;	// BitSet che contiene l'elenco degli mhs
-	private int inputFileCols;     		// Indica il numero di colonne della matrice contenuta nel file di input, cioe' la cardinalita' del dominio.
+	// BitSet di lunghezza 'inputFileCols'. Gli elementi aventi valore 'true' indicano le colonne utili
+	private BitSet usefulColumns;	
+	// Struttura dati che contiene l'elenco degli mhs del componente 
+	private ArrayList<BitSet> mhsList;
+	// Indica il numero di colonne della matrice contenuta nel file di input, cioe' la cardinalita' del dominio
+	private int inputFileCols; 
 	
 	// Il costruttore invoca il metodo per leggere la matrice da file
 	public Component(String file) {

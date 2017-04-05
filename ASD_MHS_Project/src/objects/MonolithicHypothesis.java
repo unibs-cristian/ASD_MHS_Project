@@ -45,11 +45,14 @@ public class MonolithicHypothesis extends Hypothesis {
 
 	@Override
 	public boolean check() {
-		// Controllo se il vector e' costituito da tutti 1, cioe' se la sua cardinalita' e' pari al n. di insiemi della collezione N
-		if(vector.cardinality() == nSets)
-			return true;
-		else
-			return false;
+		boolean cond = true;
+		int i = 0;
+		while(i < nSets && cond) {
+			if(!vector.get(i))
+				cond = false;
+			i++;
+		}
+		return cond;
 	}
 
 	@Override

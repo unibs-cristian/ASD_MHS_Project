@@ -29,7 +29,7 @@ public class Main{
 	private final static String TAG_DIST = "_dist";
 	private final static String MSG_EXECUTION_CANCELED = "Esecuzione annullata.";
 	private final static String MSG_RUN_ALL = "Si desidera eseguire l'algoritmo su tutti i file di una cartella? ";
-	private final static String MSG_USE_COMPONENTS = "Si desidera utilizare componenti già creati (In caso di risposta negativa i componenti già presenti verranno cancellati)? ";
+	private final static String MSG_USE_COMPONENTS = "Si desidera utilizzare componenti già creati (In caso di risposta negativa i componenti già presenti verranno cancellati)? ";
 	private final static String MSG_EXECUTION_TIME_1 = "Si desidera fissare una durata massima per l'elaborazione? ";
 	private final static String MSG_EXECUTION_TIME_2 = "Inserire la durata in secondi ";
 	private final static String MSG_EXECUTION_COMPLETE = "Esecuzione completata";

@@ -24,7 +24,6 @@ public abstract class Hypothesis implements Cloneable, Comparable<Hypothesis>{
 		return dimension;
 	}
 	
-	//TODO OPT 
 	public boolean isEmpty() {
 		if(bin.nextSetBit(0)==-1)
 			return true;

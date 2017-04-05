@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DistributedSolution extends Solution {
-	
+	// Numero di componenenti (numero files generati)
 	private int nFiles;
+	// Numero globale di MHS trovati (pre-composizione)
 	private int nGlobalMHS;
+	// Struttura dati contenente coppie chiave-valore che indicano gli MHS in ciascun componente
 	private HashMap<Integer, Integer> mhsPerComponents;
 	
 	public DistributedSolution(Instance in) {
