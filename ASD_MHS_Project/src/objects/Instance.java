@@ -58,20 +58,7 @@ public class Instance{
 		return col;				
 	}
 	
-	public BitSet getMatrixRow(int rowIndex) {
-		int k = 0;
-		BitSet row = new BitSet(inputFileCols);
-		for(int j=0; j<inputFileCols; j++) {
-			if(usefulColumns.get(j)) {
-				if(matrix.get(rowIndex*matrixCols+ k))
-					row.set(j);
-				k++;
-			}
-		}
-		return row;
-	}
-	
-	//Restituisce [firtRow,lastRow) (lastRow esclusa)
+	//Restituisce un insime di righe espanse [firtRow,lastRow) (lastRow esclusa)
 	private String getMatrixRows(int firstRow, int lastRow) {
 		int k;
 		StringBuilder matrixOut = new StringBuilder();
