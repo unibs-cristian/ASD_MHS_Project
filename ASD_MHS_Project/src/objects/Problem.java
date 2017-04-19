@@ -86,7 +86,10 @@ public class Problem {
 			Collections.sort(next, Collections.reverseOrder());
 			current = new ArrayList<>(next);
 			sol.incrementLevelReached(); // Livello raggiunto nell'esplorazione
-		} while(!current.isEmpty() && !hasExplorationStopped);		
+		//vecchie condizioni di terminazione del ciclo (senza ottimizzazione sul livello raggiunto)
+		//} while(!current.isEmpty() && !hasExplorationStopped);
+		//nuove condizioni di terminazione del ciclo
+		} while(!current.isEmpty() && !hasExplorationStopped && !sol.isMaxLevelReached());
 		long endTime = System.nanoTime();
 		double executionTime = ((double)(endTime - startTime))/NANO_TO_SEC;
 		sol.setTime(executionTime); 

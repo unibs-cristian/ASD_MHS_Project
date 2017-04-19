@@ -50,6 +50,14 @@ public abstract class Solution {
 		levelReached++;
 	}
 	
+	public boolean isMaxLevelReached() {
+		int maxLevelReachable = Math.max(in.getMatrixNumRows(), in.getNumUsefulColumns());
+		if(levelReached >= maxLevelReachable)
+			return true;
+		else
+			return false;
+	}
+	
 	public void setN_HypothesisPerLevel(int nHypothesis) {
 		nHypothesisPerLevel.addElement(nHypothesis);
 	}
