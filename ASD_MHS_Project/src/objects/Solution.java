@@ -20,7 +20,7 @@ public abstract class Solution {
 	protected double time;
 	// Struttura dati che tiene traccia di quante ipotesi sono state generate in ciascun livello
 	protected Vector<Integer> nHypothesisPerLevel;
-	//Massimo livello da raggiungere nell'esplorazione max{|N|,|M'|}
+	// Massimo livello da raggiungere nell'esplorazione max{|N|,|M'|}
 	private int maxLevelReachable;
 	
 	public Solution(Instance in) {
