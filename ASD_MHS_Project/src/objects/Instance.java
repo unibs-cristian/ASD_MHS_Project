@@ -26,12 +26,12 @@ public class Instance{
 		readMatrixFromFile(file);
 	}
 	
-	public Instance(BitSet usefulColumns, int inputFileCols) {
+	public Instance(BitSet usefulColumns, int inputFileCols, int nGlobalMHSFound) {
 		this.usefulColumns = usefulColumns;
 		this.inputFileCols = inputFileCols;
 		this.matrix = new BitSet();		   
 		this.matrixCols = usefulColumns.cardinality();
-		this.matrixRows = 0; 
+		this.matrixRows = nGlobalMHSFound; 
 	}
 	
 	public BitSet getMatrix() {

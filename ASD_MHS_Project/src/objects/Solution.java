@@ -20,7 +20,7 @@ public abstract class Solution {
 	protected double time;
 	// Struttura dati che tiene traccia di quante ipotesi sono state generate in ciascun livello
 	protected Vector<Integer> nHypothesisPerLevel;
-	// Massimo livello da raggiungere nell'esplorazione max{|N|,|M'|}
+	// Massimo livello da raggiungere nell'esplorazione min{|N|,|M'|}
 	private int maxLevelReachable;
 	
 	public Solution(Instance in) {
@@ -30,7 +30,7 @@ public abstract class Solution {
 		complete = false;
 		levelReached = -1;
 		nHypothesisPerLevel = new Vector<Integer>();
-		maxLevelReachable = Math.max(in.getMatrixNumRows(), in.getNumUsefulColumns());
+		maxLevelReachable = Math.min(in.getMatrixNumRows(), in.getNumUsefulColumns());
 	}
 	
 	public ArrayList<Hypothesis> getMhsSet() {

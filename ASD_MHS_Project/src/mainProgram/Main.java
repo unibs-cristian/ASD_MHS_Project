@@ -236,7 +236,7 @@ public class Main{
 												hsList.add(hsList_iShrink);
 											}
 											
-											Instance inDist = new Instance(usefulColumns,inputFileCols);
+											Instance inDist = new Instance(usefulColumns,inputFileCols,countMHS);
 											DistributedSolution distSol = new DistributedSolution(inDist);
 											
 											distSol.setnFiles(fileCounter);
