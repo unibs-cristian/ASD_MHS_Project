@@ -198,7 +198,7 @@ public class Main{
 											ArrayList<ArrayList<BitSet>> hsList = new ArrayList<>();
 											BitSet usefulColumns = new BitSet();
 											
-											int countMHS = 0, w = 0, inputFileCols = 0;
+											int countMHS = 0, w = 0, inputFileCols = 0, MHScardinalitySum = 0;
 											fileCounter = 0;
 											HashMap<Integer, Integer> mhsPerComponents = new HashMap<>();
 											Component c;
@@ -232,11 +232,15 @@ public class Main{
 														}
 													}
 													hsList_iShrink.add(hsShrink);
+													
+													if(j==(componentsList.get(i).getN_MHS()-1))
+														MHScardinalitySum+=componentsList.get(i).getMHS(j).cardinality();
 												}
 												hsList.add(hsList_iShrink);
 											}
 											
-											Instance inDist = new Instance(usefulColumns,inputFileCols,countMHS);
+											System.out.println(MHScardinalitySum);
+											Instance inDist = new Instance(usefulColumns,inputFileCols,MHScardinalitySum);
 											DistributedSolution distSol = new DistributedSolution(inDist);
 											
 											distSol.setnFiles(fileCounter);
